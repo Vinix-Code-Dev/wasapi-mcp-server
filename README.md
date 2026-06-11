@@ -1,6 +1,8 @@
 # @wasapi/mcp-server
 
-MCP server for [Wasapi](https://wasapi.io). Exposes 12 tools to Claude for managing contacts and sending WhatsApp messages via the Wasapi platform.
+MCP server for [Wasapi](https://wasapi.io). Exposes 12 tools for managing contacts and sending WhatsApp messages via the Wasapi platform.
+
+Works with any MCP-compatible client that can run local stdio servers: **Claude Desktop**, **Cursor**, **Claude Code**, **Windsurf**, **Zed**, and others. *(Does not work in Claude.ai web — that requires a hosted MCP server, which is a different deployment model.)*
 
 ## Install (recommended)
 
@@ -10,14 +12,22 @@ Run the interactive setup wizard:
 npx -y @wasapi/mcp-server setup
 ```
 
-It opens your Wasapi dashboard, validates your API key against the live API, picks a default WhatsApp number if you have one, and writes the entry into your Claude Desktop config. Restart Claude Desktop and you're done.
+It walks you through the flow: opens your Wasapi dashboard, validates your API key against the live API, picks a default WhatsApp number if you have one, and lets you choose where to install the MCP — **Claude Desktop**, **Cursor**, or any other platform (in which case it prints the JSON for you to paste manually).
+
+To skip the platform menu:
+
+```bash
+npx -y @wasapi/mcp-server setup --target claude-desktop
+npx -y @wasapi/mcp-server setup --target cursor
+npx -y @wasapi/mcp-server setup --print-only          # always print, never write
+```
 
 ## Install (manual)
 
 If you prefer not to use the wizard:
 
 1. Get your API key at [app.wasapi.io/account/developer](https://app.wasapi.io/account/developer)
-2. Add this to your `claude_desktop_config.json`:
+2. Add this to your MCP client's config (paths below):
 
 ```json
 {
@@ -34,9 +44,17 @@ If you prefer not to use the wizard:
 }
 ```
 
-3. Restart Claude Desktop.
+3. Restart your MCP client.
 
-You can also run `npx -y @wasapi/mcp-server setup --print-only` to get the JSON block tailored to your account without touching any files.
+**Common config paths:**
+
+| Platform | macOS / Linux | Windows |
+|---|---|---|
+| Claude Desktop | `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) / `~/.config/Claude/claude_desktop_config.json` (Linux) | `%APPDATA%\Claude\claude_desktop_config.json` |
+| Cursor | `~/.cursor/mcp.json` | `%USERPROFILE%\.cursor\mcp.json` |
+| Other clients | see their docs | see their docs |
+
+You can also run `npx -y @wasapi/mcp-server setup --print-only` to get the JSON tailored to your account without touching any files.
 
 ## Configuration
 

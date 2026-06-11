@@ -1,38 +1,39 @@
 import { fileURLToPath } from "node:url";
 import { openInBrowser } from "./browser.js";
-import { resolveConfigPath } from "./config-path.js";
 import { validateKey, type ValidateResult, type WhatsappNumber } from "./validate-key.js";
 import { writeWasapiEntry, type WasapiEntry } from "./config-write.js";
 import { question, maskedQuestion, numberInRange } from "./prompt.js";
+import { ALL_TARGETS, type Target } from "./targets.js";
 
 const DASHBOARD_URL = process.env.WASAPI_DASHBOARD_URL ?? "https://app.wasapi.io/account/developer";
 
 export interface SetupDeps {
   openInBrowser: typeof openInBrowser;
-  resolveConfigPath: typeof resolveConfigPath;
   validateKey: typeof validateKey;
   writeWasapiEntry: typeof writeWasapiEntry;
   question: typeof question;
   maskedQuestion: typeof maskedQuestion;
   numberInRange: typeof numberInRange;
   stdout: NodeJS.WritableStream;
+  targets: Target[];
 }
 
 export interface RunSetupOpts {
   printOnly: boolean;
   local?: boolean;
+  targetId?: string;
   deps?: SetupDeps;
 }
 
 const defaultDeps: SetupDeps = {
   openInBrowser,
-  resolveConfigPath,
   validateKey,
   writeWasapiEntry,
   question,
   maskedQuestion,
   numberInRange,
   stdout: process.stdout,
+  targets: ALL_TARGETS,
 };
 
 function formatNumber(n: WhatsappNumber, idx: number): string {
@@ -51,6 +52,15 @@ function buildEntry(apiKey: string, fromId: number | null, local: boolean): Wasa
   return { command: "npx", args: ["-y", "@wasapi/mcp-server"], env };
 }
 
+function printManualBlock(out: NodeJS.WritableStream, entry: WasapiEntry): void {
+  out.write("      Pega esto en la config de tu plataforma MCP:\n\n");
+  out.write(JSON.stringify({ mcpServers: { wasapi: entry } }, null, 2) + "\n\n");
+  out.write("      Paths comunes:\n");
+  out.write("        Claude Desktop:  ~/Library/Application Support/Claude/claude_desktop_config.json (macOS)\n");
+  out.write("        Cursor:          ~/.cursor/mcp.json\n");
+  out.write("        Otros:           consulta la doc de tu plataforma\n\n");
+}
+
 export async function runSetup(opts: RunSetupOpts): Promise<void> {
   const d = opts.deps ?? defaultDeps;
   const out = d.stdout;
@@ -64,11 +74,11 @@ export async function runSetup(opts: RunSetupOpts): Promise<void> {
   out.write("╭─────────────────────────────────────────────────────────────╮\n");
   out.write("│  Wasapi MCP — setup wizard                                  │\n");
   out.write("│                                                             │\n");
-  out.write("│  Te voy a guiar para conectar tu cuenta de Wasapi con       │\n");
-  out.write("│  Claude. Toma menos de un minuto.                           │\n");
+  out.write("│  Te voy a guiar para conectar tu cuenta de Wasapi con tu    │\n");
+  out.write("│  plataforma MCP (Claude Desktop, Cursor, etc).              │\n");
   out.write("╰─────────────────────────────────────────────────────────────╯\n\n");
 
-  out.write("[1/4] Necesitas una API key de Wasapi para que Claude pueda\n");
+  out.write("[1/4] Necesitas una API key de Wasapi para que el MCP pueda\n");
   out.write("      gestionar tus contactos y mensajes de WhatsApp.\n\n");
   out.write(`      Voy a abrir tu navegador en:\n        ${DASHBOARD_URL}\n\n`);
   out.write("      Allí: inicia sesión, genera o copia tu API key, y\n");
@@ -138,27 +148,52 @@ export async function runSetup(opts: RunSetupOpts): Promise<void> {
   const entry = buildEntry(apiKey, fromId, opts.local ?? false);
 
   if (opts.printOnly) {
-    out.write("[4/4] --print-only: aquí está la entrada para pegar en tu claude_desktop_config.json:\n\n");
+    out.write("[4/4] --print-only: aquí está la entrada para pegar manualmente:\n\n");
     out.write(JSON.stringify({ mcpServers: { wasapi: entry } }, null, 2) + "\n\n");
     return;
+  }
+
+  let target: Target | undefined;
+  if (opts.targetId) {
+    target = d.targets.find((t) => t.id === opts.targetId);
+    if (!target) {
+      out.write(`[4/4] Target desconocido: '${opts.targetId}'. Opciones: ${d.targets.map((t) => t.id).join(", ")}.\n\n`);
+      printManualBlock(out, entry);
+      return;
+    }
+  } else {
+    out.write("[4/4] ¿Dónde quieres instalar el MCP?\n");
+    d.targets.forEach((t, i) => out.write(`        ${i + 1}) ${t.label}\n`));
+    out.write(`        ${d.targets.length + 1}) Otra plataforma (imprimir JSON para pegar manualmente)\n`);
+    const pick = await d.numberInRange(
+      `      Selecciona [1-${d.targets.length + 1}]: `,
+      1,
+      d.targets.length + 1,
+    );
+    if (pick === null || pick === d.targets.length + 1) {
+      out.write("\n");
+      printManualBlock(out, entry);
+      return;
+    }
+    target = d.targets[pick - 1];
+    out.write("\n");
   }
 
   let cfgPath: string;
   try {
-    cfgPath = d.resolveConfigPath({ platform: process.platform, env: process.env });
+    cfgPath = target.configPath({ platform: process.platform, env: process.env });
   } catch (e) {
-    out.write(`[4/4] No pude detectar el path del config: ${(e as Error).message}\n`);
-    out.write("      Pega esto manualmente en tu claude_desktop_config.json:\n\n");
-    out.write(JSON.stringify({ mcpServers: { wasapi: entry } }, null, 2) + "\n\n");
+    out.write(`      ✗ No pude detectar el path de ${target.label}: ${(e as Error).message}\n\n`);
+    printManualBlock(out, entry);
     return;
   }
 
-  out.write(`[4/4] Detecté Claude Desktop config en:\n      ${cfgPath}\n`);
-  const confirm = await d.question("      ¿Configurar automáticamente? [Y/n]: ");
+  out.write(`      Detecté ${target.label} config en:\n        ${cfgPath}\n`);
+  const confirm = await d.question(`      ¿Configurar automáticamente? [Y/n]: `);
   const accepted = confirm === "" || /^y(es)?$/i.test(confirm);
   if (!accepted) {
-    out.write("\n      Pega esto manualmente en tu claude_desktop_config.json:\n\n");
-    out.write(JSON.stringify({ mcpServers: { wasapi: entry } }, null, 2) + "\n\n");
+    out.write("\n");
+    printManualBlock(out, entry);
     return;
   }
 
@@ -168,7 +203,7 @@ export async function runSetup(opts: RunSetupOpts): Promise<void> {
       out.write(`      ✓ Backup guardado: ${result.backupPath}\n`);
     }
     out.write('      ✓ Entrada "wasapi" agregada.\n\n');
-    out.write("Listo. Reinicia Claude Desktop (Cmd+Q + abrir) para activar el server.\n");
+    out.write(`Listo. ${target.restartHint}.\n`);
   } catch (e) {
     out.write(`      ✗ No pude escribir el config: ${(e as Error).message}\n`);
     out.write("      Sugerencia: corre 'wasapi-mcp setup --print-only' y pega el JSON manualmente.\n");

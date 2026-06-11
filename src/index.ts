@@ -12,10 +12,18 @@ import { dirname, join } from "node:path";
 
 export type DispatchResult =
   | { kind: "server" }
-  | { kind: "setup"; printOnly: boolean; local: boolean }
+  | { kind: "setup"; printOnly: boolean; local: boolean; targetId?: string }
   | { kind: "version" }
   | { kind: "help" }
   | { kind: "unknown"; arg: string };
+
+function extractFlagValue(args: string[], name: string): string | undefined {
+  const eq = args.find((a) => a.startsWith(`${name}=`));
+  if (eq) return eq.slice(name.length + 1);
+  const idx = args.indexOf(name);
+  if (idx >= 0 && idx + 1 < args.length) return args[idx + 1];
+  return undefined;
+}
 
 export function dispatch(args: string[]): DispatchResult {
   if (args.length === 0) return { kind: "server" };
@@ -25,6 +33,7 @@ export function dispatch(args: string[]): DispatchResult {
       kind: "setup",
       printOnly: args.includes("--print-only"),
       local: args.includes("--local"),
+      targetId: extractFlagValue(args, "--target"),
     };
   }
   if (first === "--version") return { kind: "version" };
@@ -46,9 +55,11 @@ Usage:
   wasapi-mcp setup            Interactive setup wizard
   wasapi-mcp setup --print-only
                               Run wizard but print the JSON instead of writing files
+  wasapi-mcp setup --target claude-desktop|cursor
+                              Skip the target menu and install to a specific platform
   wasapi-mcp setup --local
-                              Setup wizard that writes the local dist path instead of
-                              npx (for testing before publishing)
+                              Write the local dist path instead of 'npx -y @wasapi/mcp-server'
+                              (for testing before publishing)
   wasapi-mcp --version        Print version
   wasapi-mcp --help           Print this help
 
@@ -75,7 +86,7 @@ async function main() {
       process.exit(1);
     case "setup": {
       const { runSetup } = await import("./setup/index.js");
-      await runSetup({ printOnly: result.printOnly, local: result.local });
+      await runSetup({ printOnly: result.printOnly, local: result.local, targetId: result.targetId });
       return;
     }
     case "server": {

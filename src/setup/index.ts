@@ -34,8 +34,9 @@ const defaultDeps: SetupDeps = {
 };
 
 function formatNumber(n: WhatsappNumber, idx: number): string {
-  const phone = (n.phone as string | undefined) ?? "(sin teléfono)";
-  return `  ${idx + 1}) ${phone}   (id: ${n.id})`;
+  const phone = n.phone_number ?? "(sin teléfono)";
+  const name = n.display_name ? ` — ${n.display_name}` : "";
+  return `  ${idx + 1}) ${phone}${name}   (id: ${n.id})`;
 }
 
 function buildEntry(apiKey: string, fromId: number | null): WasapiEntry {

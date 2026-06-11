@@ -3,7 +3,8 @@ import { mapError, type ErrorCategory } from "../lib/errors.js";
 
 export interface WhatsappNumber {
   id: number;
-  phone?: string;
+  phone_number?: string;
+  display_name?: string;
   [k: string]: unknown;
 }
 

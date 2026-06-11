@@ -2,9 +2,22 @@
 
 MCP server for [Wasapi](https://wasapi.io). Exposes 12 tools to Claude for managing contacts and sending WhatsApp messages via the Wasapi platform.
 
-## Install
+## Install (recommended)
 
-Add to `claude_desktop_config.json` (Claude Desktop) or your Claude Code MCP config:
+Run the interactive setup wizard:
+
+```bash
+npx -y @wasapi/mcp-server setup
+```
+
+It opens your Wasapi dashboard, validates your API key against the live API, picks a default WhatsApp number if you have one, and writes the entry into your Claude Desktop config. Restart Claude Desktop and you're done.
+
+## Install (manual)
+
+If you prefer not to use the wizard:
+
+1. Get your API key at [app.wasapi.io/account/developer](https://app.wasapi.io/account/developer)
+2. Add this to your `claude_desktop_config.json`:
 
 ```json
 {
@@ -21,7 +34,9 @@ Add to `claude_desktop_config.json` (Claude Desktop) or your Claude Code MCP con
 }
 ```
 
-Get your API key at [app.wasapi.io](https://app.wasapi.io/).
+3. Restart Claude Desktop.
+
+You can also run `npx -y @wasapi/mcp-server setup --print-only` to get the JSON block tailored to your account without touching any files.
 
 ## Configuration
 

@@ -7,6 +7,7 @@ console.info = console.log;
 console.debug = console.log;
 
 import { readFile } from "node:fs/promises";
+import { realpathSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
@@ -108,11 +109,16 @@ async function main() {
   }
 }
 
-const invokedDirectly =
-  import.meta.url === `file://${process.argv[1]}` ||
-  (process.argv[1]?.endsWith("/index.js") ?? false);
+function isEntryPoint(): boolean {
+  try {
+    if (!process.argv[1]) return false;
+    return realpathSync(process.argv[1]) === fileURLToPath(import.meta.url);
+  } catch {
+    return false;
+  }
+}
 
-if (invokedDirectly) {
+if (isEntryPoint()) {
   main().catch((err) => {
     process.stderr.write(`Fatal: ${err?.message ?? err}\n`);
     process.exit(1);

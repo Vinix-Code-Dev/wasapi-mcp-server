@@ -60,14 +60,28 @@ export async function runSetup(opts: RunSetupOpts): Promise<void> {
     process.exit(1);
   }
 
-  out.write("\nWasapi MCP — setup wizard\n\n");
+  out.write("\n");
+  out.write("╭─────────────────────────────────────────────────────────────╮\n");
+  out.write("│  Wasapi MCP — setup wizard                                  │\n");
+  out.write("│                                                             │\n");
+  out.write("│  Te voy a guiar para conectar tu cuenta de Wasapi con       │\n");
+  out.write("│  Claude. Toma menos de un minuto.                           │\n");
+  out.write("╰─────────────────────────────────────────────────────────────╯\n\n");
 
-  out.write(`[1/4] Abriendo ${DASHBOARD_URL} en tu navegador...\n`);
+  out.write("[1/4] Necesitas una API key de Wasapi para que Claude pueda\n");
+  out.write("      gestionar tus contactos y mensajes de WhatsApp.\n\n");
+  out.write(`      Voy a abrir tu navegador en:\n        ${DASHBOARD_URL}\n\n`);
+  out.write("      Allí: inicia sesión, genera o copia tu API key, y\n");
+  out.write("      vuelve a esta terminal para pegarla.\n\n");
+
+  await d.question("      Presiona ENTER para abrir el navegador...");
   const opened = await d.openInBrowser(DASHBOARD_URL);
   if (!opened) {
-    out.write(`      No pude abrir el navegador. Visítalo manualmente: ${DASHBOARD_URL}\n`);
+    out.write(`      ✗ No pude abrir el navegador automáticamente.\n`);
+    out.write(`        Copia y pega esta URL: ${DASHBOARD_URL}\n\n`);
+  } else {
+    out.write("      ✓ Navegador abierto.\n\n");
   }
-  out.write("      Inicia sesión si hace falta y copia tu API key.\n\n");
 
   let apiKey = "";
   let numbers: WhatsappNumber[] = [];

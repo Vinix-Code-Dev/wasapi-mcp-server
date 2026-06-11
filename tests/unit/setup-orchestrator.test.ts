@@ -25,6 +25,7 @@ const stdoutText = (d: SetupDeps): string =>
 
 describe("runSetup happy path", () => {
   it("with 1 number, auto-selects from_id and writes config", async () => {
+    (deps.question as ReturnType<typeof vi.fn>).mockResolvedValueOnce("");
     (deps.maskedQuestion as ReturnType<typeof vi.fn>).mockResolvedValueOnce("key_abc");
     (deps.question as ReturnType<typeof vi.fn>).mockResolvedValueOnce("y");
 
@@ -39,6 +40,7 @@ describe("runSetup happy path", () => {
 
   it("with 0 numbers, skips from_id and still writes", async () => {
     (deps.validateKey as ReturnType<typeof vi.fn>).mockResolvedValue({ ok: true, numbers: [] });
+    (deps.question as ReturnType<typeof vi.fn>).mockResolvedValueOnce("");
     (deps.maskedQuestion as ReturnType<typeof vi.fn>).mockResolvedValueOnce("key_abc");
     (deps.question as ReturnType<typeof vi.fn>).mockResolvedValueOnce("y");
 
@@ -53,6 +55,7 @@ describe("runSetup happy path", () => {
       ok: true,
       numbers: [{ id: 11, phone: "+1" }, { id: 22, phone: "+2" }],
     });
+    (deps.question as ReturnType<typeof vi.fn>).mockResolvedValueOnce("");
     (deps.maskedQuestion as ReturnType<typeof vi.fn>).mockResolvedValueOnce("key_abc");
     (deps.numberInRange as ReturnType<typeof vi.fn>).mockResolvedValueOnce(2);
     (deps.question as ReturnType<typeof vi.fn>).mockResolvedValueOnce("y");
@@ -92,6 +95,7 @@ describe("runSetup edge cases", () => {
   });
 
   it("declines auto-config: prints JSON, does not write", async () => {
+    (deps.question as ReturnType<typeof vi.fn>).mockResolvedValueOnce("");
     (deps.maskedQuestion as ReturnType<typeof vi.fn>).mockResolvedValueOnce("key_abc");
     (deps.question as ReturnType<typeof vi.fn>).mockResolvedValueOnce("n");
     await runSetup({ printOnly: false, deps });

@@ -1,32 +1,103 @@
 #!/usr/bin/env node
 
-// Redirect console.log to stderr BEFORE importing anything else.
-// The Wasapi SDK and potentially other deps log to stdout, which corrupts
-// the MCP JSON-RPC stream on stdio transport. stdout must stay clean.
 console.log = (...args: unknown[]) => {
   process.stderr.write(args.map((a) => (typeof a === "string" ? a : JSON.stringify(a))).join(" ") + "\n");
 };
 console.info = console.log;
 console.debug = console.log;
 
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { buildServer } from "./server.js";
-import { allTools } from "./tools/index.js";
-import { loadConfig } from "./config.js";
+import { readFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
 
-async function main() {
-  try {
-    loadConfig();
-  } catch (e) {
-    process.stderr.write(`${(e as Error).message}\n`);
-    process.exit(1);
+export type DispatchResult =
+  | { kind: "server" }
+  | { kind: "setup"; printOnly: boolean }
+  | { kind: "version" }
+  | { kind: "help" }
+  | { kind: "unknown"; arg: string };
+
+export function dispatch(args: string[]): DispatchResult {
+  if (args.length === 0) return { kind: "server" };
+  const first = args[0];
+  if (first === "setup") {
+    const printOnly = args.includes("--print-only");
+    return { kind: "setup", printOnly };
   }
-  const server = buildServer(allTools);
-  const transport = new StdioServerTransport();
-  await server.connect(transport);
+  if (first === "--version") return { kind: "version" };
+  if (first === "--help" || first === "-h") return { kind: "help" };
+  return { kind: "unknown", arg: first };
 }
 
-main().catch((err) => {
-  process.stderr.write(`Fatal: ${err?.message ?? err}\n`);
-  process.exit(1);
-});
+async function readVersion(): Promise<string> {
+  const here = dirname(fileURLToPath(import.meta.url));
+  const pkg = JSON.parse(await readFile(join(here, "..", "package.json"), "utf8"));
+  return pkg.version;
+}
+
+function printHelp(): void {
+  process.stdout.write(`wasapi-mcp — MCP server for Wasapi
+
+Usage:
+  wasapi-mcp                  Start the MCP server on stdio (used by Claude Desktop)
+  wasapi-mcp setup            Interactive setup wizard
+  wasapi-mcp setup --print-only
+                              Run wizard but print the JSON instead of writing files
+  wasapi-mcp --version        Print version
+  wasapi-mcp --help           Print this help
+
+Environment variables:
+  WASAPI_API_KEY              Required. Your Wasapi API key.
+  WASAPI_FROM_ID              Optional. Default WhatsApp number ID.
+  WASAPI_BASE_URL             Optional. Override SDK base URL.
+  WASAPI_DEBUG                Optional. Set to 1 for stderr debug logs.
+`);
+}
+
+async function main() {
+  const result = dispatch(process.argv.slice(2));
+  switch (result.kind) {
+    case "version":
+      process.stdout.write((await readVersion()) + "\n");
+      return;
+    case "help":
+      printHelp();
+      return;
+    case "unknown":
+      process.stderr.write(`Unknown argument: ${result.arg}\n\n`);
+      printHelp();
+      process.exit(1);
+    case "setup": {
+      const { runSetup } = await import("./setup/index.js");
+      await runSetup({ printOnly: result.printOnly });
+      return;
+    }
+    case "server": {
+      const { StdioServerTransport } = await import("@modelcontextprotocol/sdk/server/stdio.js");
+      const { buildServer } = await import("./server.js");
+      const { allTools } = await import("./tools/index.js");
+      const { loadConfig } = await import("./config.js");
+      try {
+        loadConfig();
+      } catch (e) {
+        process.stderr.write(`${(e as Error).message}\n`);
+        process.exit(1);
+      }
+      const server = buildServer(allTools);
+      const transport = new StdioServerTransport();
+      await server.connect(transport);
+      return;
+    }
+  }
+}
+
+const invokedDirectly =
+  import.meta.url === `file://${process.argv[1]}` ||
+  (process.argv[1]?.endsWith("/index.js") ?? false);
+
+if (invokedDirectly) {
+  main().catch((err) => {
+    process.stderr.write(`Fatal: ${err?.message ?? err}\n`);
+    process.exit(1);
+  });
+}

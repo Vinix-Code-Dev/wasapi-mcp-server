@@ -1,3 +1,4 @@
+import { fileURLToPath } from "node:url";
 import { openInBrowser } from "./browser.js";
 import { resolveConfigPath } from "./config-path.js";
 import { validateKey, type ValidateResult, type WhatsappNumber } from "./validate-key.js";
@@ -19,6 +20,7 @@ export interface SetupDeps {
 
 export interface RunSetupOpts {
   printOnly: boolean;
+  local?: boolean;
   deps?: SetupDeps;
 }
 
@@ -39,9 +41,13 @@ function formatNumber(n: WhatsappNumber, idx: number): string {
   return `  ${idx + 1}) ${phone}${name}   (id: ${n.id})`;
 }
 
-function buildEntry(apiKey: string, fromId: number | null): WasapiEntry {
+function buildEntry(apiKey: string, fromId: number | null, local: boolean): WasapiEntry {
   const env: WasapiEntry["env"] = { WASAPI_API_KEY: apiKey };
   if (fromId !== null) env.WASAPI_FROM_ID = String(fromId);
+  if (local) {
+    const localPath = fileURLToPath(new URL("./../index.js", import.meta.url));
+    return { command: "node", args: [localPath], env };
+  }
   return { command: "npx", args: ["-y", "@wasapi/mcp-server"], env };
 }
 
@@ -115,7 +121,7 @@ export async function runSetup(opts: RunSetupOpts): Promise<void> {
     }
   }
 
-  const entry = buildEntry(apiKey, fromId);
+  const entry = buildEntry(apiKey, fromId, opts.local ?? false);
 
   if (opts.printOnly) {
     out.write("[4/4] --print-only: aquí está la entrada para pegar en tu claude_desktop_config.json:\n\n");

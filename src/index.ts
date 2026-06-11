@@ -12,7 +12,7 @@ import { dirname, join } from "node:path";
 
 export type DispatchResult =
   | { kind: "server" }
-  | { kind: "setup"; printOnly: boolean }
+  | { kind: "setup"; printOnly: boolean; local: boolean }
   | { kind: "version" }
   | { kind: "help" }
   | { kind: "unknown"; arg: string };
@@ -21,8 +21,11 @@ export function dispatch(args: string[]): DispatchResult {
   if (args.length === 0) return { kind: "server" };
   const first = args[0];
   if (first === "setup") {
-    const printOnly = args.includes("--print-only");
-    return { kind: "setup", printOnly };
+    return {
+      kind: "setup",
+      printOnly: args.includes("--print-only"),
+      local: args.includes("--local"),
+    };
   }
   if (first === "--version") return { kind: "version" };
   if (first === "--help" || first === "-h") return { kind: "help" };
@@ -43,6 +46,9 @@ Usage:
   wasapi-mcp setup            Interactive setup wizard
   wasapi-mcp setup --print-only
                               Run wizard but print the JSON instead of writing files
+  wasapi-mcp setup --local
+                              Setup wizard that writes the local dist path instead of
+                              npx (for testing before publishing)
   wasapi-mcp --version        Print version
   wasapi-mcp --help           Print this help
 
@@ -69,7 +75,7 @@ async function main() {
       process.exit(1);
     case "setup": {
       const { runSetup } = await import("./setup/index.js");
-      await runSetup({ printOnly: result.printOnly });
+      await runSetup({ printOnly: result.printOnly, local: result.local });
       return;
     }
     case "server": {

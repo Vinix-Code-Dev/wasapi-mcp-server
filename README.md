@@ -79,7 +79,7 @@ Note: contacts are identified by `wa_id` (a string WhatsApp ID), not a numeric I
 ```bash
 npm install
 npm run dev          # run with tsx (requires WASAPI_API_KEY)
-npm test             # unit + contract tests (52 unit + 12 type contracts)
+npm test             # unit + contract tests
 npm run test:integration  # opt-in, needs WASAPI_TEST_API_KEY=xxx
 npm run typecheck
 npm run build

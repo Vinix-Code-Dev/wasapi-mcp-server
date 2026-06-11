@@ -4,11 +4,16 @@ import { getContactTool } from "./contacts/get.js";
 import { createContactTool } from "./contacts/create.js";
 import { updateContactTool } from "./contacts/update.js";
 import { deleteContactTool } from "./contacts/delete.js";
+import { addLabelTool } from "./contacts/add-label.js";
+import { removeLabelTool } from "./contacts/remove-label.js";
 
-export const allTools: ToolDefinition[] = [
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const allTools: ToolDefinition<any>[] = [
   listContactsTool,
   getContactTool,
   createContactTool,
   updateContactTool,
   deleteContactTool,
+  addLabelTool,
+  removeLabelTool,
 ];

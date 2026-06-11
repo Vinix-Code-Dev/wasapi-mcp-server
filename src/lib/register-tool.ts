@@ -1,10 +1,8 @@
 import { z, ZodType } from "zod";
+import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { mapError } from "./errors.js";
 
-export interface ToolResponse {
-  content: Array<{ type: "text"; text: string }>;
-  isError?: boolean;
-}
+export type ToolResponse = CallToolResult;
 
 export function wrapHandler<S extends ZodType>(
   schema: S,

@@ -9,6 +9,7 @@ import { removeLabelTool } from "./contacts/remove-label.js";
 import { listWhatsappNumbersTool } from "./whatsapp/list-numbers.js";
 import { sendMessageTool } from "./whatsapp/send-message.js";
 import { sendTemplateTool } from "./whatsapp/send-template.js";
+import { sendAttachmentTool } from "./whatsapp/send-attachment.js";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const allTools: ToolDefinition<any>[] = [
@@ -22,4 +23,5 @@ export const allTools: ToolDefinition<any>[] = [
   listWhatsappNumbersTool,
   sendMessageTool,
   sendTemplateTool,
+  sendAttachmentTool,
 ];

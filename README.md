@@ -1,4 +1,4 @@
-# @wasapi/mcp-server
+# @jpabloe/wasapi-mcp-server
 
 MCP server for [Wasapi](https://wasapi.io). Exposes 12 tools for managing contacts and sending WhatsApp messages via the Wasapi platform.
 
@@ -9,7 +9,7 @@ Works with any MCP-compatible client that can run local stdio servers: **Claude 
 Run the interactive setup wizard:
 
 ```bash
-npx -y @wasapi/mcp-server setup
+npx -y @jpabloe/wasapi-mcp-server setup
 ```
 
 It walks you through the flow: opens your Wasapi dashboard, validates your API key against the live API, picks a default WhatsApp number if you have one, and lets you choose where to install the MCP — **Claude Desktop**, **Cursor**, or any other platform (in which case it prints the JSON for you to paste manually).
@@ -17,9 +17,9 @@ It walks you through the flow: opens your Wasapi dashboard, validates your API k
 To skip the platform menu:
 
 ```bash
-npx -y @wasapi/mcp-server setup --target claude-desktop
-npx -y @wasapi/mcp-server setup --target cursor
-npx -y @wasapi/mcp-server setup --print-only          # always print, never write
+npx -y @jpabloe/wasapi-mcp-server setup --target claude-desktop
+npx -y @jpabloe/wasapi-mcp-server setup --target cursor
+npx -y @jpabloe/wasapi-mcp-server setup --print-only          # always print, never write
 ```
 
 ## Install (manual)
@@ -34,7 +34,7 @@ If you prefer not to use the wizard:
   "mcpServers": {
     "wasapi": {
       "command": "npx",
-      "args": ["-y", "@wasapi/mcp-server"],
+      "args": ["-y", "@jpabloe/wasapi-mcp-server"],
       "env": {
         "WASAPI_API_KEY": "your_api_key_here",
         "WASAPI_FROM_ID": "12345"
@@ -54,7 +54,7 @@ If you prefer not to use the wizard:
 | Cursor | `~/.cursor/mcp.json` | `%USERPROFILE%\.cursor\mcp.json` |
 | Other clients | see their docs | see their docs |
 
-You can also run `npx -y @wasapi/mcp-server setup --print-only` to get the JSON tailored to your account without touching any files.
+You can also run `npx -y @jpabloe/wasapi-mcp-server setup --print-only` to get the JSON tailored to your account without touching any files.
 
 ## Configuration
 

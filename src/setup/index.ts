@@ -49,7 +49,7 @@ function buildEntry(apiKey: string, fromId: number | null, local: boolean): Wasa
     const localPath = fileURLToPath(new URL("./../index.js", import.meta.url));
     return { command: "node", args: [localPath], env };
   }
-  return { command: "npx", args: ["-y", "@wasapi/mcp-server"], env };
+  return { command: "npx", args: ["-y", "@jpabloe/wasapi-mcp-server"], env };
 }
 
 function printManualBlock(out: NodeJS.WritableStream, entry: WasapiEntry): void {

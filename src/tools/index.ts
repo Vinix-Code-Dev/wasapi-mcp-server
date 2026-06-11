@@ -10,6 +10,9 @@ import { listWhatsappNumbersTool } from "./whatsapp/list-numbers.js";
 import { sendMessageTool } from "./whatsapp/send-message.js";
 import { sendTemplateTool } from "./whatsapp/send-template.js";
 import { sendAttachmentTool } from "./whatsapp/send-attachment.js";
+import { getConversationTool } from "./whatsapp/get-conversation.js";
+// NOTE: list_conversations is NOT implemented — SDK gap (no listConversations method exists).
+// Tracked for follow-up SDK PR.
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const allTools: ToolDefinition<any>[] = [
@@ -24,4 +27,5 @@ export const allTools: ToolDefinition<any>[] = [
   sendMessageTool,
   sendTemplateTool,
   sendAttachmentTool,
+  getConversationTool,
 ];

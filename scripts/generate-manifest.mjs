@@ -17,7 +17,7 @@ const TOOLS = [
 ];
 
 export const manifestSchema = z.object({
-  dxt_version: z.literal("0.1"),
+  manifest_version: z.literal("0.3"),
   name: z.string().min(1),
   display_name: z.string().min(1),
   version: z.string().regex(/^\d+\.\d+\.\d+/),
@@ -79,7 +79,7 @@ export function buildManifest(pkg) {
     : (pkg.author ?? { name: "Unknown" });
 
   return {
-    dxt_version: "0.1",
+    manifest_version: "0.3",
     name: "wasapi-mcp",
     display_name: "Wasapi",
     version: pkg.version,
@@ -112,7 +112,7 @@ export function buildManifest(pkg) {
     },
     tools: TOOLS,
     compatibility: {
-      claude_desktop: ">=0.10.0",
+      claude_desktop: ">=1.0.0",
       platforms: ["darwin", "win32", "linux"],
       runtimes: { node: ">=20.0.0" },
     },

@@ -68,7 +68,7 @@ function step6_writeManifest() {
 }
 
 function step7_zip(version) {
-  const outPath = join(releaseDir, `wasapi-mcp-${version}.dxt`);
+  const outPath = join(releaseDir, `wasapi-mcp-${version}.mcpb`);
   log(`Creating ZIP: ${outPath}`);
   return new Promise((resolveZip, rejectZip) => {
     const output = createWriteStream(outPath);
@@ -90,8 +90,8 @@ async function main() {
   const version = step6_writeManifest();
   const outPath = await step7_zip(version);
   // Stable-named copy so the GitHub "latest" download URL never changes:
-  // https://github.com/.../releases/latest/download/wasapi-mcp.dxt
-  const stablePath = join(releaseDir, "wasapi-mcp.dxt");
+  // https://github.com/.../releases/latest/download/wasapi-mcp.mcpb
+  const stablePath = join(releaseDir, "wasapi-mcp.mcpb");
   cpSync(outPath, stablePath);
   const size = statSync(outPath).size;
   log(`Done. ${outPath} (${(size / 1024 / 1024).toFixed(2)} MB)`);

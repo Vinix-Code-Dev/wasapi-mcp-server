@@ -91,6 +91,8 @@ describe("send_template", () => {
         file_name: "contrato.pdf",
       }),
     );
+    // The SDK derives `file` from url_file itself; the tool must never send it
+    expect(sendMock).toHaveBeenCalledWith(expect.not.objectContaining({ file: expect.anything() }));
   });
 
   it("rejects invalid contact_type", async () => {

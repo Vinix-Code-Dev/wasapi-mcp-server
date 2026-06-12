@@ -16,10 +16,11 @@ describe("export_contacts", () => {
     expect(JSON.parse(res.content[0].text).success).toBe(true);
   });
 
-  it("works with no args", async () => {
+  it("works with no args and passes empty object to the SDK", async () => {
     const h = wrapHandler(exportContactsTool.schema, exportContactsTool.handler);
     const res = await h({});
     expect(res.isError).toBeFalsy();
+    expect(mock).toHaveBeenCalledWith({});
   });
 
   it("rejects invalid email", async () => {

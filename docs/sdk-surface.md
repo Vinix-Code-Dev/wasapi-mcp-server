@@ -78,7 +78,7 @@ The SDK's `sendTemplate` accepts `recipients` as a comma-separated string (e.g. 
 Three SDK methods return `any` in their type declarations — the actual shape must be inferred from runtime observations:
 - `getFieldsTemplate(template_uuid)` → observed: `{ fields: [...] }`
 - `getFlowsByPhoneId(from_id?)` → observed: `{ data: [...] }` or similar
-- `getFlowScreens({ flow_id, phone_id? })` → observed: `{ screens: [...] }` or similar
+- `getFlowScreens({ flow_id, phone_id? })` → returns a plain `Screen[]` array — the SDK implementation extracts `getFlowAssets().data.screens` internally (see `dist/esm/wasapi/modules/whatsapp.js`)
 
 ### Campaigns module (stub — DO NOT USE)
 The `campaigns` module has `create`, `update`, and `delete` methods that **throw "not implemented"** at runtime. They are present in the SDK class but are stubs. Do not expose them as MCP tools until the SDK implements them.

@@ -12,8 +12,10 @@ const mocks = {
   getFlowsByPhoneId: vi.fn().mockResolvedValue({ data: [] }),
   sendFlow: vi.fn().mockResolvedValue({ success: true }),
   getFlowResponses: vi.fn().mockResolvedValue({ data: [] }),
-  getFlowAssets: vi.fn().mockResolvedValue({ success: true, data: {} }),
-  getFlowScreens: vi.fn().mockResolvedValue({ screens: [] }),
+  getFlowAssets: vi.fn().mockResolvedValue({ success: true, data: { flow: {}, screens: [], data_api: false } }),
+  // The SDK's getFlowScreens returns a plain Screen[] (it extracts
+  // getFlowAssets().data.screens internally), NOT a wrapped object.
+  getFlowScreens: vi.fn().mockResolvedValue([{ id: "s1", name: "WELCOME" }]),
 };
 vi.mock("../../../src/wasapi.js", () => ({
   getClient: () => ({ whatsapp: mocks }),

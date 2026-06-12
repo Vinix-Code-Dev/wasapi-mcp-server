@@ -14,6 +14,21 @@ const TOOLS = [
   { name: "send_template", description: "Envía una plantilla aprobada de WhatsApp" },
   { name: "send_attachment", description: "Envía un archivo adjunto desde una ruta local" },
   { name: "get_conversation", description: "Obtiene el hilo de mensajes con un contacto" },
+  { name: "assign_agent_to_contact", description: "Asigna automáticamente un agente a un contacto" },
+  { name: "export_contacts", description: "Inicia una exportación de todos los contactos" },
+  { name: "list_whatsapp_templates", description: "Lista las plantillas de WhatsApp de la cuenta" },
+  { name: "get_whatsapp_template", description: "Obtiene el detalle de una plantilla por UUID" },
+  { name: "get_template_fields", description: "Obtiene los campos/variables de una plantilla" },
+  { name: "list_templates_by_number", description: "Lista plantillas disponibles para un número" },
+  { name: "sync_meta_templates", description: "Sincroniza las plantillas desde Meta" },
+  { name: "change_conversation_status", description: "Cambia el estado de una conversación (open/hold/closed)" },
+  { name: "send_contact_card", description: "Envía tarjetas de contacto (vCard) por WhatsApp" },
+  { name: "list_flows", description: "Lista los WhatsApp Flows de la cuenta" },
+  { name: "list_flows_by_number", description: "Lista los Flows disponibles para un número" },
+  { name: "send_flow", description: "Envía un WhatsApp Flow interactivo a un contacto" },
+  { name: "get_flow_responses", description: "Obtiene las respuestas de un Flow (paginado)" },
+  { name: "get_flow_assets", description: "Obtiene el detalle y assets de un Flow" },
+  { name: "get_flow_screens", description: "Lista las pantallas de un Flow" },
 ];
 
 export const manifestSchema = z.object({

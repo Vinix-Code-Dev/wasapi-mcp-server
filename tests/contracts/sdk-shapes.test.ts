@@ -66,4 +66,81 @@ describe("SDK shape contracts — whatsapp", () => {
     type Fn = WasapiClient["whatsapp"]["getConversation"];
     expectTypeOf<Fn>().toBeFunction();
   });
+
+  it("whatsapp.getWhatsappTemplates is a function", () => {
+    type Fn = WasapiClient["whatsapp"]["getWhatsappTemplates"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("whatsapp.getWhatsappTemplate is a function", () => {
+    type Fn = WasapiClient["whatsapp"]["getWhatsappTemplate"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("whatsapp.getFieldsTemplate is a function", () => {
+    type Fn = WasapiClient["whatsapp"]["getFieldsTemplate"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("whatsapp.getTemplatesByAppId is a function", () => {
+    type Fn = WasapiClient["whatsapp"]["getTemplatesByAppId"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("whatsapp.syncMetaTemplates is a function", () => {
+    type Fn = WasapiClient["whatsapp"]["syncMetaTemplates"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("whatsapp.changeStatus is a function", () => {
+    type Fn = WasapiClient["whatsapp"]["changeStatus"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("whatsapp.sendContacts is a function", () => {
+    type Fn = WasapiClient["whatsapp"]["sendContacts"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("whatsapp.getFlows is a function", () => {
+    type Fn = WasapiClient["whatsapp"]["getFlows"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("whatsapp.getFlowsByPhoneId is a function", () => {
+    type Fn = WasapiClient["whatsapp"]["getFlowsByPhoneId"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("whatsapp.sendFlow is a function", () => {
+    type Fn = WasapiClient["whatsapp"]["sendFlow"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("whatsapp.getFlowResponses is a function", () => {
+    type Fn = WasapiClient["whatsapp"]["getFlowResponses"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("whatsapp.getFlowAssets is a function", () => {
+    type Fn = WasapiClient["whatsapp"]["getFlowAssets"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("whatsapp.getFlowScreens is a function", () => {
+    type Fn = WasapiClient["whatsapp"]["getFlowScreens"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+});
+
+describe("SDK shape contracts — contacts (new methods)", () => {
+  it("contacts.assingAgentAutomatic is a function", () => {
+    type Fn = WasapiClient["contacts"]["assingAgentAutomatic"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("contacts.export is a function", () => {
+    type Fn = WasapiClient["contacts"]["export"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
 });

@@ -23,7 +23,7 @@ describe("buildManifest", () => {
     expect(m.author.email).toBe("juanpablo@vinixcode.com");
   });
 
-  it("declares all 12 tools", () => {
+  it("declares all 27 tools", () => {
     const m = buildManifest(pkgFixture);
     const names = m.tools.map((t) => t.name);
     expect(names).toEqual([
@@ -31,6 +31,12 @@ describe("buildManifest", () => {
       "delete_contact", "add_label_to_contact", "remove_label_from_contact",
       "list_whatsapp_numbers", "send_message", "send_template",
       "send_attachment", "get_conversation",
+      "assign_agent_to_contact", "export_contacts",
+      "list_whatsapp_templates", "get_whatsapp_template", "get_template_fields",
+      "list_templates_by_number", "sync_meta_templates",
+      "change_conversation_status", "send_contact_card",
+      "list_flows", "list_flows_by_number", "send_flow",
+      "get_flow_responses", "get_flow_assets", "get_flow_screens",
     ]);
   });
 

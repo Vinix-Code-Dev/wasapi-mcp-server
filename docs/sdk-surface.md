@@ -1,7 +1,8 @@
 # SDK Surface (verified)
 
-SDK: `@wasapi/js-sdk` v0.1.38
-Inspected: 2026-06-10
+SDK: `@wasapi/js-sdk`
+Source: `node_modules/@wasapi/js-sdk/dist/types/wasapi/modules/*.d.ts`
+Inspected: 2026-06-12 (post SDK-parity batch A+B, 27 tools)
 
 ## Init
 
@@ -11,57 +12,97 @@ new WasapiClient(config: WasapiConfig | string)
 // or pass apiKey string directly
 ```
 
+---
+
 ## contacts (`client.contacts`)
 
-| Plan assumption | Actual SDK method | Notes |
-|---|---|---|
-| `contacts.list(args)` | `contacts.getAll()` | No pagination params accepted |
-| `contacts.list({ search })` | `contacts.getSearch({ search?, labels?, page? })` | Search is separate method |
-| `contacts.get(id)` | `contacts.getById(wa_id: string)` | ID is `wa_id` (string), not numeric |
-| `contacts.create(args)` | `contacts.create({ first_name, last_name, email, country_code, phone, ...options })` | `first_name` is required |
-| `contacts.update(id, data)` | `contacts.update({ wa_id, data })` | Takes object, not two args |
-| `contacts.delete(id)` | `contacts.delete(wa_id: string)` | ID is string |
-| `contacts.addLabel(id, labelId)` | `contacts.addLabel({ contact_uuid, label_id: number[] })` | Different signature — takes object, label_id is array |
-| `contacts.removeLabel(id, labelId)` | `contacts.removeLabel({ contact_uuid, label_id: number[] })` | Same |
+Full method surface:
+
+| Method | Signature | Return type | Notes |
+|---|---|---|---|
+| `getAll` | `()` | `Promise<ResponseAllContacts>` | No pagination params |
+| `getSearch` | `({ search?, labels?, page? })` | `Promise<ResponseAllContacts>` | |
+| `getById` | `(wa_id: string)` | `Promise<ResponseContactById>` | |
+| `create` | `({ first_name, last_name, email, country_code, phone, ...options })` | `Promise<ResponseContactById>` | `first_name` required |
+| `update` | `({ wa_id, data })` | `Promise<ResponseContactById>` | |
+| `delete` | `(wa_id: string)` | `Promise<any>` | |
+| `addLabel` | `({ contact_uuid, label_id })` | `Promise<ResponseContactById>` | |
+| `removeLabel` | `({ contact_uuid, label_id })` | `Promise<ResponseContactById>` | |
+| `assingAgentAutomatic` | `({ contact_uuid })` | `Promise<ResponseContactById>` | Note: typo in SDK name ("assing" not "assign") |
+| `export` | `(data: ExportContactsRequest)` | `Promise<void>` | Triggers async export; no return value |
+
+---
 
 ## whatsapp (`client.whatsapp`)
 
-| Plan assumption | Actual SDK method | Notes |
-|---|---|---|
-| `whatsapp.listNumbers()` | `whatsapp.getWhatsappNumbers()` | Different name |
-| `whatsapp.sendMessage({ to, message, from_id })` | `whatsapp.sendMessage({ from_id?, wa_id, message })` | Uses `wa_id` not `to` |
-| `whatsapp.sendTemplate({ to, template_name, variables, from_id })` | `whatsapp.sendTemplate({ recipients, template_id, contact_type, from_id?, ... })` | Completely different shape — template_id (UUID) instead of name, recipients instead of to, contact_type required |
-| `whatsapp.sendAttachment({ to, url, type, caption, from_id })` | `whatsapp.sendAttachment({ from_id?, wa_id, filePath, caption?, filename? })` | Takes `filePath` (local or URL?), no explicit type enum; different params |
-| `whatsapp.listConversations(args)` | NOT FOUND | No `listConversations` method exists |
-| `whatsapp.getConversation(id)` | `whatsapp.getConversation({ wa_id, from_id?, page? })` | Takes object with `wa_id`, not a conversation ID |
+Full method surface:
+
+| Method | Signature | Return type | Notes |
+|---|---|---|---|
+| `sendMessage` | `({ from_id?, wa_id, message })` | `Promise<ResponseMessageWPP>` | |
+| `sendAttachment` | `({ from_id?, wa_id, filePath, caption?, filename? })` | `Promise<ResponseAttachmentWPP>` | Local file path only; no remote URL support at SDK level |
+| `sendTemplate` | `({ recipients, template_id, contact_type, from_id?, url_file?, ...options })` | `Promise<ResponseTemplate>` | `recipients` is a **CSV string** at the API level (e.g. `"573001,573002"`). The MCP tool accepts `string[]` and joins with `","`. `url_file` triggers `getTemplateFileType` internally — do NOT pass a `file` param |
+| `getConversation` | `({ wa_id, from_id?, page? })` | `Promise<ResponseConversation>` | |
+| `getWhatsappNumbers` | `()` | `Promise<ResponseWhatsappNumbers>` | |
+| `getWhatsappTemplates` | `()` | `Promise<ResponseTemplate>` | |
+| `getWhatsappTemplate` | `({ template_uuid })` | `Promise<ResponseTemplateById>` | |
+| `getFieldsTemplate` | `(template_uuid: string)` | `Promise<any>` | Returns `any` in SDK types; observed shape: `{ fields: [...] }` |
+| `getTemplatesByAppId` | `({ from_id })` | `Promise<Template[]>` | |
+| `syncMetaTemplates` | `()` | `Promise<ResponseTemplateSyncMeta>` | |
+| `changeStatus` | `({ from_id, wa_id, status, message?, ...options })` | `Promise<any>` | `status` values: `"open"`, `"hold"`, `"closed"` |
+| `sendContacts` | `({ wa_id, from_id, context_wam_id?, contacts })` | `Promise<ResponseSendContact>` | Sends vCard contact cards |
+| `getFlows` | `()` | `Promise<ResponseAllFlows>` | |
+| `getFlowsByPhoneId` | `(from_id?: number)` | `Promise<any>` | Returns `any` in SDK types; takes positional arg (not object) |
+| `sendFlow` | `({ wa_id, message, phone_id, cta, screen, flow_id, action? })` | `Promise<ResponseSendFlow>` | |
+| `getFlowResponses` | `({ flow_id, page?, per_page? })` | `Promise<ResponseFlowResponses>` | |
+| `getFlowAssets` | `({ flow_id, phone_id? })` | `Promise<GetFlowDetail>` | |
+| `getFlowScreens` | `({ flow_id, phone_id? })` | `Promise<any>` | Returns `any` in SDK types; same params as `getFlowAssets` |
+| `getAppIdByFromId` | `(from_id: number)` | `Promise<any>` | Internal utility; not exposed as MCP tool |
+
+---
 
 ## labels (`client.labels`)
 
 Methods: `getAll()`, `getSearch(name)`, `getById(id)`, `create({ title, description, color })`, `update({ id, data })`, `delete(id)`
 
-Labels are managed separately — they are NOT attached/detached via the contacts module with a simple (contactId, labelId) signature.
+Labels are managed separately — not exposed as MCP tools in this version.
 
-## Key discrepancies affecting Tasks 7–17
+---
 
-1. **contacts.list** does not exist — use `getAll()` (no args) or `getSearch({ search?, labels?, page? })`
-2. **contacts.get** → `getById(wa_id: string)` — ID is a string wa_id
-3. **contacts.update** → `update({ wa_id, data })` — object signature, `wa_id` is string
-4. **contacts.delete** → `delete(wa_id: string)` — string
-5. **contacts.addLabel** → `addLabel({ contact_uuid, label_id: number[] })` — object, label_id is array
-6. **contacts.removeLabel** → `removeLabel({ contact_uuid, label_id: number[] })` — same
-7. **whatsapp.listNumbers** → `getWhatsappNumbers()`
-8. **whatsapp.sendMessage** uses `wa_id` not `to`
-9. **whatsapp.sendTemplate** has completely different shape (template_id UUID, recipients, contact_type)
-10. **whatsapp.sendAttachment** uses `filePath` not `url`+`type`
-11. **whatsapp.listConversations** does NOT exist
-12. **whatsapp.getConversation** takes `{ wa_id, from_id?, page? }` not a conversation ID
+## Important notes
 
-## Response shapes
+### `recipients` is CSV at the API level
+The SDK's `sendTemplate` accepts `recipients` as a comma-separated string (e.g. `"573001112233,573002223344"`). The MCP tool accepts `recipients: string[]` for model ergonomics and joins with `","` in the handler before calling the SDK.
 
-- `contacts.getAll()` → `ResponseAllContacts`
-- `contacts.getById()` → `ResponseContactById`
-- `whatsapp.getWhatsappNumbers()` → `ResponseWhatsappNumbers`
-- `whatsapp.sendMessage()` → `ResponseMessageWPP`
-- `whatsapp.sendTemplate()` → `ResponseTemplate`
-- `whatsapp.sendAttachment()` → `ResponseAttachmentWPP`
-- `whatsapp.getConversation()` → `ResponseConversation`
+### Methods returning `any`
+Three SDK methods return `any` in their type declarations — the actual shape must be inferred from runtime observations:
+- `getFieldsTemplate(template_uuid)` → observed: `{ fields: [...] }`
+- `getFlowsByPhoneId(from_id?)` → observed: `{ data: [...] }` or similar
+- `getFlowScreens({ flow_id, phone_id? })` → observed: `{ screens: [...] }` or similar
+
+### Campaigns module (stub — DO NOT USE)
+The `campaigns` module has `create`, `update`, and `delete` methods that **throw "not implemented"** at runtime. They are present in the SDK class but are stubs. Do not expose them as MCP tools until the SDK implements them.
+
+### `listConversations` does not exist
+There is no `listConversations` or equivalent method in the `whatsapp` module. Only `getConversation({ wa_id, from_id?, page? })` exists (retrieves single conversation thread). This is a known gap.
+
+---
+
+## Response type aliases
+
+| Type | Module |
+|---|---|
+| `ResponseAllContacts` | contacts |
+| `ResponseContactById` | contacts |
+| `ResponseWhatsappNumbers` | whatsapp |
+| `ResponseMessageWPP` | whatsapp |
+| `ResponseTemplate` | whatsapp |
+| `ResponseTemplateById` | whatsapp |
+| `ResponseTemplateSyncMeta` | whatsapp |
+| `ResponseAttachmentWPP` | whatsapp |
+| `ResponseConversation` | whatsapp |
+| `ResponseSendContact` | whatsapp |
+| `ResponseAllFlows` | whatsapp |
+| `ResponseSendFlow` | whatsapp |
+| `ResponseFlowResponses` | whatsapp |
+| `GetFlowDetail` | whatsapp |

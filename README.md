@@ -1,33 +1,94 @@
 # @jpabloe/wasapi-mcp-server
 
-MCP server for [Wasapi](https://wasapi.io). Exposes 12 tools for managing contacts and sending WhatsApp messages via the Wasapi platform.
+[![npm version](https://img.shields.io/npm/v/@jpabloe/wasapi-mcp-server.svg)](https://www.npmjs.com/package/@jpabloe/wasapi-mcp-server)
+[![license](https://img.shields.io/npm/l/@jpabloe/wasapi-mcp-server.svg)](./LICENSE)
+[![node](https://img.shields.io/node/v/@jpabloe/wasapi-mcp-server.svg)](https://nodejs.org)
 
-Works with any MCP-compatible client that can run local stdio servers: **Claude Desktop**, **Cursor**, **Claude Code**, **Windsurf**, **Zed**, and others. *(Does not work in Claude.ai web — that requires a hosted MCP server, which is a different deployment model.)*
+> **Manage your [Wasapi](https://wasapi.io) WhatsApp Business account directly from Claude, Cursor, or any MCP-compatible client.** Send messages, manage contacts, fetch conversations — all via natural language.
 
-## Install (recommended)
+---
 
-Run the interactive setup wizard:
-
-```bash
-npx -y @jpabloe/wasapi-mcp-server setup
-```
-
-It walks you through the flow: opens your Wasapi dashboard, validates your API key against the live API, picks a default WhatsApp number if you have one, and lets you choose where to install the MCP — **Claude Desktop**, **Cursor**, or any other platform (in which case it prints the JSON for you to paste manually).
-
-To skip the platform menu:
+## Quick start (30 seconds)
 
 ```bash
-npx -y @jpabloe/wasapi-mcp-server setup --target claude-desktop
-npx -y @jpabloe/wasapi-mcp-server setup --target cursor
-npx -y @jpabloe/wasapi-mcp-server setup --print-only          # always print, never write
+npx -y @jpabloe/wasapi-mcp-server setup --restart
 ```
 
-## Install (manual)
+The wizard:
+1. Opens your Wasapi dashboard so you can copy your API key
+2. Validates the key against the live API
+3. Picks a default WhatsApp number (if you have one)
+4. Detects your MCP client (Claude Desktop / Cursor) and writes the config
+5. Restarts the app for you (with `--restart`)
 
-If you prefer not to use the wizard:
+That's it. Open Claude (or Cursor) and try one of the examples below.
+
+---
+
+## What can I do with it?
+
+Once installed, ask your MCP client in plain language. Some examples:
+
+> *"Lista los primeros 10 contactos de mi cuenta de Wasapi."*
+
+> *"¿Cuántos contactos tengo en total?"*
+
+> *"Crea un contacto: Ana Gómez, teléfono +57 300 123 4567, código de país 57."*
+
+> *"Envíale por WhatsApp a +57 300 123 4567 el mensaje: 'Hola Ana, te confirmo tu cita mañana a las 10am.'"*
+
+> *"Etiqueta al contacto con UUID `abc-123` con el label 42."*
+
+> *"Muéstrame los últimos mensajes con el wa_id 573001234567."*
+
+Claude figures out which of the 12 tools to use, asks for clarification if anything's ambiguous, and shows you the response.
+
+---
+
+## Compatible clients
+
+Works with **any MCP-compatible client that runs local stdio servers**:
+
+| Client | Supported by wizard | Notes |
+|---|---|---|
+| **Claude Desktop** | ✅ Auto-configures + auto-restart | Recommended |
+| **Cursor** | ✅ Auto-configures + auto-restart | |
+| **Claude Code** | Use `--print-only` | Manual config (use `claude mcp add` or edit `~/.claude.json`) |
+| **Windsurf, Zed, others** | Use `--print-only` | Paste the JSON in their MCP config |
+
+> **Note:** This is a **local stdio** MCP server. It does **not** work in **Claude.ai web** — that requires a hosted MCP server, which is a different deployment model.
+
+---
+
+## Setup wizard flags
+
+```bash
+npx -y @jpabloe/wasapi-mcp-server setup [flags]
+
+  --target claude-desktop|cursor   Skip the platform menu, install directly
+  --restart                        Auto-restart the target app after writing (macOS)
+  --print-only                     Print the JSON; never write to disk
+  --local                          (dev) Write a local node path instead of npx
+```
+
+Examples:
+
+```bash
+# Auto-configure Claude Desktop and restart it
+npx -y @jpabloe/wasapi-mcp-server setup --target claude-desktop --restart
+
+# Get the JSON to paste into Windsurf / Zed / Claude Code manually
+npx -y @jpabloe/wasapi-mcp-server setup --print-only
+```
+
+---
+
+## Manual install
+
+If you'd rather edit the config yourself:
 
 1. Get your API key at [app.wasapi.io/account/developer](https://app.wasapi.io/account/developer)
-2. Add this to your MCP client's config (paths below):
+2. Paste this into your MCP client's config:
 
 ```json
 {
@@ -48,83 +109,117 @@ If you prefer not to use the wizard:
 
 **Common config paths:**
 
-| Platform | macOS / Linux | Windows |
-|---|---|---|
-| Claude Desktop | `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) / `~/.config/Claude/claude_desktop_config.json` (Linux) | `%APPDATA%\Claude\claude_desktop_config.json` |
-| Cursor | `~/.cursor/mcp.json` | `%USERPROFILE%\.cursor\mcp.json` |
-| Other clients | see their docs | see their docs |
+| Client | macOS | Linux | Windows |
+|---|---|---|---|
+| Claude Desktop | `~/Library/Application Support/Claude/claude_desktop_config.json` | `~/.config/Claude/claude_desktop_config.json` | `%APPDATA%\Claude\claude_desktop_config.json` |
+| Cursor | `~/.cursor/mcp.json` | `~/.cursor/mcp.json` | `%USERPROFILE%\.cursor\mcp.json` |
 
-You can also run `npx -y @jpabloe/wasapi-mcp-server setup --print-only` to get the JSON tailored to your account without touching any files.
+---
 
 ## Configuration
 
 | Variable | Required | Description |
 |---|---|---|
-| `WASAPI_API_KEY` | yes | Your Wasapi API key |
-| `WASAPI_FROM_ID` | no | Default WhatsApp number ID for outgoing messages. Use `list_whatsapp_numbers` to find yours. |
-| `WASAPI_BASE_URL` | no | Override SDK base URL (staging / testing) |
+| `WASAPI_API_KEY` | yes | Your Wasapi API key. Get it at [app.wasapi.io/account/developer](https://app.wasapi.io/account/developer) |
+| `WASAPI_FROM_ID` | no | Default WhatsApp number ID for outgoing messages. Use the `list_whatsapp_numbers` tool to discover yours. |
+| `WASAPI_BASE_URL` | no | Override the SDK base URL (staging / testing) |
 | `WASAPI_DEBUG` | no | Set to `1` for verbose error logging to stderr |
 
-## Tools
+---
 
-### Contacts (7 tools)
+## Tools (12 total)
 
-| Tool | Description | Key parameters |
+### Contacts (7)
+
+| Tool | What it does | Key params |
 |---|---|---|
 | `list_contacts` | Paginated contact list with optional search | `search`, `labels[]`, `page` |
-| `get_contact` | Fetch a contact by WhatsApp ID | `wa_id` (string) |
-| `create_contact` | Create a new contact | `first_name` (required), `phone`, `country_code`, `last_name`, `email` |
-| `update_contact` | Update an existing contact | `wa_id` (string), then fields to change |
-| `delete_contact` | Permanently delete a contact | `wa_id` (string) |
-| `add_label_to_contact` | Attach one or more labels to a contact | `contact_uuid`, `label_id[]` |
-| `remove_label_from_contact` | Detach labels from a contact | `contact_uuid`, `label_id[]` |
+| `get_contact` | Fetch a contact by WhatsApp ID | `wa_id` |
+| `create_contact` | Create a contact | `first_name` (req), `phone`, `country_code`, `last_name`, `email` |
+| `update_contact` | Update an existing contact | `wa_id` + fields to change |
+| `delete_contact` | Permanently delete a contact | `wa_id` |
+| `add_label_to_contact` | Attach a label | `contact_uuid`, `label_id` |
+| `remove_label_from_contact` | Detach a label | `contact_uuid`, `label_id` |
 
-Note: contacts are identified by `wa_id` (a string WhatsApp ID), not a numeric ID.
+Contacts are identified by `wa_id` (a string WhatsApp ID), not numeric ID.
 
-### WhatsApp (5 tools)
+### WhatsApp (5)
 
-| Tool | Description | Key parameters |
+| Tool | What it does | Key params |
 |---|---|---|
-| `list_whatsapp_numbers` | List connected WhatsApp numbers and their `from_id` values | — |
-| `send_message` | Send a plain-text WhatsApp message | `wa_id`, `message`, `from_id` (optional) |
-| `send_template` | Send an approved WhatsApp template | `recipients[]`, `template_id` (UUID), `contact_type`, `from_id` (optional) |
-| `send_attachment` | Send a file attachment | `wa_id`, `filePath`, `caption` (optional), `from_id` (optional) |
-| `get_conversation` | Fetch message thread with a contact | `wa_id`, `from_id` (optional), `page` (optional) |
+| `list_whatsapp_numbers` | List connected numbers + their `from_id` | — |
+| `send_message` | Send a plain-text message | `wa_id`, `message`, `from_id` (opt) |
+| `send_template` | Send an approved template | `recipients[]`, `template_id` (UUID), `contact_type`, `from_id` (opt) |
+| `send_attachment` | Send a file from local path | `wa_id`, `filePath`, `caption` (opt), `from_id` (opt) |
+| `get_conversation` | Fetch message thread with a contact | `wa_id`, `from_id` (opt), `page` (opt) |
 
-## send_attachment — local file required
+---
 
-`send_attachment` uses `filePath`, which must be a path accessible on the **host running the MCP server**. The SDK does not support URL-based attachments. If the file lives elsewhere, download it first before passing the path to this tool.
+## Troubleshooting
 
-## send_template — template_id, not template_name
+### "I ran the wizard but the MCP doesn't show up in my client"
 
-`send_template` takes a `template_id` UUID (visible in the Wasapi console). Template variable interpolation is not exposed by the SDK — the template content is fixed.
+1. **Full restart, not just close window.** On macOS: `Cmd+Q`, not just clicking the red ×. Or run the wizard with `--restart`.
+2. **Check the config path.** The wizard prints the path it wrote to. Confirm that's the same path your client uses (paths table above).
+3. **Check for `CLAUDE_DESKTOP_CONFIG` / `CURSOR_MCP_CONFIG` env vars** left over from testing:
+   ```bash
+   echo $CLAUDE_DESKTOP_CONFIG
+   echo $CURSOR_MCP_CONFIG
+   ```
+   If either prints a path, unset it and re-run the wizard. The wizard now warns about this, but older versions didn't.
 
-## Known limitations
+### "Tools call returns 'API key inválida o sin permisos'"
+
+Your API key works but doesn't have permission for that endpoint. Check the developer console at [app.wasapi.io/account/developer](https://app.wasapi.io/account/developer) and confirm the key has the scopes you need.
+
+### "send_attachment fails: file not found"
+
+The `filePath` must exist on the **machine running the MCP server** (your computer), not on the MCP client's machine. URL-based attachments aren't supported by the SDK yet. Download the file locally first.
+
+### "list_conversations doesn't exist"
+
+Correct — the underlying SDK doesn't expose it yet. Use `get_conversation` with a known `wa_id` to fetch the message thread with a specific contact.
+
+### Enabling debug logs
+
+```bash
+WASAPI_DEBUG=1 wasapi-mcp
+```
+
+Or set `WASAPI_DEBUG=1` in the `env` block of your MCP client config. Logs go to stderr.
+
+---
+
+## Limitations
 
 | Gap | Notes |
 |---|---|
-| `list_conversations` not implemented | The `@wasapi/js-sdk` has no `listConversations` method. Use `get_conversation` with a known `wa_id` instead. |
-| `send_attachment` requires local `filePath` | No URL-based attachment support in the SDK. Requires local filesystem access on the MCP server host. |
-| `send_template` has no variable interpolation | Template variables cannot be set at send time via the SDK. |
+| `list_conversations` not implemented | SDK doesn't expose it. Use `get_conversation` with a `wa_id`. |
+| `send_attachment` requires local `filePath` | No URL-based attachment support yet. |
+| `send_template` has no variable interpolation | Template content is whatever the template defines server-side. |
+
+---
 
 ## Development
 
 ```bash
+git clone <this repo>
 npm install
 npm run dev          # run with tsx (requires WASAPI_API_KEY)
 npm test             # unit + contract tests
-npm run test:integration  # opt-in, needs WASAPI_TEST_API_KEY=xxx
 npm run typecheck
 npm run build
 ```
 
-## Running integration tests
+### Integration tests (opt-in)
 
 ```bash
 WASAPI_TEST_API_KEY=your_key_here npm run test:integration
 ```
 
-The integration smoke test calls `list_contacts` against the real Wasapi API. It is skipped when `WASAPI_TEST_API_KEY` is not set.
+The integration smoke test calls `list_contacts` against the real Wasapi API. Skipped when `WASAPI_TEST_API_KEY` is not set.
+
+---
 
 ## License
 

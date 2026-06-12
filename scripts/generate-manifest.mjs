@@ -84,7 +84,10 @@ export function buildManifest(pkg) {
     display_name: "Wasapi",
     version: pkg.version,
     description: "Manage WhatsApp contacts and send messages via your Wasapi account",
-    long_description: "Connects Claude to your Wasapi WhatsApp Business account. Send messages, manage contacts, fetch conversations — all in natural language. Get your API key at https://app.wasapi.io/account/developer",
+    long_description:
+      "Connects Claude to your Wasapi WhatsApp Business account. Send messages, manage contacts, fetch conversations — all in natural language.\n\n" +
+      "**Antes de instalar:** consigue tu API key en [app.wasapi.io/account/developer](https://app.wasapi.io/account/developer).\n\n" +
+      "**Después de instalar:** activa la extensión en Settings → Extensions (se instala deshabilitada por defecto).",
     author,
     homepage,
     documentation: `${homepage}#readme`,
@@ -105,7 +108,7 @@ export function buildManifest(pkg) {
       api_key: {
         type: "string",
         title: "Wasapi API Key",
-        description: "Tu API key personal. Consíguela en https://app.wasapi.io/account/developer",
+        description: "Pega aquí tu API key de Wasapi",
         sensitive: true,
         required: true,
       },

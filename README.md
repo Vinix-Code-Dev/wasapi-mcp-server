@@ -13,8 +13,12 @@
 1. Download **[wasapi-mcp.mcpb](https://github.com/juanpablo-estrada/wasapi-mcp-server/releases/latest/download/wasapi-mcp.mcpb)** (direct link, always the latest version).
 2. Double-click the file — Claude Desktop opens an install dialog.
 3. Paste your Wasapi API key (get one at [app.wasapi.io/account/developer](https://app.wasapi.io/account/developer)).
-4. Click **Install**. Restart Claude Desktop if it asks. Done.
+4. Click **Install**.
+5. **Enable the extension:** go to **Settings → Extensions**, find "Wasapi", and turn it on (Claude Desktop installs unverified extensions disabled by default).
+6. Open a new chat and try: *"Lista mis números de WhatsApp"*.
 
+> You'll see a warning that the developer is "not verified by Anthropic" — that's expected for extensions distributed outside Anthropic's official directory. The source is this repo.
+>
 > Works only with Claude Desktop. For Cursor, Claude Code, and other MCP clients, use the developer install below.
 
 ## Install for developers (30 seconds)

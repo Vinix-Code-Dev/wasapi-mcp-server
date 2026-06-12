@@ -21,7 +21,6 @@ Servidor MCP para [Wasapi](https://wasapi.io). Gestiona tu cuenta de WhatsApp Bu
 - [Herramientas disponibles](#herramientas-disponibles)
 - [Solución de problemas](#solución-de-problemas)
 - [Limitaciones conocidas](#limitaciones-conocidas)
-- [Desarrollo](#desarrollo)
 
 ---
 
@@ -256,6 +255,7 @@ O agrega `"WASAPI_DEBUG": "1"` al bloque `env` de tu configuración MCP. Los log
 
 ---
 
+<!--
 ## Desarrollo
 
 ```bash
@@ -290,6 +290,8 @@ gh release create vX.Y.Z release/wasapi-mcp-X.Y.Z.mcpb release/wasapi-mcp.mcpb -
 Checklist manual previo al release: [`docs/mcpb-smoke.md`](./docs/mcpb-smoke.md).
 
 ---
+-->
+
 
 ## Licencia
 

@@ -1,7 +1,7 @@
 {
   "name": "@jpabloe/wasapi-mcp-server",
   "version": "0.3.1",
-  "description": "MCP server for Wasapi — manage contacts and send WhatsApp messages via Claude",
+  "description": "Servidor MCP para Wasapi — gestiona contactos y envía mensajes de WhatsApp desde Claude",
   "main": "dist/index.js",
   "bin": {
     "wasapi-mcp": "dist/index.js"
@@ -21,7 +21,15 @@
     "prepublishOnly": "rm -rf dist && npm run build && find dist -name .DS_Store -delete",
     "package:dxt": "node scripts/build-dxt.mjs"
   },
-  "keywords": [],
+  "keywords": [
+    "wasapi",
+    "whatsapp",
+    "mcp",
+    "mcp-server",
+    "modelcontextprotocol",
+    "claude",
+    "ai"
+  ],
   "author": {
     "name": "Juan Pablo",
     "email": "juanpablo@vinixcode.com",

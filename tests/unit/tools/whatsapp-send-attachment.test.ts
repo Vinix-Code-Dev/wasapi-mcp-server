@@ -56,4 +56,10 @@ describe("send_attachment", () => {
     const res = await h({ wa_id: "5571999000000" });
     expect(res.isError).toBe(true);
   });
+
+  it("passes optional filename through", async () => {
+    const h = wrapHandler(sendAttachmentTool.schema, sendAttachmentTool.handler);
+    await h({ wa_id: "57300", filePath: "/tmp/a.pdf", filename: "propuesta.pdf" });
+    expect(sendAttachmentMock).toHaveBeenCalledWith(expect.objectContaining({ filename: "propuesta.pdf" }));
+  });
 });

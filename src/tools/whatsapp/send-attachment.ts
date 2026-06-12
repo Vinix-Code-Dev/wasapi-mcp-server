@@ -12,6 +12,7 @@ const schema = z.object({
   wa_id: z.string().min(1).describe("WhatsApp ID of the recipient (E.164 sin +)"),
   filePath: z.string().min(1).describe("Ruta local al archivo a enviar. SDK gap: URL-based attachment no disponible — requiere PR al SDK."),
   caption: z.string().optional().describe("Texto descriptivo opcional para el adjunto"),
+  filename: z.string().optional().describe("Nombre con el que el destinatario recibe el archivo"),
   from_id: z.number().int().positive().optional().describe("WhatsApp number ID to send from. Falls back to WASAPI_FROM_ID env var."),
 });
 
@@ -24,11 +25,12 @@ export const sendAttachmentTool: ToolDefinition<typeof schema> = {
     "from_id es opcional si WASAPI_FROM_ID está configurado.",
   ].join(" "),
   schema,
-  handler: async ({ wa_id, filePath, caption, from_id }) => {
+  handler: async ({ wa_id, filePath, caption, filename, from_id }) => {
     const client = getClient();
     const resolved = resolveFromId(from_id);
     const params: Record<string, unknown> = { wa_id, filePath, from_id: resolved };
     if (caption !== undefined) params.caption = caption;
+    if (filename !== undefined) params.filename = filename;
     return await (client.whatsapp as any).sendAttachment(params);
   },
 };

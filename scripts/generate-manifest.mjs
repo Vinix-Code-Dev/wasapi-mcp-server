@@ -2,18 +2,18 @@
 import { z } from "zod";
 
 const TOOLS = [
-  { name: "list_contacts", description: "List contacts (paginated, optional search)" },
-  { name: "get_contact", description: "Fetch a contact by wa_id" },
-  { name: "create_contact", description: "Create a new contact" },
-  { name: "update_contact", description: "Update an existing contact" },
-  { name: "delete_contact", description: "Delete a contact" },
-  { name: "add_label_to_contact", description: "Attach a label to a contact" },
-  { name: "remove_label_from_contact", description: "Detach a label from a contact" },
-  { name: "list_whatsapp_numbers", description: "List WhatsApp numbers connected to the account" },
-  { name: "send_message", description: "Send a plain-text WhatsApp message" },
-  { name: "send_template", description: "Send an approved WhatsApp template" },
-  { name: "send_attachment", description: "Send a file attachment from a local path" },
-  { name: "get_conversation", description: "Fetch the message thread with a contact" },
+  { name: "list_contacts", description: "Lista contactos (paginada, con búsqueda opcional)" },
+  { name: "get_contact", description: "Obtiene un contacto por su wa_id" },
+  { name: "create_contact", description: "Crea un contacto nuevo" },
+  { name: "update_contact", description: "Actualiza un contacto existente" },
+  { name: "delete_contact", description: "Elimina un contacto" },
+  { name: "add_label_to_contact", description: "Agrega una etiqueta a un contacto" },
+  { name: "remove_label_from_contact", description: "Quita una etiqueta de un contacto" },
+  { name: "list_whatsapp_numbers", description: "Lista los números de WhatsApp conectados a la cuenta" },
+  { name: "send_message", description: "Envía un mensaje de texto por WhatsApp" },
+  { name: "send_template", description: "Envía una plantilla aprobada de WhatsApp" },
+  { name: "send_attachment", description: "Envía un archivo adjunto desde una ruta local" },
+  { name: "get_conversation", description: "Obtiene el hilo de mensajes con un contacto" },
 ];
 
 export const manifestSchema = z.object({
@@ -83,11 +83,11 @@ export function buildManifest(pkg) {
     name: "wasapi-mcp",
     display_name: "Wasapi",
     version: pkg.version,
-    description: "Manage WhatsApp contacts and send messages via your Wasapi account",
+    description: "Gestiona contactos y envía mensajes de WhatsApp desde tu cuenta de Wasapi",
     long_description:
-      "Connects Claude to your Wasapi WhatsApp Business account. Send messages, manage contacts, fetch conversations — all in natural language.\n\n" +
+      "Conecta Claude con tu cuenta de WhatsApp Business en Wasapi. Envía mensajes, gestiona contactos y consulta conversaciones — todo en lenguaje natural.\n\n" +
       "**Antes de instalar:** consigue tu API key en [app.wasapi.io/account/developer](https://app.wasapi.io/account/developer).\n\n" +
-      "**Después de instalar:** activa la extensión en Settings → Extensions (se instala deshabilitada por defecto).",
+      "**Después de instalar:** activa la extensión en Configuración → Extensiones (se instala deshabilitada por defecto).",
     author,
     homepage,
     documentation: `${homepage}#readme`,

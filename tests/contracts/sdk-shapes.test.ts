@@ -144,3 +144,15 @@ describe("SDK shape contracts — contacts (new methods)", () => {
     expectTypeOf<Fn>().toBeFunction();
   });
 });
+
+describe("SDK shape contracts — campaigns", () => {
+  it("campaigns.getAll is a function", () => {
+    type Fn = WasapiClient["campaigns"]["getAll"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("campaigns.getById is a function", () => {
+    type Fn = WasapiClient["campaigns"]["getById"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+});

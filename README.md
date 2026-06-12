@@ -19,6 +19,7 @@ Servidor MCP para [Wasapi](https://wasapi.io). Gestiona tu cuenta de WhatsApp Bu
 - [Referencia del asistente (`setup`)](#referencia-del-asistente-setup)
 - [Variables de entorno](#variables-de-entorno)
 - [Herramientas disponibles](#herramientas-disponibles)
+- [¿Cómo actualizo?](#cómo-actualizo)
 - [Solución de problemas](#solución-de-problemas)
 - [Limitaciones conocidas](#limitaciones-conocidas)
 
@@ -124,7 +125,9 @@ Una vez instalado, háblale a tu cliente MCP en lenguaje natural. Algunos ejempl
 
 > *"¿Qué flows tengo configurados? Envíale el flow de encuesta al 573001234567."*
 
-Claude decide cuál de las 27 herramientas usar, pide aclaraciones si algo es ambiguo, y te muestra la respuesta.
+> *"¿Cómo le fue a mi última campaña? ¿Cuántos mensajes se entregaron?"*
+
+Claude decide cuál de las 29 herramientas usar, pide aclaraciones si algo es ambiguo, y te muestra la respuesta.
 
 ---
 
@@ -181,7 +184,7 @@ npx -y @jpabloe/wasapi-mcp-server setup --print-only
 
 ## Herramientas disponibles
 
-**27 herramientas en total.**
+**29 herramientas en total.**
 
 ### Contactos (9)
 
@@ -231,6 +234,50 @@ Los contactos se identifican por `wa_id` (un WhatsApp ID en texto), no por ID nu
 | `get_flow_responses` | Respuestas que enviaron los usuarios por un Flow | `flow_id`, `page` (opcional) |
 | `get_flow_assets` | Detalle y assets de un Flow | `flow_id` |
 | `get_flow_screens` | Pantallas de un Flow (para elegir `screen` en `send_flow`) | `flow_id` |
+
+### Campañas (2)
+
+| Herramienta | Qué hace | Parámetros clave |
+|---|---|---|
+| `list_campaigns` | Lista las campañas de difusión de la cuenta | — |
+| `get_campaign` | Detalle de una campaña con sus envíos por contacto | `campaign_uuid` |
+
+> Crear, editar o eliminar campañas aún no está disponible (el SDK no lo implementa todavía).
+
+---
+
+## ¿Cómo actualizo?
+
+Depende de cómo instalaste:
+
+### Si usaste el asistente o la configuración manual con `npx`
+
+Tu configuración usa `npx -y @jpabloe/wasapi-mcp-server` sin versión fijada, así que **basta con reiniciar tu cliente MCP** (Cmd+Q completo + abrir) — npx resuelve la última versión automáticamente.
+
+Si por caché te sigue sirviendo una versión vieja, fuérzala y reinicia:
+
+```bash
+npx -y @jpabloe/wasapi-mcp-server@latest --version
+```
+
+### Si lo instalaste globalmente
+
+```bash
+npm install -g @jpabloe/wasapi-mcp-server@latest
+```
+
+y reinicia tu cliente.
+
+### Si instalaste la extensión `.mcpb` en Claude Desktop
+
+Las extensiones instaladas fuera del directorio oficial de Anthropic **no se actualizan solas**:
+
+1. Descarga el nuevo **[wasapi-mcp.mcpb](https://github.com/juanpablo-estrada/wasapi-mcp-server/releases/latest/download/wasapi-mcp.mcpb)** (siempre apunta a la última versión)
+2. Haz doble click — Claude Desktop detecta la extensión existente y la actualiza
+3. Tu API key se conserva, pero tenla a mano por si el diálogo la vuelve a pedir
+4. Verifica que la extensión siga activa en **Configuración → Extensiones**
+
+> Puedes ver qué versión tienes instalada en Configuración → Extensiones → Wasapi.
 
 ---
 

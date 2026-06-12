@@ -23,7 +23,7 @@ describe("buildManifest", () => {
     expect(m.author.email).toBe("juanpablo@vinixcode.com");
   });
 
-  it("declares all 27 tools", () => {
+  it("declares all 29 tools", () => {
     const m = buildManifest(pkgFixture);
     const names = m.tools.map((t) => t.name);
     expect(names).toEqual([
@@ -37,6 +37,7 @@ describe("buildManifest", () => {
       "change_conversation_status", "send_contact_card",
       "list_flows", "list_flows_by_number", "send_flow",
       "get_flow_responses", "get_flow_assets", "get_flow_screens",
+      "list_campaigns", "get_campaign",
     ]);
   });
 

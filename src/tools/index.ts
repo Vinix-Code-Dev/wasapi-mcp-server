@@ -26,8 +26,11 @@ import { sendFlowTool } from "./whatsapp/send-flow.js";
 import { getFlowResponsesTool } from "./whatsapp/get-flow-responses.js";
 import { getFlowAssetsTool } from "./whatsapp/get-flow-assets.js";
 import { getFlowScreensTool } from "./whatsapp/get-flow-screens.js";
+import { listCampaignsTool } from "./campaigns/list.js";
+import { getCampaignTool } from "./campaigns/get.js";
 // NOTE: list_conversations is NOT implemented — SDK gap (no listConversations method exists).
-// Tracked for follow-up SDK PR.
+// NOTE: campaigns create/update/delete are NOT implemented — SDK stubs that throw.
+// Tracked for follow-up SDK PRs.
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const allTools: ToolDefinition<any>[] = [
@@ -58,4 +61,6 @@ export const allTools: ToolDefinition<any>[] = [
   getFlowResponsesTool,
   getFlowAssetsTool,
   getFlowScreensTool,
+  listCampaignsTool,
+  getCampaignTool,
 ];

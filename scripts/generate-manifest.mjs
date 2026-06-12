@@ -29,6 +29,8 @@ const TOOLS = [
   { name: "get_flow_responses", description: "Obtiene las respuestas de un Flow (paginado)" },
   { name: "get_flow_assets", description: "Obtiene el detalle y assets de un Flow" },
   { name: "get_flow_screens", description: "Lista las pantallas de un Flow" },
+  { name: "list_campaigns", description: "Lista las campañas de difusión de la cuenta" },
+  { name: "get_campaign", description: "Obtiene el detalle de una campaña y sus envíos" },
 ];
 
 export const manifestSchema = z.object({

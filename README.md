@@ -8,7 +8,18 @@
 
 ---
 
-## Quick start (30 seconds)
+## Install for Claude Desktop (no terminal)
+
+1. Download **[wasapi-mcp.dxt](https://github.com/jpabloe/wasapi-mcp-server/releases/latest)** from the latest release.
+2. Double-click the file — Claude Desktop opens an install dialog.
+3. Paste your Wasapi API key (get one at [app.wasapi.io/account/developer](https://app.wasapi.io/account/developer)).
+4. Click **Install**. Restart Claude Desktop if it asks. Done.
+
+> Works only with Claude Desktop. For Cursor, Claude Code, and other MCP clients, use the developer install below.
+
+## Install for developers (30 seconds)
+
+Run the interactive setup wizard:
 
 ```bash
 npx -y @jpabloe/wasapi-mcp-server setup --restart
@@ -20,8 +31,6 @@ The wizard:
 3. Picks a default WhatsApp number (if you have one)
 4. Detects your MCP client (Claude Desktop / Cursor) and writes the config
 5. Restarts the app for you (with `--restart`)
-
-That's it. Open Claude (or Cursor) and try one of the examples below.
 
 ---
 

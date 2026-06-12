@@ -120,7 +120,11 @@ Una vez instalado, háblale a tu cliente MCP en lenguaje natural. Algunos ejempl
 
 > *"Muéstrame los últimos mensajes con el wa_id 573001234567."*
 
-Claude decide cuál de las 12 herramientas usar, pide aclaraciones si algo es ambiguo, y te muestra la respuesta.
+> *"Envíale la plantilla de bienvenida al 573001234567 con el nombre Ana en la variable 1."*
+
+> *"¿Qué flows tengo configurados? Envíale el flow de encuesta al 573001234567."*
+
+Claude decide cuál de las 27 herramientas usar, pide aclaraciones si algo es ambiguo, y te muestra la respuesta.
 
 ---
 
@@ -177,9 +181,9 @@ npx -y @jpabloe/wasapi-mcp-server setup --print-only
 
 ## Herramientas disponibles
 
-**12 herramientas en total.**
+**27 herramientas en total.**
 
-### Contactos (7)
+### Contactos (9)
 
 | Herramienta | Qué hace | Parámetros clave |
 |---|---|---|
@@ -190,18 +194,43 @@ npx -y @jpabloe/wasapi-mcp-server setup --print-only
 | `delete_contact` | Elimina un contacto permanentemente | `wa_id` |
 | `add_label_to_contact` | Agrega una etiqueta | `contact_uuid`, `label_id` |
 | `remove_label_from_contact` | Quita una etiqueta | `contact_uuid`, `label_id` |
+| `assign_agent_to_contact` | Asigna un agente automáticamente | `contact_uuid` |
+| `export_contacts` | Inicia una exportación de todos los contactos | `email_urls[]` (opcional) |
 
 Los contactos se identifican por `wa_id` (un WhatsApp ID en texto), no por ID numérico.
 
-### WhatsApp (5)
+### WhatsApp — Mensajería y conversaciones (7)
 
 | Herramienta | Qué hace | Parámetros clave |
 |---|---|---|
 | `list_whatsapp_numbers` | Lista los números conectados y sus `from_id` | — |
 | `send_message` | Envía un mensaje de texto | `wa_id`, `message`, `from_id` (opcional) |
-| `send_template` | Envía una plantilla aprobada | `recipients[]`, `template_id` (UUID), `contact_type`, `from_id` (opcional) |
-| `send_attachment` | Envía un archivo desde una ruta local | `wa_id`, `filePath`, `caption` (opcional), `from_id` (opcional) |
-| `get_conversation` | Obtiene el hilo de mensajes con un contacto | `wa_id`, `from_id` (opcional), `page` (opcional) |
+| `send_template` | Envía una plantilla aprobada, con variables y adjunto por URL | `recipients[]`, `template_id`, `contact_type`, `body_vars[]`, `url_file`, `from_id` (opcionales) |
+| `send_attachment` | Envía un archivo desde una ruta local | `wa_id`, `filePath`, `caption`, `filename`, `from_id` (opcionales) |
+| `send_contact_card` | Envía tarjetas de contacto (vCard) | `wa_id`, `contacts[]`, `from_id` (opcional) |
+| `get_conversation` | Obtiene el hilo de mensajes con un contacto | `wa_id`, `from_id`, `page` (opcionales) |
+| `change_conversation_status` | Cambia el estado de la conversación | `wa_id`, `status` (open/hold/closed), `agent_id` (opcional) |
+
+### WhatsApp — Plantillas (5)
+
+| Herramienta | Qué hace | Parámetros clave |
+|---|---|---|
+| `list_whatsapp_templates` | Lista todas las plantillas de la cuenta | — |
+| `get_whatsapp_template` | Detalle de una plantilla | `template_uuid` |
+| `get_template_fields` | Variables que acepta una plantilla (úsalo antes de `send_template`) | `template_uuid` |
+| `list_templates_by_number` | Plantillas disponibles para un número | `from_id` |
+| `sync_meta_templates` | Sincroniza plantillas desde Meta | — |
+
+### WhatsApp — Flows (6)
+
+| Herramienta | Qué hace | Parámetros clave |
+|---|---|---|
+| `list_flows` | Lista los WhatsApp Flows de la cuenta | — |
+| `list_flows_by_number` | Flows disponibles para un número | `from_id` (opcional) |
+| `send_flow` | Envía un Flow interactivo a un contacto | `wa_id`, `message`, `cta`, `screen`, `flow_id` |
+| `get_flow_responses` | Respuestas que enviaron los usuarios por un Flow | `flow_id`, `page` (opcional) |
+| `get_flow_assets` | Detalle y assets de un Flow | `flow_id` |
+| `get_flow_screens` | Pantallas de un Flow (para elegir `screen` en `send_flow`) | `flow_id` |
 
 ---
 
@@ -249,8 +278,7 @@ O agrega `"WASAPI_DEBUG": "1"` al bloque `env` de tu configuración MCP. Los log
 | Limitación | Detalle |
 |---|---|
 | `list_conversations` no implementado | El SDK no lo expone. Usa `get_conversation` con un `wa_id`. |
-| `send_attachment` requiere ruta local | Sin soporte de adjuntos por URL todavía. |
-| `send_template` sin variables | El contenido de la plantilla es el que define el template en el servidor. |
+| `send_attachment` requiere ruta local | Para enviar archivos por URL usa `send_template` con `url_file`. |
 | No funciona en Claude.ai web | Requiere un servidor MCP hosteado (modelo de despliegue distinto). |
 
 ---

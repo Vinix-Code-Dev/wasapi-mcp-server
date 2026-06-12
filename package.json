@@ -1,6 +1,6 @@
 {
   "name": "@jpabloe/wasapi-mcp-server",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "MCP server for Wasapi — manage contacts and send WhatsApp messages via Claude",
   "main": "dist/index.js",
   "bin": {

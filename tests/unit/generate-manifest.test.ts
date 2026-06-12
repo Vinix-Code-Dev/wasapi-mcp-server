@@ -6,8 +6,8 @@ const pkgFixture = {
   name: "@jpabloe/wasapi-mcp-server",
   version: "0.3.0",
   description: "MCP server for Wasapi — manage contacts and send WhatsApp messages via Claude",
-  author: { name: "Juan Pablo", email: "juanpablo@vinixcode.com", url: "https://github.com/jpabloe" },
-  repository: { type: "git", url: "git+https://github.com/jpabloe/wasapi-mcp-server.git" },
+  author: { name: "Juan Pablo", email: "juanpablo@vinixcode.com", url: "https://github.com/juanpablo-estrada" },
+  repository: { type: "git", url: "git+https://github.com/juanpablo-estrada/wasapi-mcp-server.git" },
   license: "ISC",
 };
 
@@ -59,32 +59,32 @@ describe("buildManifest", () => {
 
   it("derives homepage/documentation/support from repository URL", () => {
     const m = buildManifest(pkgFixture);
-    expect(m.homepage).toBe("https://github.com/jpabloe/wasapi-mcp-server");
-    expect(m.documentation).toBe("https://github.com/jpabloe/wasapi-mcp-server#readme");
-    expect(m.support).toBe("https://github.com/jpabloe/wasapi-mcp-server/issues");
+    expect(m.homepage).toBe("https://github.com/juanpablo-estrada/wasapi-mcp-server");
+    expect(m.documentation).toBe("https://github.com/juanpablo-estrada/wasapi-mcp-server#readme");
+    expect(m.support).toBe("https://github.com/juanpablo-estrada/wasapi-mcp-server/issues");
   });
 
   it("normalizes SCP-style SSH repository URLs (git@host:user/repo.git)", () => {
     const m = buildManifest({
       ...pkgFixture,
-      repository: { type: "git", url: "git@github.com:jpabloe/wasapi-mcp-server.git" },
+      repository: { type: "git", url: "git@github.com:juanpablo-estrada/wasapi-mcp-server.git" },
     });
-    expect(m.homepage).toBe("https://github.com/jpabloe/wasapi-mcp-server");
+    expect(m.homepage).toBe("https://github.com/juanpablo-estrada/wasapi-mcp-server");
     expect(() => manifestSchema.parse(m)).not.toThrow();
   });
 
   it("normalizes ssh:// repository URLs", () => {
     const m = buildManifest({
       ...pkgFixture,
-      repository: { type: "git", url: "ssh://git@github.com/jpabloe/wasapi-mcp-server.git" },
+      repository: { type: "git", url: "ssh://git@github.com/juanpablo-estrada/wasapi-mcp-server.git" },
     });
-    expect(m.homepage).toBe("https://github.com/jpabloe/wasapi-mcp-server");
+    expect(m.homepage).toBe("https://github.com/juanpablo-estrada/wasapi-mcp-server");
   });
 
   it("falls back to default homepage when repository is missing", () => {
     const { repository, ...pkgNoRepo } = pkgFixture;
     const m = buildManifest(pkgNoRepo);
-    expect(m.homepage).toBe("https://github.com/jpabloe/wasapi-mcp-server");
+    expect(m.homepage).toBe("https://github.com/juanpablo-estrada/wasapi-mcp-server");
     expect(() => manifestSchema.parse(m)).not.toThrow();
   });
 

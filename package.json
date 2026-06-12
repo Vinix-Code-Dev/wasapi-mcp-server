@@ -25,11 +25,11 @@
   "author": {
     "name": "Juan Pablo",
     "email": "juanpablo@vinixcode.com",
-    "url": "https://github.com/jpabloe"
+    "url": "https://github.com/juanpablo-estrada"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jpabloe/wasapi-mcp-server.git"
+    "url": "git+https://github.com/juanpablo-estrada/wasapi-mcp-server.git"
   },
   "license": "ISC",
   "dependencies": {

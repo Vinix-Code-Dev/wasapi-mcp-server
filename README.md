@@ -10,7 +10,7 @@
 
 ## Install for Claude Desktop (no terminal)
 
-1. Download **[wasapi-mcp.dxt](https://github.com/jpabloe/wasapi-mcp-server/releases/latest/download/wasapi-mcp.dxt)** (direct link, always the latest version).
+1. Download **[wasapi-mcp.dxt](https://github.com/juanpablo-estrada/wasapi-mcp-server/releases/latest/download/wasapi-mcp.dxt)** (direct link, always the latest version).
 2. Double-click the file — Claude Desktop opens an install dialog.
 3. Paste your Wasapi API key (get one at [app.wasapi.io/account/developer](https://app.wasapi.io/account/developer)).
 4. Click **Install**. Restart Claude Desktop if it asks. Done.

@@ -4,6 +4,7 @@ import { validateKey, type ValidateResult, type WhatsappNumber } from "./validat
 import { writeWasapiEntry, type WasapiEntry } from "./config-write.js";
 import { question, maskedQuestion, numberInRange } from "./prompt.js";
 import { ALL_TARGETS, type Target } from "./targets.js";
+import { restartApp } from "./restart.js";
 
 const DASHBOARD_URL = process.env.WASAPI_DASHBOARD_URL ?? "https://app.wasapi.io/account/developer";
 
@@ -14,6 +15,7 @@ export interface SetupDeps {
   question: typeof question;
   maskedQuestion: typeof maskedQuestion;
   numberInRange: typeof numberInRange;
+  restartApp: typeof restartApp;
   stdout: NodeJS.WritableStream;
   targets: Target[];
 }
@@ -22,6 +24,7 @@ export interface RunSetupOpts {
   printOnly: boolean;
   local?: boolean;
   targetId?: string;
+  restart?: boolean;
   deps?: SetupDeps;
 }
 
@@ -32,6 +35,7 @@ const defaultDeps: SetupDeps = {
   question,
   maskedQuestion,
   numberInRange,
+  restartApp,
   stdout: process.stdout,
   targets: ALL_TARGETS,
 };
@@ -188,7 +192,14 @@ export async function runSetup(opts: RunSetupOpts): Promise<void> {
     return;
   }
 
-  out.write(`      Detecté ${target.label} config en:\n        ${cfgPath}\n`);
+  out.write(`      Voy a escribir en:\n        ${cfgPath}\n`);
+  const envOverrideValue = process.env[target.envOverride];
+  if (envOverrideValue) {
+    out.write(`      ⚠️  ${target.envOverride} está seteada en tu shell — por eso uso ese\n`);
+    out.write(`         path en vez del default de ${target.label}. Si esto NO es\n`);
+    out.write(`         intencional, cancela (Ctrl+C), corre 'unset ${target.envOverride}'\n`);
+    out.write(`         y vuelve a empezar.\n`);
+  }
   const confirm = await d.question(`      ¿Configurar automáticamente? [Y/n]: `);
   const accepted = confirm === "" || /^y(es)?$/i.test(confirm);
   if (!accepted) {
@@ -202,11 +213,32 @@ export async function runSetup(opts: RunSetupOpts): Promise<void> {
     if (result.backupPath) {
       out.write(`      ✓ Backup guardado: ${result.backupPath}\n`);
     }
-    out.write('      ✓ Entrada "wasapi" agregada.\n\n');
-    out.write(`Listo. ${target.restartHint}.\n`);
+    out.write(`      ✓ Entrada "wasapi" escrita en:\n        ${cfgPath}\n\n`);
   } catch (e) {
     out.write(`      ✗ No pude escribir el config: ${(e as Error).message}\n`);
     out.write("      Sugerencia: corre 'wasapi-mcp setup --print-only' y pega el JSON manualmente.\n");
     process.exit(1);
+  }
+
+  out.write("Próximos pasos:\n");
+  out.write(`  1) Verificar el contenido:\n       cat "${cfgPath}"\n`);
+
+  if (opts.restart && target.appName) {
+    out.write(`  2) Reiniciando ${target.label} automáticamente...\n`);
+    const result = await d.restartApp(target.appName);
+    if (result.ok) {
+      out.write(`     ✓ ${result.message}\n`);
+    } else {
+      out.write(`     ✗ ${result.message}\n`);
+      out.write(`     Hazlo a mano: ${target.restartHint}\n`);
+    }
+  } else if (opts.restart && !target.appName) {
+    out.write(`  2) ${target.restartHint}\n`);
+    out.write(`     (--restart no soportado para ${target.label})\n`);
+  } else {
+    out.write(`  2) Reiniciar ${target.label}:\n     ${target.restartHint}\n`);
+    if (target.appName) {
+      out.write(`     (Para que el wizard lo haga por ti la próxima vez: agrega --restart)\n`);
+    }
   }
 }

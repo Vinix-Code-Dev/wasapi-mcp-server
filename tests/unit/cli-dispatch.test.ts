@@ -6,13 +6,16 @@ describe("dispatch", () => {
     expect(dispatch([])).toEqual({ kind: "server" });
   });
   it("returns 'setup' for setup", () => {
-    expect(dispatch(["setup"])).toEqual({ kind: "setup", printOnly: false, local: false });
+    expect(dispatch(["setup"])).toEqual({ kind: "setup", printOnly: false, local: false, restart: false });
   });
   it("returns 'setup' with printOnly=true for setup --print-only", () => {
-    expect(dispatch(["setup", "--print-only"])).toEqual({ kind: "setup", printOnly: true, local: false });
+    expect(dispatch(["setup", "--print-only"])).toEqual({ kind: "setup", printOnly: true, local: false, restart: false });
   });
   it("returns 'setup' with local=true for setup --local", () => {
-    expect(dispatch(["setup", "--local"])).toEqual({ kind: "setup", printOnly: false, local: true });
+    expect(dispatch(["setup", "--local"])).toEqual({ kind: "setup", printOnly: false, local: true, restart: false });
+  });
+  it("returns 'setup' with restart=true for setup --restart", () => {
+    expect(dispatch(["setup", "--restart"])).toEqual({ kind: "setup", printOnly: false, local: false, restart: true });
   });
   it("returns 'version' for --version", () => {
     expect(dispatch(["--version"])).toEqual({ kind: "version" });

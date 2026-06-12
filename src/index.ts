@@ -13,7 +13,7 @@ import { dirname, join } from "node:path";
 
 export type DispatchResult =
   | { kind: "server" }
-  | { kind: "setup"; printOnly: boolean; local: boolean; targetId?: string }
+  | { kind: "setup"; printOnly: boolean; local: boolean; restart: boolean; targetId?: string }
   | { kind: "version" }
   | { kind: "help" }
   | { kind: "unknown"; arg: string };
@@ -34,6 +34,7 @@ export function dispatch(args: string[]): DispatchResult {
       kind: "setup",
       printOnly: args.includes("--print-only"),
       local: args.includes("--local"),
+      restart: args.includes("--restart"),
       targetId: extractFlagValue(args, "--target"),
     };
   }
@@ -58,6 +59,8 @@ Usage:
                               Run wizard but print the JSON instead of writing files
   wasapi-mcp setup --target claude-desktop|cursor
                               Skip the target menu and install to a specific platform
+  wasapi-mcp setup --restart  Automatically restart the target app after writing config
+                              (macOS only; falls back to manual hint elsewhere)
   wasapi-mcp setup --local
                               Write the local dist path instead of 'npx -y @wasapi/mcp-server'
                               (for testing before publishing)
@@ -87,7 +90,12 @@ async function main() {
       process.exit(1);
     case "setup": {
       const { runSetup } = await import("./setup/index.js");
-      await runSetup({ printOnly: result.printOnly, local: result.local, targetId: result.targetId });
+      await runSetup({
+        printOnly: result.printOnly,
+        local: result.local,
+        restart: result.restart,
+        targetId: result.targetId,
+      });
       return;
     }
     case "server": {

@@ -7,6 +7,7 @@ const mockClaudeDesktop: Target = {
   label: "Claude Desktop",
   envOverride: "CLAUDE_DESKTOP_CONFIG",
   restartHint: "Reinicia Claude Desktop",
+  appName: "Claude",
   configPath: () => "/tmp/claude_desktop_config.json",
 };
 
@@ -15,6 +16,7 @@ const mockCursor: Target = {
   label: "Cursor",
   envOverride: "CURSOR_MCP_CONFIG",
   restartHint: "Reinicia Cursor",
+  appName: "Cursor",
   configPath: () => "/tmp/cursor-mcp.json",
 };
 
@@ -26,6 +28,7 @@ function makeDeps(): SetupDeps {
     question: vi.fn(),
     maskedQuestion: vi.fn(),
     numberInRange: vi.fn(),
+    restartApp: vi.fn().mockResolvedValue({ ok: true, message: "Claude reiniciado." }),
     stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
     targets: [mockClaudeDesktop, mockCursor],
   };
@@ -119,6 +122,35 @@ describe("runSetup happy path", () => {
 
     expect(deps.writeWasapiEntry).not.toHaveBeenCalled();
     expect(stdoutText(deps)).toContain('"WASAPI_API_KEY": "key_abc"');
+  });
+});
+
+describe("runSetup env-override and restart", () => {
+  it("warns when target.envOverride env var is set", async () => {
+    process.env.CLAUDE_DESKTOP_CONFIG = "/tmp/leak.json";
+    (deps.question as ReturnType<typeof vi.fn>).mockResolvedValueOnce("");
+    (deps.maskedQuestion as ReturnType<typeof vi.fn>).mockResolvedValueOnce("key_abc");
+    (deps.question as ReturnType<typeof vi.fn>).mockResolvedValueOnce("y");
+    await runSetup({ printOnly: false, targetId: "claude-desktop", deps });
+    expect(stdoutText(deps)).toContain("CLAUDE_DESKTOP_CONFIG está seteada");
+    delete process.env.CLAUDE_DESKTOP_CONFIG;
+  });
+
+  it("--restart calls restartApp on success path", async () => {
+    (deps.question as ReturnType<typeof vi.fn>).mockResolvedValueOnce("");
+    (deps.maskedQuestion as ReturnType<typeof vi.fn>).mockResolvedValueOnce("key_abc");
+    (deps.question as ReturnType<typeof vi.fn>).mockResolvedValueOnce("y");
+    await runSetup({ printOnly: false, restart: true, targetId: "claude-desktop", deps });
+    expect(deps.restartApp).toHaveBeenCalledWith("Claude");
+  });
+
+  it("without --restart, does not call restartApp and prints manual hint", async () => {
+    (deps.question as ReturnType<typeof vi.fn>).mockResolvedValueOnce("");
+    (deps.maskedQuestion as ReturnType<typeof vi.fn>).mockResolvedValueOnce("key_abc");
+    (deps.question as ReturnType<typeof vi.fn>).mockResolvedValueOnce("y");
+    await runSetup({ printOnly: false, targetId: "claude-desktop", deps });
+    expect(deps.restartApp).not.toHaveBeenCalled();
+    expect(stdoutText(deps)).toContain("Reinicia Claude Desktop");
   });
 });
 

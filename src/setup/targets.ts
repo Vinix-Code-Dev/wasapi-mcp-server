@@ -11,6 +11,8 @@ export interface Target {
   configPath(opts: TargetPathOpts): string;
   restartHint: string;
   envOverride: string;
+  /** App name used by --restart on macOS (osascript quit + open -a). Omit if not auto-restartable. */
+  appName?: string;
 }
 
 function requireEnv(env: NodeJS.ProcessEnv, key: string): string {
@@ -24,6 +26,7 @@ export const CLAUDE_DESKTOP: Target = {
   label: "Claude Desktop",
   envOverride: "CLAUDE_DESKTOP_CONFIG",
   restartHint: "Reinicia Claude Desktop (Cmd+Q completo + volver a abrir)",
+  appName: "Claude",
   configPath: ({ platform, env }) => {
     if (env.CLAUDE_DESKTOP_CONFIG) return env.CLAUDE_DESKTOP_CONFIG;
     if (platform === "darwin")
@@ -39,6 +42,7 @@ export const CURSOR: Target = {
   label: "Cursor",
   envOverride: "CURSOR_MCP_CONFIG",
   restartHint: "Reinicia Cursor o recarga la ventana (Cmd+Shift+P → 'Developer: Reload Window')",
+  appName: "Cursor",
   configPath: ({ platform, env }) => {
     if (env.CURSOR_MCP_CONFIG) return env.CURSOR_MCP_CONFIG;
     if (platform === "win32") return win32.join(requireEnv(env, "USERPROFILE"), ".cursor", "mcp.json");

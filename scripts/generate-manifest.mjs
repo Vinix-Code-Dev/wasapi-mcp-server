@@ -43,16 +43,17 @@ export const manifestSchema = z.object({
       env: z.record(z.string(), z.string()),
     }),
   }),
-  user_config: z.record(
-    z.string(),
-    z.object({
-      type: z.string(),
+  user_config: z.object({
+    api_key: z.object({
+      type: z.literal("string"),
       title: z.string(),
       description: z.string(),
-      sensitive: z.boolean().optional(),
-      required: z.boolean().optional(),
+      // The API key MUST be masked and keychain-stored; the schema enforces it
+      // so an accidental edit to the builder fails the build, not the user.
+      sensitive: z.literal(true),
+      required: z.literal(true),
     }),
-  ),
+  }),
   tools: z.array(z.object({ name: z.string(), description: z.string() })),
   compatibility: z.object({
     claude_desktop: z.string(),
@@ -66,7 +67,8 @@ function repoUrlToHttps(url) {
   return url
     .replace(/^git\+/, "")
     .replace(/^git:\/\//, "https://")
-    .replace(/^ssh:\/\/git@/, "https://")
+    .replace(/^ssh:\/\/git@([^/]+)\//, "https://$1/")
+    .replace(/^git@([^:]+):/, "https://$1/")
     .replace(/\.git$/, "");
 }
 

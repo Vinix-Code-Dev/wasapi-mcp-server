@@ -1,11 +1,9 @@
 // scripts/build-dxt.mjs
 import { execSync } from "node:child_process";
-import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, existsSync, statSync, createWriteStream } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, readdirSync, statSync, createWriteStream } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const { ZipArchive } = require("archiver");
+import { ZipArchive } from "archiver";
 import { buildManifest, manifestSchema } from "./generate-manifest.mjs";
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -26,11 +24,19 @@ function step1_clean() {
   mkdirSync(stageDir, { recursive: true });
 }
 
+function deleteDsStore(dir) {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) deleteDsStore(full);
+    else if (entry.name === ".DS_Store") rmSync(full);
+  }
+}
+
 function step2_build() {
   log("Building TypeScript");
   rmSync(join(repoRoot, "dist"), { recursive: true, force: true });
   run("npm run build");
-  run("find dist -name .DS_Store -delete");
+  deleteDsStore(join(repoRoot, "dist"));
 }
 
 function step3_copyDist() {
@@ -83,8 +89,13 @@ async function main() {
   step5_copyAssets();
   const version = step6_writeManifest();
   const outPath = await step7_zip(version);
+  // Stable-named copy so the GitHub "latest" download URL never changes:
+  // https://github.com/.../releases/latest/download/wasapi-mcp.dxt
+  const stablePath = join(releaseDir, "wasapi-mcp.dxt");
+  cpSync(outPath, stablePath);
   const size = statSync(outPath).size;
   log(`Done. ${outPath} (${(size / 1024 / 1024).toFixed(2)} MB)`);
+  log(`Stable copy: ${stablePath}`);
 }
 
 main().catch((err) => {

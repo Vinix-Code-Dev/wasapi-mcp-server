@@ -63,4 +63,43 @@ describe("buildManifest", () => {
     expect(m.documentation).toBe("https://github.com/jpabloe/wasapi-mcp-server#readme");
     expect(m.support).toBe("https://github.com/jpabloe/wasapi-mcp-server/issues");
   });
+
+  it("normalizes SCP-style SSH repository URLs (git@host:user/repo.git)", () => {
+    const m = buildManifest({
+      ...pkgFixture,
+      repository: { type: "git", url: "git@github.com:jpabloe/wasapi-mcp-server.git" },
+    });
+    expect(m.homepage).toBe("https://github.com/jpabloe/wasapi-mcp-server");
+    expect(() => manifestSchema.parse(m)).not.toThrow();
+  });
+
+  it("normalizes ssh:// repository URLs", () => {
+    const m = buildManifest({
+      ...pkgFixture,
+      repository: { type: "git", url: "ssh://git@github.com/jpabloe/wasapi-mcp-server.git" },
+    });
+    expect(m.homepage).toBe("https://github.com/jpabloe/wasapi-mcp-server");
+  });
+
+  it("falls back to default homepage when repository is missing", () => {
+    const { repository, ...pkgNoRepo } = pkgFixture;
+    const m = buildManifest(pkgNoRepo);
+    expect(m.homepage).toBe("https://github.com/jpabloe/wasapi-mcp-server");
+    expect(() => manifestSchema.parse(m)).not.toThrow();
+  });
+
+  it("handles string-form author", () => {
+    const m = buildManifest({ ...pkgFixture, author: "Solo Name" });
+    expect(m.author).toEqual({ name: "Solo Name" });
+    expect(() => manifestSchema.parse(m)).not.toThrow();
+  });
+
+  it("manifestSchema rejects user_config with sensitive: false", () => {
+    const m = buildManifest(pkgFixture);
+    const bad = {
+      ...m,
+      user_config: { api_key: { ...m.user_config.api_key, sensitive: false } },
+    };
+    expect(() => manifestSchema.parse(bad)).toThrow();
+  });
 });

@@ -18,11 +18,19 @@
     "test:watch": "vitest",
     "test:integration": "vitest run --config vitest.integration.config.ts",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "rm -rf dist && npm run build && find dist -name .DS_Store -delete"
+    "prepublishOnly": "rm -rf dist && npm run build && find dist -name .DS_Store -delete",
+    "package:dxt": "node scripts/build-dxt.mjs"
   },
   "keywords": [],
-  "author": { "name": "Juan Pablo", "email": "juanpablo@vinixcode.com", "url": "https://github.com/jpabloe" },
-  "repository": { "type": "git", "url": "git+https://github.com/jpabloe/wasapi-mcp-server.git" },
+  "author": {
+    "name": "Juan Pablo",
+    "email": "juanpablo@vinixcode.com",
+    "url": "https://github.com/jpabloe"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jpabloe/wasapi-mcp-server.git"
+  },
   "license": "ISC",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
@@ -32,6 +40,7 @@
   },
   "devDependencies": {
     "@types/node": "^25.9.3",
+    "archiver": "^8.0.0",
     "tsx": "^4.22.4",
     "typescript": "^6.0.3",
     "vitest": "^4.1.8"

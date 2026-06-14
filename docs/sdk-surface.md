@@ -86,6 +86,18 @@ The `campaigns` module has `create`, `update`, and `delete` methods that **throw
 ### `listConversations` does not exist
 There is no `listConversations` or equivalent method in the `whatsapp` module. Only `getConversation({ wa_id, from_id?, page? })` exists (retrieves single conversation thread). This is a known gap.
 
+### funnels module (`client.funnels`)
+| Method | Params (SDK camelCase) | MCP tool |
+|---|---|---|
+| `getAll()` | — | `list_funnels` |
+| `searchContact({ phoneNumber?, contactUuid? })` | at least one | `search_contact_in_funnels` |
+| `moveContactToFunnel({ funnelContactId, toStageId })` | both required | `move_contact_to_funnel_stage` |
+
+### metrics module (`client.metrics`)
+11 public methods (a 12th, `getAgentMetric`, is private and used internally by the per-agent wrappers). No-arg: `getOnlineAgents()`, `getStatusContacts()`. Date-range `{ startDate, endDate }`: `getTotalCampaigns`, `getConsolidatedConversations`, `getAgentConversations`, `getMessages`, `getMessagesBot`. Per-agent `{ agentId, startDate, endDate }`: `getAgentTimeResponse`, `getAgentTransferred`, `getAgentVolumeOfWork`, `getAgentTimeInConversation`.
+
+**Date format (confirmed against live API, 2026-06-14):** `YYYY-MM-DD`. The SDK inserts the values straight into the query string (`?dates[]=${startDate}&dates[]=${endDate}` for dashboard metrics; `start`/`end` for per-agent `/metrics`). A wide range (e.g. `2026-01-01` to `2026-06-30`) works as expected.
+
 ---
 
 ## Response type aliases

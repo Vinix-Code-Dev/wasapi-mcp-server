@@ -42,6 +42,14 @@ import { getAgentTimeResponseTool } from "./metrics/agent-time-response.js";
 import { getAgentTransferredTool } from "./metrics/agent-transferred.js";
 import { getAgentVolumeOfWorkTool } from "./metrics/agent-volume-of-work.js";
 import { getAgentTimeInConversationTool } from "./metrics/agent-time-in-conversation.js";
+import { toggleBotStatusTool } from "./bot/toggle-status.js";
+import { getWorkflowStatusesTool } from "./workflow/get-statuses.js";
+import { listCustomFieldsTool } from "./custom-fields/list.js";
+import { getCustomFieldTool } from "./custom-fields/get.js";
+import { createCustomFieldTool } from "./custom-fields/create.js";
+import { updateCustomFieldTool } from "./custom-fields/update.js";
+import { deleteCustomFieldTool } from "./custom-fields/delete.js";
+import { getCurrentUserTool } from "./user/get-user.js";
 // NOTE: list_conversations is NOT implemented — SDK gap (no listConversations method exists).
 // NOTE: campaigns create/update/delete are NOT implemented — SDK stubs that throw.
 // Tracked for follow-up SDK PRs.
@@ -91,4 +99,12 @@ export const allTools: ToolDefinition<any>[] = [
   getAgentTransferredTool,
   getAgentVolumeOfWorkTool,
   getAgentTimeInConversationTool,
+  toggleBotStatusTool,
+  getWorkflowStatusesTool,
+  listCustomFieldsTool,
+  getCustomFieldTool,
+  createCustomFieldTool,
+  updateCustomFieldTool,
+  deleteCustomFieldTool,
+  getCurrentUserTool,
 ];

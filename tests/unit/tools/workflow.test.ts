@@ -11,8 +11,8 @@ vi.mock("../../../src/wasapi.js", () => ({
 describe("get_workflow_statuses", () => {
   it("passes filters through unchanged (snake_case)", async () => {
     const h = wrapHandler(getWorkflowStatusesTool.schema, getWorkflowStatusesTool.handler);
-    await h({ action: "open", phone: "573001112233", agent_id: 5, per_page: 25, page: 2 });
-    expect(mock).toHaveBeenCalledWith({ action: "open", phone: "573001112233", agent_id: 5, per_page: 25, page: 2 });
+    await h({ action: "open", phone: "573001112233", agent_id: 5, dates: "2026-01-01,2026-06-01", per_page: 25, page: 2 });
+    expect(mock).toHaveBeenCalledWith({ action: "open", phone: "573001112233", agent_id: 5, dates: "2026-01-01,2026-06-01", per_page: 25, page: 2 });
   });
 
   it("works with no args (all optional)", async () => {

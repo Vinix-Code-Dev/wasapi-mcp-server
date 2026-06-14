@@ -284,7 +284,7 @@ Las métricas con rango de fechas esperan formato `YYYY-MM-DD`.
 
 | Herramienta | Qué hace | Parámetros clave |
 |---|---|---|
-| `get_workflow_statuses` | Lista cambios de estado de conversaciones, con filtros | `action`, `phone`, `agent_id`, `dates`, `page` (todos opcionales) |
+| `get_workflow_statuses` | Lista cambios de estado de conversaciones, con filtros | `action`, `phone`, `agent_id`, `dates`, `per_page`, `page` (todos opcionales) |
 
 ### Campos personalizados (5)
 

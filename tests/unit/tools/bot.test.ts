@@ -1,5 +1,5 @@
 // tests/unit/tools/bot.test.ts
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { toggleBotStatusTool } from "../../../src/tools/bot/toggle-status.js";
 import { wrapHandler } from "../../../src/lib/register-tool.js";
 
@@ -13,6 +13,11 @@ describe("toggle_bot_status", () => {
     vi.clearAllMocks();
     process.env.WASAPI_API_KEY = "test";
     process.env.WASAPI_FROM_ID = "10";
+  });
+
+  afterEach(() => {
+    delete process.env.WASAPI_API_KEY;
+    delete process.env.WASAPI_FROM_ID;
   });
 
   it("maps to { wa_id, data: { from_id, action } } with from_id fallback", async () => {

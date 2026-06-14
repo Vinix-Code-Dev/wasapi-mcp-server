@@ -98,6 +98,32 @@ There is no `listConversations` or equivalent method in the `whatsapp` module. O
 
 **Date format (confirmed against live API, 2026-06-14):** `YYYY-MM-DD`. The SDK inserts the values straight into the query string (`?dates[]=${startDate}&dates[]=${endDate}` for dashboard metrics; `start`/`end` for per-agent `/metrics`). A wide range (e.g. `2026-01-01` to `2026-06-30`) works as expected.
 
+### bot module (`client.bot`)
+| Method | Params | MCP tool |
+|---|---|---|
+| `toggleStatus({ wa_id, data: { from_id, action } })` | action ∈ enable\|disable\|disable_permanently | `toggle_bot_status` |
+
+### workflow module (`client.workflow`)
+| Method | Params (all optional) | MCP tool |
+|---|---|---|
+| `getStatuses({ action?, phone?, agent_id?, dates?, per_page?, page? })` | snake_case; `dates` is a `YYYY-MM-DD,YYYY-MM-DD` string | `get_workflow_statuses` |
+
+**Workflow quirks (confirmed benign against live API, 2026-06-14):** the SDK (a) calls `console.log(response.data)` — already redirected to stderr since v0.2, so it does not corrupt MCP stdio; (b) interpolates omitted params as the literal string `"undefined"` in the URL. The live API **tolerates** the `"undefined"` garbage gracefully — it returns a valid paginated empty response (`{ data: [], total: 0 }`, HTTP 200) and the response `path` is clean. No workaround needed.
+
+### customFields module (`client.customFields`)
+| Method | Params | MCP tool |
+|---|---|---|
+| `getAll()` | — | `list_custom_fields` |
+| `getById(id)` | positional string | `get_custom_field` |
+| `create({ name })` | — | `create_custom_field` |
+| `update({ id, data: { name } })` | — | `update_custom_field` |
+| `delete(id)` | positional string | `delete_custom_field` |
+
+### user module (`client.user`)
+| Method | Params | MCP tool |
+|---|---|---|
+| `getUser()` | — | `get_current_user` |
+
 ---
 
 ## Response type aliases

@@ -31,6 +31,13 @@ import { getCampaignTool } from "./campaigns/get.js";
 import { listFunnelsTool } from "./funnels/list.js";
 import { searchContactInFunnelsTool } from "./funnels/search-contact.js";
 import { moveContactToFunnelStageTool } from "./funnels/move-contact.js";
+import { getOnlineAgentsTool } from "./metrics/online-agents.js";
+import { getStatusContactsTool } from "./metrics/status-contacts.js";
+import { getTotalCampaignsTool } from "./metrics/total-campaigns.js";
+import { getConsolidatedConversationsTool } from "./metrics/consolidated-conversations.js";
+import { getAgentConversationsTool } from "./metrics/agent-conversations.js";
+import { getMessagesTool } from "./metrics/messages.js";
+import { getMessagesBotTool } from "./metrics/messages-bot.js";
 // NOTE: list_conversations is NOT implemented — SDK gap (no listConversations method exists).
 // NOTE: campaigns create/update/delete are NOT implemented — SDK stubs that throw.
 // Tracked for follow-up SDK PRs.
@@ -69,4 +76,11 @@ export const allTools: ToolDefinition<any>[] = [
   listFunnelsTool,
   searchContactInFunnelsTool,
   moveContactToFunnelStageTool,
+  getOnlineAgentsTool,
+  getStatusContactsTool,
+  getTotalCampaignsTool,
+  getConsolidatedConversationsTool,
+  getAgentConversationsTool,
+  getMessagesTool,
+  getMessagesBotTool,
 ];

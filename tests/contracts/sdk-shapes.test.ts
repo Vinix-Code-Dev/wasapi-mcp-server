@@ -174,6 +174,54 @@ describe("SDK shape contracts — funnels", () => {
   });
 });
 
+describe("SDK shape contracts — bot", () => {
+  it("bot.toggleStatus is a function", () => {
+    type Fn = WasapiClient["bot"]["toggleStatus"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+});
+
+describe("SDK shape contracts — workflow", () => {
+  it("workflow.getStatuses is a function", () => {
+    type Fn = WasapiClient["workflow"]["getStatuses"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+});
+
+describe("SDK shape contracts — customFields", () => {
+  it("customFields.getAll is a function", () => {
+    type Fn = WasapiClient["customFields"]["getAll"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("customFields.getById is a function", () => {
+    type Fn = WasapiClient["customFields"]["getById"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("customFields.create is a function", () => {
+    type Fn = WasapiClient["customFields"]["create"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("customFields.update is a function", () => {
+    type Fn = WasapiClient["customFields"]["update"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("customFields.delete is a function", () => {
+    type Fn = WasapiClient["customFields"]["delete"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+});
+
+describe("SDK shape contracts — user", () => {
+  it("user.getUser is a function", () => {
+    type Fn = WasapiClient["user"]["getUser"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+});
+
 describe("SDK shape contracts — metrics", () => {
   it("metrics.getOnlineAgents is a function", () => {
     type Fn = WasapiClient["metrics"]["getOnlineAgents"];

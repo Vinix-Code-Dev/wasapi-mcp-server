@@ -45,6 +45,14 @@ const TOOLS = [
   { name: "get_agent_transferred", description: "Métrica de agente: conversaciones transferidas" },
   { name: "get_agent_volume_of_work", description: "Métrica de agente: volumen de trabajo" },
   { name: "get_agent_time_in_conversation", description: "Métrica de agente: tiempo en conversación" },
+  { name: "toggle_bot_status", description: "Activa o desactiva el chatbot para un contacto" },
+  { name: "get_workflow_statuses", description: "Lista cambios de estado de conversaciones (workflow)" },
+  { name: "list_custom_fields", description: "Lista los campos personalizados de la cuenta" },
+  { name: "get_custom_field", description: "Obtiene un campo personalizado por ID" },
+  { name: "create_custom_field", description: "Crea un campo personalizado" },
+  { name: "update_custom_field", description: "Actualiza un campo personalizado" },
+  { name: "delete_custom_field", description: "Elimina un campo personalizado" },
+  { name: "get_current_user", description: "Obtiene los datos del usuario de la API key actual" },
 ];
 
 export const manifestSchema = z.object({

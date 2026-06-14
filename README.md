@@ -129,7 +129,9 @@ Una vez instalado, háblale a tu cliente MCP en lenguaje natural. Algunos ejempl
 
 > *"¿Cuántos mensajes enviamos entre el 1 y el 31 de enero? ¿Y cuántos agentes están en línea ahora?"*
 
-Claude decide cuál de las 43 herramientas usar, pide aclaraciones si algo es ambiguo, y te muestra la respuesta.
+> *"Desactiva el bot para el contacto 573001234567 y dime qué campos personalizados tengo configurados."*
+
+Claude decide cuál de las 51 herramientas usar, pide aclaraciones si algo es ambiguo, y te muestra la respuesta.
 
 ---
 
@@ -186,7 +188,7 @@ npx -y @jpabloe/wasapi-mcp-server setup --print-only
 
 ## Herramientas disponibles
 
-**43 herramientas en total.**
+**51 herramientas en total.**
 
 ### Contactos (9)
 
@@ -271,6 +273,34 @@ Los contactos se identifican por `wa_id` (un WhatsApp ID en texto), no por ID nu
 | `get_agent_time_in_conversation` | Tiempo en conversación de un agente | `agent_id`, `start_date`, `end_date` |
 
 Las métricas con rango de fechas esperan formato `YYYY-MM-DD`.
+
+### Bot (1)
+
+| Herramienta | Qué hace | Parámetros clave |
+|---|---|---|
+| `toggle_bot_status` | Activa/desactiva el chatbot para un contacto | `wa_id`, `action` (enable/disable/disable_permanently), `from_id` (opcional) |
+
+### Workflow (1)
+
+| Herramienta | Qué hace | Parámetros clave |
+|---|---|---|
+| `get_workflow_statuses` | Lista cambios de estado de conversaciones, con filtros | `action`, `phone`, `agent_id`, `dates`, `page` (todos opcionales) |
+
+### Campos personalizados (5)
+
+| Herramienta | Qué hace | Parámetros clave |
+|---|---|---|
+| `list_custom_fields` | Lista los campos personalizados | — |
+| `get_custom_field` | Obtiene un campo por ID | `field_id` |
+| `create_custom_field` | Crea un campo | `name` |
+| `update_custom_field` | Renombra un campo | `field_id`, `name` |
+| `delete_custom_field` | Elimina un campo | `field_id` |
+
+### Usuario (1)
+
+| Herramienta | Qué hace | Parámetros clave |
+|---|---|---|
+| `get_current_user` | Datos de la cuenta asociada a la API key | — |
 
 ---
 

@@ -38,6 +38,10 @@ import { getConsolidatedConversationsTool } from "./metrics/consolidated-convers
 import { getAgentConversationsTool } from "./metrics/agent-conversations.js";
 import { getMessagesTool } from "./metrics/messages.js";
 import { getMessagesBotTool } from "./metrics/messages-bot.js";
+import { getAgentTimeResponseTool } from "./metrics/agent-time-response.js";
+import { getAgentTransferredTool } from "./metrics/agent-transferred.js";
+import { getAgentVolumeOfWorkTool } from "./metrics/agent-volume-of-work.js";
+import { getAgentTimeInConversationTool } from "./metrics/agent-time-in-conversation.js";
 // NOTE: list_conversations is NOT implemented — SDK gap (no listConversations method exists).
 // NOTE: campaigns create/update/delete are NOT implemented — SDK stubs that throw.
 // Tracked for follow-up SDK PRs.
@@ -83,4 +87,8 @@ export const allTools: ToolDefinition<any>[] = [
   getAgentConversationsTool,
   getMessagesTool,
   getMessagesBotTool,
+  getAgentTimeResponseTool,
+  getAgentTransferredTool,
+  getAgentVolumeOfWorkTool,
+  getAgentTimeInConversationTool,
 ];

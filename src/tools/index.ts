@@ -28,6 +28,9 @@ import { getFlowAssetsTool } from "./whatsapp/get-flow-assets.js";
 import { getFlowScreensTool } from "./whatsapp/get-flow-screens.js";
 import { listCampaignsTool } from "./campaigns/list.js";
 import { getCampaignTool } from "./campaigns/get.js";
+import { listFunnelsTool } from "./funnels/list.js";
+import { searchContactInFunnelsTool } from "./funnels/search-contact.js";
+import { moveContactToFunnelStageTool } from "./funnels/move-contact.js";
 // NOTE: list_conversations is NOT implemented — SDK gap (no listConversations method exists).
 // NOTE: campaigns create/update/delete are NOT implemented — SDK stubs that throw.
 // Tracked for follow-up SDK PRs.
@@ -63,4 +66,7 @@ export const allTools: ToolDefinition<any>[] = [
   getFlowScreensTool,
   listCampaignsTool,
   getCampaignTool,
+  listFunnelsTool,
+  searchContactInFunnelsTool,
+  moveContactToFunnelStageTool,
 ];

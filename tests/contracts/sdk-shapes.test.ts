@@ -156,3 +156,77 @@ describe("SDK shape contracts — campaigns", () => {
     expectTypeOf<Fn>().toBeFunction();
   });
 });
+
+describe("SDK shape contracts — funnels", () => {
+  it("funnels.getAll is a function", () => {
+    type Fn = WasapiClient["funnels"]["getAll"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("funnels.searchContact is a function", () => {
+    type Fn = WasapiClient["funnels"]["searchContact"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("funnels.moveContactToFunnel is a function", () => {
+    type Fn = WasapiClient["funnels"]["moveContactToFunnel"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+});
+
+describe("SDK shape contracts — metrics", () => {
+  it("metrics.getOnlineAgents is a function", () => {
+    type Fn = WasapiClient["metrics"]["getOnlineAgents"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("metrics.getStatusContacts is a function", () => {
+    type Fn = WasapiClient["metrics"]["getStatusContacts"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("metrics.getTotalCampaigns is a function", () => {
+    type Fn = WasapiClient["metrics"]["getTotalCampaigns"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("metrics.getConsolidatedConversations is a function", () => {
+    type Fn = WasapiClient["metrics"]["getConsolidatedConversations"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("metrics.getAgentConversations is a function", () => {
+    type Fn = WasapiClient["metrics"]["getAgentConversations"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("metrics.getMessages is a function", () => {
+    type Fn = WasapiClient["metrics"]["getMessages"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("metrics.getMessagesBot is a function", () => {
+    type Fn = WasapiClient["metrics"]["getMessagesBot"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("metrics.getAgentTimeResponse is a function", () => {
+    type Fn = WasapiClient["metrics"]["getAgentTimeResponse"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("metrics.getAgentTransferred is a function", () => {
+    type Fn = WasapiClient["metrics"]["getAgentTransferred"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("metrics.getAgentVolumeOfWork is a function", () => {
+    type Fn = WasapiClient["metrics"]["getAgentVolumeOfWork"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("metrics.getAgentTimeInConversation is a function", () => {
+    type Fn = WasapiClient["metrics"]["getAgentTimeInConversation"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+});

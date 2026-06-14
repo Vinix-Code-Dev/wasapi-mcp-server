@@ -23,7 +23,7 @@ describe("buildManifest", () => {
     expect(m.author.email).toBe("juanpablo@vinixcode.com");
   });
 
-  it("declares all 29 tools", () => {
+  it("declares all 43 tools", () => {
     const m = buildManifest(pkgFixture);
     const names = m.tools.map((t) => t.name);
     expect(names).toEqual([
@@ -38,6 +38,11 @@ describe("buildManifest", () => {
       "list_flows", "list_flows_by_number", "send_flow",
       "get_flow_responses", "get_flow_assets", "get_flow_screens",
       "list_campaigns", "get_campaign",
+      "list_funnels", "search_contact_in_funnels", "move_contact_to_funnel_stage",
+      "get_online_agents", "get_status_contacts", "get_total_campaigns",
+      "get_consolidated_conversations", "get_agent_conversations", "get_messages",
+      "get_messages_bot", "get_agent_time_response", "get_agent_transferred",
+      "get_agent_volume_of_work", "get_agent_time_in_conversation",
     ]);
   });
 

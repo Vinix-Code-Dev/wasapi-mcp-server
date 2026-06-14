@@ -31,6 +31,20 @@ const TOOLS = [
   { name: "get_flow_screens", description: "Lista las pantallas de un Flow" },
   { name: "list_campaigns", description: "Lista las campañas de difusión de la cuenta" },
   { name: "get_campaign", description: "Obtiene el detalle de una campaña y sus envíos" },
+  { name: "list_funnels", description: "Lista los embudos de venta de la cuenta" },
+  { name: "search_contact_in_funnels", description: "Busca un contacto en los embudos por teléfono o UUID" },
+  { name: "move_contact_to_funnel_stage", description: "Mueve un contacto a otra etapa de un embudo" },
+  { name: "get_online_agents", description: "Métrica: agentes en línea" },
+  { name: "get_status_contacts", description: "Métrica: contactos por estado" },
+  { name: "get_total_campaigns", description: "Métrica: total de campañas en un rango de fechas" },
+  { name: "get_consolidated_conversations", description: "Métrica: conversaciones consolidadas en un rango" },
+  { name: "get_agent_conversations", description: "Métrica: conversaciones por agente en un rango" },
+  { name: "get_messages", description: "Métrica: volumen de mensajes en un rango" },
+  { name: "get_messages_bot", description: "Métrica: mensajes del bot en un rango" },
+  { name: "get_agent_time_response", description: "Métrica de agente: tiempo de respuesta" },
+  { name: "get_agent_transferred", description: "Métrica de agente: conversaciones transferidas" },
+  { name: "get_agent_volume_of_work", description: "Métrica de agente: volumen de trabajo" },
+  { name: "get_agent_time_in_conversation", description: "Métrica de agente: tiempo en conversación" },
 ];
 
 export const manifestSchema = z.object({

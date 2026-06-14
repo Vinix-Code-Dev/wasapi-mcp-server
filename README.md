@@ -127,7 +127,9 @@ Una vez instalado, háblale a tu cliente MCP en lenguaje natural. Algunos ejempl
 
 > *"¿Cómo le fue a mi última campaña? ¿Cuántos mensajes se entregaron?"*
 
-Claude decide cuál de las 29 herramientas usar, pide aclaraciones si algo es ambiguo, y te muestra la respuesta.
+> *"¿Cuántos mensajes enviamos entre el 1 y el 31 de enero? ¿Y cuántos agentes están en línea ahora?"*
+
+Claude decide cuál de las 43 herramientas usar, pide aclaraciones si algo es ambiguo, y te muestra la respuesta.
 
 ---
 
@@ -184,7 +186,7 @@ npx -y @jpabloe/wasapi-mcp-server setup --print-only
 
 ## Herramientas disponibles
 
-**29 herramientas en total.**
+**43 herramientas en total.**
 
 ### Contactos (9)
 
@@ -243,6 +245,32 @@ Los contactos se identifican por `wa_id` (un WhatsApp ID en texto), no por ID nu
 | `get_campaign` | Detalle de una campaña con sus envíos por contacto | `campaign_uuid` |
 
 > Crear, editar o eliminar campañas aún no está disponible (el SDK no lo implementa todavía).
+
+### Funnels (3)
+
+| Herramienta | Qué hace | Parámetros clave |
+|---|---|---|
+| `list_funnels` | Lista los embudos de venta y sus etapas | — |
+| `search_contact_in_funnels` | Busca un contacto en los embudos | `phone_number` o `contact_uuid` |
+| `move_contact_to_funnel_stage` | Mueve un contacto a otra etapa | `funnel_contact_id`, `to_stage_id` |
+
+### Métricas (11)
+
+| Herramienta | Qué hace | Parámetros clave |
+|---|---|---|
+| `get_online_agents` | Agentes en línea | — |
+| `get_status_contacts` | Contactos por estado | — |
+| `get_total_campaigns` | Total de campañas en un rango | `start_date`, `end_date` |
+| `get_consolidated_conversations` | Conversaciones consolidadas | `start_date`, `end_date` |
+| `get_agent_conversations` | Conversaciones por agente | `start_date`, `end_date` |
+| `get_messages` | Volumen de mensajes | `start_date`, `end_date` |
+| `get_messages_bot` | Mensajes del bot | `start_date`, `end_date` |
+| `get_agent_time_response` | Tiempo de respuesta de un agente | `agent_id`, `start_date`, `end_date` |
+| `get_agent_transferred` | Conversaciones transferidas de un agente | `agent_id`, `start_date`, `end_date` |
+| `get_agent_volume_of_work` | Volumen de trabajo de un agente | `agent_id`, `start_date`, `end_date` |
+| `get_agent_time_in_conversation` | Tiempo en conversación de un agente | `agent_id`, `start_date`, `end_date` |
+
+Las métricas con rango de fechas esperan formato `YYYY-MM-DD`.
 
 ---
 

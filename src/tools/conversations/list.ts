@@ -14,6 +14,9 @@ export const listConversationsTool: ToolDefinition<typeof schema> = {
   schema,
   handler: async (args) => {
     const client = getClient();
-    return await (client.conversations as any).getAll(args);
+    // Drop keys the caller didn't provide so the SDK never sees `undefined`
+    // filter values (consistent with get_conversations_next_page).
+    const params = Object.fromEntries(Object.entries(args).filter(([, v]) => v !== undefined));
+    return await (client.conversations as any).getAll(params);
   },
 };

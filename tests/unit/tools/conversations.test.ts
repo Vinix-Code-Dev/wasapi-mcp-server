@@ -38,4 +38,10 @@ describe("get_conversations_next_page", () => {
     await h({ cursor: "abc", status: "closed" });
     expect(mocks.getNextPage).toHaveBeenCalledWith("abc", { status: "closed" });
   });
+
+  it("works with cursor alone (empty filters)", async () => {
+    const h = wrapHandler(getConversationsNextPageTool.schema, getConversationsNextPageTool.handler);
+    await h({ cursor: "abc" });
+    expect(mocks.getNextPage).toHaveBeenCalledWith("abc", {});
+  });
 });

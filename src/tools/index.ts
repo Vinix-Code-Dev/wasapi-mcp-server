@@ -52,6 +52,12 @@ import { deleteCustomFieldTool } from "./custom-fields/delete.js";
 import { getCurrentUserTool } from "./user/get-user.js";
 import { listConversationsTool } from "./conversations/list.js";
 import { getConversationsNextPageTool } from "./conversations/next-page.js";
+import { listLabelsTool } from "./labels/list.js";
+import { searchLabelsTool } from "./labels/search.js";
+import { getLabelTool } from "./labels/get.js";
+import { createLabelTool } from "./labels/create.js";
+import { updateLabelTool } from "./labels/update.js";
+import { deleteLabelTool } from "./labels/delete.js";
 // NOTE: campaigns create/update/delete are NOT implemented — SDK stubs that throw.
 // Tracked for follow-up SDK PRs.
 
@@ -110,4 +116,10 @@ export const allTools: ToolDefinition<any>[] = [
   getCurrentUserTool,
   listConversationsTool,
   getConversationsNextPageTool,
+  listLabelsTool,
+  searchLabelsTool,
+  getLabelTool,
+  createLabelTool,
+  updateLabelTool,
+  deleteLabelTool,
 ];

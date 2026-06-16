@@ -1,0 +1,68 @@
+Modulo,Metodo SDK,En MCP,Tool MCP,Notas
+bot,toggleStatus,Si,toggle_bot_status,
+campaigns,getAll,Si,list_campaigns,
+campaigns,getById,Si,get_campaign,
+campaigns,create,No,,Stub del SDK: lanza "not implemented"
+campaigns,update,No,,Stub del SDK: lanza "not implemented"
+campaigns,delete,No,,Stub del SDK: lanza "not implemented"
+contacts,getAll,No,,Omitido a proposito: getSearch es superset (con busqueda y paginacion)
+contacts,getSearch,Si,list_contacts,
+contacts,getById,Si,get_contact,
+contacts,create,Si,create_contact,
+contacts,update,Si,update_contact,
+contacts,delete,Si,delete_contact,
+contacts,addLabel,Si,add_label_to_contact,
+contacts,removeLabel,Si,remove_label_from_contact,
+contacts,assingAgentAutomatic,Si,assign_agent_to_contact,Nombre del SDK tiene typo (assing)
+contacts,export,Si,export_contacts,
+conversations,getAll,Si,list_conversations,Nuevo en SDK 2.0.0; cierra gap historico
+conversations,getNextPage,Si,get_conversations_next_page,Nuevo en SDK 2.0.0
+customFields,getAll,Si,list_custom_fields,
+customFields,getById,Si,get_custom_field,
+customFields,create,Si,create_custom_field,
+customFields,update,Si,update_custom_field,
+customFields,delete,Si,delete_custom_field,
+funnels,getAll,Si,list_funnels,
+funnels,searchContact,Si,search_contact_in_funnels,
+funnels,moveContactToFunnel,Si,move_contact_to_funnel_stage,
+labels,getAll,Si,list_labels,Nuevo en SDK 2.0.0
+labels,getSearch,Si,search_labels,Nuevo en SDK 2.0.0
+labels,getById,Si,get_label,Nuevo en SDK 2.0.0
+labels,create,Si,create_label,Nuevo en SDK 2.0.0
+labels,update,Si,update_label,Nuevo en SDK 2.0.0
+labels,delete,Si,delete_label,Nuevo en SDK 2.0.0
+metrics,getOnlineAgents,Si,get_online_agents,
+metrics,getTotalCampaigns,Si,get_total_campaigns,
+metrics,getConsolidatedConversations,Si,get_consolidated_conversations,
+metrics,getAgentConversations,Si,get_agent_conversations,
+metrics,getStatusContacts,Si,get_status_contacts,
+metrics,getMessages,Si,get_messages,
+metrics,getMessagesBot,Si,get_messages_bot,
+metrics,getAgentTimeResponse,Si,get_agent_time_response,
+metrics,getAgentTransferred,Si,get_agent_transferred,
+metrics,getAgentVolumeOfWork,Si,get_agent_volume_of_work,
+metrics,getAgentTimeInConversation,Si,get_agent_time_in_conversation,
+reports,getPerformanceByAgent,Si,get_agent_performance_report,Nuevo en SDK 2.0.0
+reports,getVolumeOfWorkflow,Si,get_workflow_volume_report,Nuevo en SDK 2.0.0
+reports,getSatisfactionSurvey,Si,get_satisfaction_survey_report,Nuevo en SDK 2.0.0
+user,getUser,Si,get_current_user,
+whatsapp,sendMessage,Si,send_message,
+whatsapp,sendAttachment,Si,send_attachment,
+whatsapp,sendTemplate,Si,send_template,
+whatsapp,getConversation,Si,get_conversation,Hilo de mensajes con un contacto (distinto de list_conversations)
+whatsapp,getWhatsappNumbers,Si,list_whatsapp_numbers,
+whatsapp,getWhatsappTemplates,Si,list_whatsapp_templates,
+whatsapp,getWhatsappTemplate,Si,get_whatsapp_template,
+whatsapp,getTemplatesByAppId,Si,list_templates_by_number,
+whatsapp,getFieldsTemplate,Si,get_template_fields,
+whatsapp,getAppIdByFromId,No,,Helper interno de resolucion de IDs; no se expone
+whatsapp,syncMetaTemplates,Si,sync_meta_templates,
+whatsapp,changeStatus,Si,change_conversation_status,
+whatsapp,sendContacts,Si,send_contact_card,
+whatsapp,getFlows,Si,list_flows,
+whatsapp,getFlowsByPhoneId,Si,list_flows_by_number,
+whatsapp,sendFlow,Si,send_flow,
+whatsapp,getFlowResponses,Si,get_flow_responses,
+whatsapp,getFlowAssets,Si,get_flow_assets,
+whatsapp,getFlowScreens,Si,get_flow_screens,
+workflow,getStatuses,Si,get_workflow_statuses,

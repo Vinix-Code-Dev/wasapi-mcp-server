@@ -58,6 +58,9 @@ import { getLabelTool } from "./labels/get.js";
 import { createLabelTool } from "./labels/create.js";
 import { updateLabelTool } from "./labels/update.js";
 import { deleteLabelTool } from "./labels/delete.js";
+import { getAgentPerformanceReportTool } from "./reports/agent-performance.js";
+import { getWorkflowVolumeReportTool } from "./reports/workflow-volume.js";
+import { getSatisfactionSurveyReportTool } from "./reports/satisfaction-survey.js";
 // NOTE: campaigns create/update/delete are NOT implemented — SDK stubs that throw.
 // Tracked for follow-up SDK PRs.
 
@@ -122,4 +125,7 @@ export const allTools: ToolDefinition<any>[] = [
   createLabelTool,
   updateLabelTool,
   deleteLabelTool,
+  getAgentPerformanceReportTool,
+  getWorkflowVolumeReportTool,
+  getSatisfactionSurveyReportTool,
 ];

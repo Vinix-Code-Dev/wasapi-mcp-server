@@ -21,6 +21,7 @@ Servidor MCP para [Wasapi](https://wasapi.io). Gestiona tu cuenta de WhatsApp Bu
 - [Herramientas disponibles](#herramientas-disponibles)
 - [¿Cómo actualizo?](#cómo-actualizo)
 - [Solución de problemas](#solución-de-problemas)
+- [Privacidad](#privacidad)
 - [Limitaciones conocidas](#limitaciones-conocidas)
 
 ---
@@ -399,6 +400,16 @@ WASAPI_DEBUG=1 wasapi-mcp
 ```
 
 O agrega `"WASAPI_DEBUG": "1"` al bloque `env` de tu configuración MCP. Los logs salen por stderr.
+
+---
+
+## Privacidad
+
+- El servidor MCP corre **localmente** en tu máquina (o donde lo ejecute tu cliente MCP). No es un servicio hosteado por nosotros.
+- Envía tu API key y tus solicitudes **únicamente** a la API de Wasapi (`https://api-ws.wasapi.io`). No transmite datos a los autores del paquete ni a terceros.
+- **No recolecta, almacena ni comparte** tus datos por su cuenta. Tu API key se guarda donde tu cliente MCP la configure (en Claude Desktop, en el keychain del sistema operativo).
+- El tratamiento de los datos de tu cuenta por parte de Wasapi se rige por la [Política de Privacidad de Wasapi](https://www.wasapi.io/org/politica-de-privacidad).
+- Soporte y contacto: [issues del repositorio](https://github.com/Vinix-Code-Dev/wasapi-mcp-server/issues).
 
 ---
 

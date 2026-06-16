@@ -115,6 +115,11 @@ describe("buildManifest", () => {
     expect(() => manifestSchema.parse(m)).not.toThrow();
   });
 
+  it("includes the Wasapi privacy policy URL in privacy_policies", () => {
+    const m = buildManifest(pkgFixture);
+    expect(m.privacy_policies).toEqual(["https://www.wasapi.io/org/politica-de-privacidad"]);
+  });
+
   it("manifestSchema rejects user_config with sensitive: false", () => {
     const m = buildManifest(pkgFixture);
     const bad = {

@@ -2,6 +2,17 @@ import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { wrapHandler, type ToolDefinition } from "./lib/register-tool.js";
+import { getAnnotations } from "./lib/tool-annotations.js";
+
+// Exported so it can be unit-tested directly (pure transform).
+export function buildToolList(tools: ToolDefinition[]) {
+  return tools.map((t) => ({
+    name: t.name,
+    description: t.description,
+    inputSchema: zodToJsonSchema(t.schema) as any,
+    annotations: getAnnotations(t.name),
+  }));
+}
 
 export function buildServer(tools: ToolDefinition[]): Server {
   const server = new Server(
@@ -12,11 +23,7 @@ export function buildServer(tools: ToolDefinition[]): Server {
   const handlers = new Map(tools.map((t) => [t.name, wrapHandler(t.schema, t.handler)]));
 
   server.setRequestHandler(ListToolsRequestSchema, async () => ({
-    tools: tools.map((t) => ({
-      name: t.name,
-      description: t.description,
-      inputSchema: zodToJsonSchema(t.schema) as any,
-    })),
+    tools: buildToolList(tools),
   }));
 
   server.setRequestHandler(CallToolRequestSchema, async (req) => {

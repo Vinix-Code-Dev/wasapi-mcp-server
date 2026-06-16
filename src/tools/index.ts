@@ -50,7 +50,8 @@ import { createCustomFieldTool } from "./custom-fields/create.js";
 import { updateCustomFieldTool } from "./custom-fields/update.js";
 import { deleteCustomFieldTool } from "./custom-fields/delete.js";
 import { getCurrentUserTool } from "./user/get-user.js";
-// NOTE: list_conversations is NOT implemented — SDK gap (no listConversations method exists).
+import { listConversationsTool } from "./conversations/list.js";
+import { getConversationsNextPageTool } from "./conversations/next-page.js";
 // NOTE: campaigns create/update/delete are NOT implemented — SDK stubs that throw.
 // Tracked for follow-up SDK PRs.
 
@@ -107,4 +108,6 @@ export const allTools: ToolDefinition<any>[] = [
   updateCustomFieldTool,
   deleteCustomFieldTool,
   getCurrentUserTool,
+  listConversationsTool,
+  getConversationsNextPageTool,
 ];

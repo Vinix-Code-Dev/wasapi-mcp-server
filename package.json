@@ -42,7 +42,7 @@
   "license": "ISC",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
-    "@wasapi/js-sdk": "^0.1.38",
+    "@wasapi/js-sdk": "^2.0.0",
     "zod": "^3.25.76",
     "zod-to-json-schema": "^3.25.2"
   },

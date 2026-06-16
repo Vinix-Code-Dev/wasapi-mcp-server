@@ -53,6 +53,17 @@ const TOOLS = [
   { name: "update_custom_field", description: "Actualiza un campo personalizado" },
   { name: "delete_custom_field", description: "Elimina un campo personalizado" },
   { name: "get_current_user", description: "Obtiene los datos del usuario de la API key actual" },
+  { name: "list_conversations", description: "Lista las conversaciones de la cuenta (paginado por cursor) con filtros" },
+  { name: "get_conversations_next_page", description: "Siguiente página de conversaciones usando un cursor" },
+  { name: "list_labels", description: "Lista las etiquetas de la cuenta" },
+  { name: "search_labels", description: "Busca etiquetas por nombre" },
+  { name: "get_label", description: "Obtiene una etiqueta por ID" },
+  { name: "create_label", description: "Crea una etiqueta" },
+  { name: "update_label", description: "Actualiza una etiqueta" },
+  { name: "delete_label", description: "Elimina una etiqueta" },
+  { name: "get_agent_performance_report", description: "Reporte de desempeño por agente en un rango" },
+  { name: "get_workflow_volume_report", description: "Reporte de volumen de workflow en un rango" },
+  { name: "get_satisfaction_survey_report", description: "Reporte de encuestas de satisfacción en un rango" },
 ];
 
 export const manifestSchema = z.object({

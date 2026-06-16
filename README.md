@@ -131,7 +131,9 @@ Una vez instalado, háblale a tu cliente MCP en lenguaje natural. Algunos ejempl
 
 > *"Desactiva el bot para el contacto 573001234567 y dime qué campos personalizados tengo configurados."*
 
-Claude decide cuál de las 51 herramientas usar, pide aclaraciones si algo es ambiguo, y te muestra la respuesta.
+> *"Muéstrame las conversaciones abiertas sin etiqueta y dame el reporte de satisfacción del último mes."*
+
+Claude decide cuál de las 62 herramientas usar, pide aclaraciones si algo es ambiguo, y te muestra la respuesta.
 
 ---
 
@@ -188,7 +190,7 @@ npx -y @jpabloe/wasapi-mcp-server setup --print-only
 
 ## Herramientas disponibles
 
-**51 herramientas en total.**
+**62 herramientas en total.**
 
 ### Contactos (9)
 
@@ -302,6 +304,32 @@ Las métricas con rango de fechas esperan formato `YYYY-MM-DD`.
 |---|---|---|
 | `get_current_user` | Datos de la cuenta asociada a la API key | — |
 
+### Conversaciones (2)
+
+| Herramienta | Qué hace | Parámetros clave |
+|---|---|---|
+| `list_conversations` | Lista conversaciones (paginado por cursor) con filtros | `status`, `query`, `phones`, `labels`, `agents`, `dates`, `per_page` (todos opcionales) |
+| `get_conversations_next_page` | Siguiente página vía cursor | `cursor` + mismos filtros |
+
+### Etiquetas (6)
+
+| Herramienta | Qué hace | Parámetros clave |
+|---|---|---|
+| `list_labels` | Lista las etiquetas | — |
+| `search_labels` | Busca etiquetas por nombre | `name` |
+| `get_label` | Obtiene una etiqueta por ID | `label_id` |
+| `create_label` | Crea una etiqueta | `title`, `color`, `description` (opcional) |
+| `update_label` | Actualiza una etiqueta | `label_id`, `title`, `color`, `description` (opcional) |
+| `delete_label` | Elimina una etiqueta | `label_id` |
+
+### Reportes (3)
+
+| Herramienta | Qué hace | Parámetros clave |
+|---|---|---|
+| `get_agent_performance_report` | Desempeño por agente en un rango | `start_date`, `end_date`, `agent_id` (opcional) |
+| `get_workflow_volume_report` | Volumen de workflow en un rango | `start_date`, `end_date`, `from_id` (opcional) |
+| `get_satisfaction_survey_report` | Encuestas de satisfacción en un rango | `start_date`, `end_date`, `agent_id` (opcional) |
+
 ---
 
 ## ¿Cómo actualizo?
@@ -364,10 +392,6 @@ Tu API key funciona pero no tiene permiso para ese endpoint. Revisa la consola d
 
 El `filePath` debe existir en la **máquina donde corre el servidor MCP** (tu computador), no en la del cliente. Los adjuntos por URL aún no están soportados por el SDK; descarga el archivo localmente primero.
 
-### "list_conversations no existe"
-
-Correcto — el SDK aún no lo expone. Usa `get_conversation` con un `wa_id` conocido para traer el hilo de mensajes con ese contacto.
-
 ### Activar logs de depuración
 
 ```bash
@@ -382,7 +406,6 @@ O agrega `"WASAPI_DEBUG": "1"` al bloque `env` de tu configuración MCP. Los log
 
 | Limitación | Detalle |
 |---|---|
-| `list_conversations` no implementado | El SDK no lo expone. Usa `get_conversation` con un `wa_id`. |
 | `send_attachment` requiere ruta local | Para enviar archivos por URL usa `send_template` con `url_file`. |
 | No funciona en Claude.ai web | Requiere un servidor MCP hosteado (modelo de despliegue distinto). |
 

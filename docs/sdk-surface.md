@@ -1,8 +1,8 @@
 # SDK Surface (verified)
 
-SDK: `@wasapi/js-sdk`
+SDK: `@wasapi/js-sdk` — **2.0.0**
 Source: `node_modules/@wasapi/js-sdk/dist/types/wasapi/modules/*.d.ts`
-Inspected: 2026-06-12 (post SDK-parity batch A+B, 27 tools)
+Inspected: 2026-06-16 (post conversations/labels/reports batch, 62 tools)
 
 ## Init
 
@@ -61,11 +61,49 @@ Full method surface:
 
 ---
 
+## conversations (`client.conversations`)
+
+Full method surface (SDK 2.0.0):
+
+| Method | Signature | Notes |
+|---|---|---|
+| `getAll` | `(params?: GetConversationsParams)` | All params optional; see filters table |
+| `getNextPage` | `(cursor: string, params?: Omit<GetConversationsParams,'cursor'>)` | cursor is positional first arg |
+
+`GetConversationsParams` optional fields: `query`, `search_type` ('contactName'\|'all'), `status` ('open'\|'hold'\|'closed'), `phones`, `labels`, `agents`, `dates` (YYYY-MM-DD,YYYY-MM-DD), `without_labels` (boolean), `open_options` ('0'–'3'), `order_conversations` ('0'\|'1'), `all_agents` (boolean), `cursor`, `per_page` (number).
+
+MCP tools: `list_conversations` (getAll), `get_conversations_next_page` (getNextPage).
+
+---
+
 ## labels (`client.labels`)
 
-Methods: `getAll()`, `getSearch(name)`, `getById(id)`, `create({ title, description, color })`, `update({ id, data })`, `delete(id)`
+Full method surface (SDK 2.0.0):
 
-Labels are managed separately — not exposed as MCP tools in this version.
+| Method | Signature | Notes |
+|---|---|---|
+| `getAll` | `()` | Returns all labels |
+| `getSearch` | `(name: string)` | Positional arg |
+| `getById` | `(id: string)` | Positional arg |
+| `create` | `({ title, description?, color })` | color required |
+| `update` | `({ id, data: { title, description?, color } })` | |
+| `delete` | `(id: string)` | Positional arg |
+
+MCP tools: `list_labels`, `search_labels`, `get_label`, `create_label`, `update_label`, `delete_label`.
+
+---
+
+## reports (`client.reports`)
+
+Full method surface (SDK 2.0.0):
+
+| Method | Signature | Notes |
+|---|---|---|
+| `getPerformanceByAgent` | `({ start_date, end_date, agent_id? })` | agent_id is optional filter |
+| `getVolumeOfWorkflow` | `({ start_date, end_date, from_id? })` | from_id is optional filter |
+| `getSatisfactionSurvey` | `({ start_date, end_date, agent_id? })` | agent_id is optional filter |
+
+MCP tools: `get_agent_performance_report`, `get_workflow_volume_report`, `get_satisfaction_survey_report`.
 
 ---
 
@@ -83,8 +121,8 @@ Three SDK methods return `any` in their type declarations — the actual shape m
 ### Campaigns module (stub — DO NOT USE)
 The `campaigns` module has `create`, `update`, and `delete` methods that **throw "not implemented"** at runtime. They are present in the SDK class but are stubs. Do not expose them as MCP tools until the SDK implements them.
 
-### `listConversations` does not exist
-There is no `listConversations` or equivalent method in the `whatsapp` module. Only `getConversation({ wa_id, from_id?, page? })` exists (retrieves single conversation thread). This is a known gap.
+### `listConversations` gap — now resolved (SDK 2.0.0)
+The `whatsapp` module still only exposes `getConversation({ wa_id, from_id?, page? })` (single conversation thread). The list-conversations capability is provided by the new `conversations` module (`client.conversations`): `getAll(params?)` and `getNextPage(cursor, params?)`. MCP tools `list_conversations` and `get_conversations_next_page` are built on these methods.
 
 ### funnels module (`client.funnels`)
 | Method | Params (SDK camelCase) | MCP tool |

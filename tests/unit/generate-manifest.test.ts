@@ -23,7 +23,7 @@ describe("buildManifest", () => {
     expect(m.author.email).toBe("juanpablo@vinixcode.com");
   });
 
-  it("declares all 51 tools", () => {
+  it("declares all 62 tools", () => {
     const m = buildManifest(pkgFixture);
     const names = m.tools.map((t) => t.name);
     expect(names).toEqual([
@@ -48,6 +48,10 @@ describe("buildManifest", () => {
       "list_custom_fields", "get_custom_field", "create_custom_field",
       "update_custom_field", "delete_custom_field",
       "get_current_user",
+      "list_conversations", "get_conversations_next_page",
+      "list_labels", "search_labels", "get_label",
+      "create_label", "update_label", "delete_label",
+      "get_agent_performance_report", "get_workflow_volume_report", "get_satisfaction_survey_report",
     ]);
   });
 

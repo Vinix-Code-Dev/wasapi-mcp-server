@@ -222,6 +222,67 @@ describe("SDK shape contracts — user", () => {
   });
 });
 
+describe("SDK shape contracts — conversations", () => {
+  it("conversations.getAll is a function", () => {
+    type Fn = WasapiClient["conversations"]["getAll"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("conversations.getNextPage is a function", () => {
+    type Fn = WasapiClient["conversations"]["getNextPage"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+});
+
+describe("SDK shape contracts — labels", () => {
+  it("labels.getAll is a function", () => {
+    type Fn = WasapiClient["labels"]["getAll"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("labels.getSearch is a function", () => {
+    type Fn = WasapiClient["labels"]["getSearch"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("labels.getById is a function", () => {
+    type Fn = WasapiClient["labels"]["getById"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("labels.create is a function", () => {
+    type Fn = WasapiClient["labels"]["create"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("labels.update is a function", () => {
+    type Fn = WasapiClient["labels"]["update"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("labels.delete is a function", () => {
+    type Fn = WasapiClient["labels"]["delete"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+});
+
+describe("SDK shape contracts — reports", () => {
+  it("reports.getPerformanceByAgent is a function", () => {
+    type Fn = WasapiClient["reports"]["getPerformanceByAgent"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("reports.getVolumeOfWorkflow is a function", () => {
+    type Fn = WasapiClient["reports"]["getVolumeOfWorkflow"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+
+  it("reports.getSatisfactionSurvey is a function", () => {
+    type Fn = WasapiClient["reports"]["getSatisfactionSurvey"];
+    expectTypeOf<Fn>().toBeFunction();
+  });
+});
+
 describe("SDK shape contracts — metrics", () => {
   it("metrics.getOnlineAgents is a function", () => {
     type Fn = WasapiClient["metrics"]["getOnlineAgents"];

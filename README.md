@@ -1,8 +1,8 @@
 # Wasapi MCP Server
 
-[![npm version](https://img.shields.io/npm/v/@jpabloe/wasapi-mcp-server.svg)](https://www.npmjs.com/package/@jpabloe/wasapi-mcp-server)
-[![license](https://img.shields.io/npm/l/@jpabloe/wasapi-mcp-server.svg)](./LICENSE)
-[![node](https://img.shields.io/node/v/@jpabloe/wasapi-mcp-server.svg)](https://nodejs.org)
+[![npm version](https://img.shields.io/npm/v/@wasapi/mcp-server.svg)](https://www.npmjs.com/package/@wasapi/mcp-server)
+[![license](https://img.shields.io/npm/l/@wasapi/mcp-server.svg)](./LICENSE)
+[![node](https://img.shields.io/node/v/@wasapi/mcp-server.svg)](https://nodejs.org)
 
 Servidor MCP para [Wasapi](https://wasapi.io). Gestiona tu cuenta de WhatsApp Business directamente desde Claude, Cursor o cualquier cliente compatible con MCP: envía mensajes, administra contactos y consulta conversaciones usando lenguaje natural.
 
@@ -33,7 +33,7 @@ Antes de empezar necesitas una **API key de Wasapi**. Consíguela en [app.wasapi
 
 La forma más fácil si usas Claude Desktop y no quieres tocar la terminal:
 
-1. Descarga **[wasapi-mcp.mcpb](https://github.com/juanpablo-estrada/wasapi-mcp-server/releases/latest/download/wasapi-mcp.mcpb)** (enlace directo, siempre la última versión).
+1. Descarga **[wasapi-mcp.mcpb](https://github.com/Vinix-Code-Dev/wasapi-mcp-server/releases/latest/download/wasapi-mcp.mcpb)** (enlace directo, siempre la última versión).
 2. Haz doble click en el archivo — Claude Desktop abre el diálogo de instalación.
 3. Pega tu API key de Wasapi.
 4. Haz click en **Instalar**.
@@ -47,7 +47,7 @@ La forma más fácil si usas Claude Desktop y no quieres tocar la terminal:
 No necesitas instalar nada previamente — `npx` descarga y ejecuta el paquete en un solo paso:
 
 ```bash
-npx -y @jpabloe/wasapi-mcp-server setup --restart
+npx -y @wasapi/mcp-server setup --restart
 ```
 
 El asistente te guía por todo el proceso:
@@ -62,7 +62,7 @@ El asistente te guía por todo el proceso:
 <summary>¿Prefieres instalarlo globalmente?</summary>
 
 ```bash
-npm install -g @jpabloe/wasapi-mcp-server
+npm install -g @wasapi/mcp-server
 wasapi-mcp setup --restart
 ```
 
@@ -82,7 +82,7 @@ Si prefieres editar la configuración tú mismo:
   "mcpServers": {
     "wasapi": {
       "command": "npx",
-      "args": ["-y", "@jpabloe/wasapi-mcp-server"],
+      "args": ["-y", "@wasapi/mcp-server"],
       "env": {
         "WASAPI_API_KEY": "tu_api_key_aquí",
         "WASAPI_FROM_ID": "12345"
@@ -101,7 +101,7 @@ Si prefieres editar la configuración tú mismo:
 | Claude Desktop | `~/Library/Application Support/Claude/claude_desktop_config.json` | `~/.config/Claude/claude_desktop_config.json` | `%APPDATA%\Claude\claude_desktop_config.json` |
 | Cursor | `~/.cursor/mcp.json` | `~/.cursor/mcp.json` | `%USERPROFILE%\.cursor\mcp.json` |
 
-> **Tip:** `npx -y @jpabloe/wasapi-mcp-server setup --print-only` genera este JSON ya personalizado con tu cuenta, sin escribir ningún archivo.
+> **Tip:** `npx -y @wasapi/mcp-server setup --print-only` genera este JSON ya personalizado con tu cuenta, sin escribir ningún archivo.
 
 ---
 
@@ -155,7 +155,7 @@ Funciona con **cualquier cliente MCP que ejecute servidores locales por stdio**:
 ## Referencia del asistente (`setup`)
 
 ```bash
-npx -y @jpabloe/wasapi-mcp-server setup [flags]
+npx -y @wasapi/mcp-server setup [flags]
 ```
 
 | Flag | Descripción |
@@ -169,10 +169,10 @@ npx -y @jpabloe/wasapi-mcp-server setup [flags]
 
 ```bash
 # Configurar Claude Desktop y reiniciarlo automáticamente
-npx -y @jpabloe/wasapi-mcp-server setup --target claude-desktop --restart
+npx -y @wasapi/mcp-server setup --target claude-desktop --restart
 
 # Obtener el JSON para pegarlo manualmente en Windsurf / Zed / Claude Code
-npx -y @jpabloe/wasapi-mcp-server setup --print-only
+npx -y @wasapi/mcp-server setup --print-only
 ```
 
 ---
@@ -338,18 +338,18 @@ Depende de cómo instalaste:
 
 ### Si usaste el asistente o la configuración manual con `npx`
 
-Tu configuración usa `npx -y @jpabloe/wasapi-mcp-server` sin versión fijada, así que **basta con reiniciar tu cliente MCP** (Cmd+Q completo + abrir) — npx resuelve la última versión automáticamente.
+Tu configuración usa `npx -y @wasapi/mcp-server` sin versión fijada, así que **basta con reiniciar tu cliente MCP** (Cmd+Q completo + abrir) — npx resuelve la última versión automáticamente.
 
 Si por caché te sigue sirviendo una versión vieja, fuérzala y reinicia:
 
 ```bash
-npx -y @jpabloe/wasapi-mcp-server@latest --version
+npx -y @wasapi/mcp-server@latest --version
 ```
 
 ### Si lo instalaste globalmente
 
 ```bash
-npm install -g @jpabloe/wasapi-mcp-server@latest
+npm install -g @wasapi/mcp-server@latest
 ```
 
 y reinicia tu cliente.
@@ -358,7 +358,7 @@ y reinicia tu cliente.
 
 Las extensiones instaladas fuera del directorio oficial de Anthropic **no se actualizan solas**:
 
-1. Descarga el nuevo **[wasapi-mcp.mcpb](https://github.com/juanpablo-estrada/wasapi-mcp-server/releases/latest/download/wasapi-mcp.mcpb)** (siempre apunta a la última versión)
+1. Descarga el nuevo **[wasapi-mcp.mcpb](https://github.com/Vinix-Code-Dev/wasapi-mcp-server/releases/latest/download/wasapi-mcp.mcpb)** (siempre apunta a la última versión)
 2. Haz doble click — Claude Desktop detecta la extensión existente y la actualiza
 3. Tu API key se conserva, pero tenla a mano por si el diálogo la vuelve a pedir
 4. Verifica que la extensión siga activa en **Configuración → Extensiones**
@@ -415,7 +415,7 @@ O agrega `"WASAPI_DEBUG": "1"` al bloque `env` de tu configuración MCP. Los log
 ## Desarrollo
 
 ```bash
-git clone https://github.com/juanpablo-estrada/wasapi-mcp-server.git
+git clone https://github.com/Vinix-Code-Dev/wasapi-mcp-server.git
 cd wasapi-mcp-server
 npm install
 npm run dev          # ejecutar con tsx (requiere WASAPI_API_KEY)

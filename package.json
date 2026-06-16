@@ -1,6 +1,6 @@
 {
-  "name": "@jpabloe/wasapi-mcp-server",
-  "version": "0.8.0",
+  "name": "@wasapi/mcp-server",
+  "version": "1.0.0",
   "description": "Servidor MCP para Wasapi — gestiona contactos y envía mensajes de WhatsApp desde Claude",
   "main": "dist/index.js",
   "bin": {
@@ -37,7 +37,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/juanpablo-estrada/wasapi-mcp-server.git"
+    "url": "git+https://github.com/Vinix-Code-Dev/wasapi-mcp-server.git"
   },
   "license": "ISC",
   "dependencies": {

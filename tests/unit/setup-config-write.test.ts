@@ -8,7 +8,7 @@ let tmp: string;
 let cfgPath: string;
 const entry: WasapiEntry = {
   command: "npx",
-  args: ["-y", "@jpabloe/wasapi-mcp-server"],
+  args: ["-y", "@wasapi/mcp-server"],
   env: { WASAPI_API_KEY: "k", WASAPI_FROM_ID: "1" },
 };
 

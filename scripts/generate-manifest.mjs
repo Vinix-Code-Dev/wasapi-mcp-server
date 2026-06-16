@@ -113,7 +113,7 @@ export const manifestSchema = z.object({
 });
 
 function repoUrlToHttps(url) {
-  if (!url) return "https://github.com/juanpablo-estrada/wasapi-mcp-server";
+  if (!url) return "https://github.com/Vinix-Code-Dev/wasapi-mcp-server";
   return url
     .replace(/^git\+/, "")
     .replace(/^git:\/\//, "https://")

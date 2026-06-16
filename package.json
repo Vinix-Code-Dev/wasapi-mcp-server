@@ -1,6 +1,6 @@
 {
   "name": "@wasapi/mcp-server",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Servidor MCP para Wasapi — gestiona contactos y envía mensajes de WhatsApp desde Claude",
   "main": "dist/index.js",
   "bin": {

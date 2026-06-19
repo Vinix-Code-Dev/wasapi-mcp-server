@@ -74,6 +74,12 @@ export class WasapiOAuthProvider implements OAuthServerProvider {
     const target = new URL(this.config.consentUrl);
     target.searchParams.set("sid", sid);
     target.searchParams.set("redirect", callbackUrl);
+    // Pass the requesting AI's registered name so the consent screen and the
+    // issued API key aren't hardcoded to "Claude". client_name is optional and
+    // client-controlled — the web app/backend sanitize it before display/use.
+    if (client.client_name) {
+      target.searchParams.set("app", client.client_name);
+    }
     res.redirect(302, target.toString());
   }
 

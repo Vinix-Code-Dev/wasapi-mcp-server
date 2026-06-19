@@ -69,7 +69,7 @@ async function runFullFlow(app: any, grantCode: string) {
   // (3) Dynamic client registration.
   const reg = await request(app)
     .post("/register")
-    .send({ redirect_uris: ["https://claude.ai/cb"], token_endpoint_auth_method: "none" });
+    .send({ redirect_uris: ["https://claude.ai/cb"], token_endpoint_auth_method: "none", client_name: "Test AI" });
   expect(reg.status).toBe(201);
   const clientId = reg.body.client_id as string;
 
@@ -87,6 +87,7 @@ async function runFullFlow(app: any, grantCode: string) {
   expect(authorize.status).toBe(302);
   const consent = locationOf(authorize);
   expect(consent.origin + consent.pathname).toBe("https://app.test/oauth/mcp");
+  expect(consent.searchParams.get("app")).toBe("Test AI");
   const sid = consent.searchParams.get("sid")!;
 
   // (6)-(8) The web app + backend produce a grant; simulate the redirect to our callback.

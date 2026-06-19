@@ -20,7 +20,11 @@ const config: ServeConfig = {
   debug: false,
 };
 
-const client = { client_id: "client-1", redirect_uris: ["https://claude.ai/cb"] } as OAuthClientInformationFull;
+const client = {
+  client_id: "client-1",
+  client_name: "Claude",
+  redirect_uris: ["https://claude.ai/cb"],
+} as OAuthClientInformationFull;
 
 const session: LoginSession = {
   clientId: "client-1",
@@ -63,6 +67,8 @@ describe("WasapiOAuthProvider", () => {
     expect(u.origin + u.pathname).toBe("https://app.test/oauth/mcp");
     expect(u.searchParams.get("sid")).toBeTruthy();
     expect(u.searchParams.get("redirect")).toBe("https://mcp.test/oauth/callback");
+    // The requesting AI's name is forwarded to the consent screen.
+    expect(u.searchParams.get("app")).toBe("Claude");
     // The persisted session carries the original PKCE challenge.
     const sid = u.searchParams.get("sid")!;
     expect(store.logins.get(sid)?.codeChallenge).toBe("challenge-xyz");

@@ -13,6 +13,7 @@ import { dirname, join } from "node:path";
 
 export type DispatchResult =
   | { kind: "server" }
+  | { kind: "serve"; port?: number }
   | { kind: "setup"; printOnly: boolean; local: boolean; restart: boolean; targetId?: string }
   | { kind: "version" }
   | { kind: "help" }
@@ -38,6 +39,11 @@ export function dispatch(args: string[]): DispatchResult {
       targetId: extractFlagValue(args, "--target"),
     };
   }
+  if (first === "serve") {
+    const portStr = extractFlagValue(args, "--port") ?? process.env.PORT;
+    const port = portStr !== undefined ? Number(portStr) : undefined;
+    return { kind: "serve", port: port !== undefined && Number.isFinite(port) ? port : undefined };
+  }
   if (first === "--version") return { kind: "version" };
   if (first === "--help" || first === "-h") return { kind: "help" };
   return { kind: "unknown", arg: first };
@@ -54,6 +60,8 @@ function printHelp(): void {
 
 Usage:
   wasapi-mcp                  Start the MCP server on stdio (used by Claude Desktop)
+  wasapi-mcp serve            Start the remote OAuth HTTP server (Streamable HTTP at /mcp)
+  wasapi-mcp serve --port N   Listen on port N (defaults to PORT env or 3000)
   wasapi-mcp setup            Interactive setup wizard
   wasapi-mcp setup --print-only
                               Run wizard but print the JSON instead of writing files
@@ -67,11 +75,22 @@ Usage:
   wasapi-mcp --version        Print version
   wasapi-mcp --help           Print this help
 
-Environment variables:
+Environment variables (stdio mode):
   WASAPI_API_KEY              Required. Your Wasapi API key.
   WASAPI_FROM_ID              Optional. Default WhatsApp number ID.
   WASAPI_BASE_URL             Optional. Override SDK base URL.
   WASAPI_DEBUG                Optional. Set to 1 for stderr debug logs.
+
+Environment variables (serve mode):
+  OAUTH_ISSUER_URL            Required. e.g. https://mcp.wasapi.io
+  MCP_PUBLIC_URL              Required. Public base URL (usually = issuer).
+  WASAPI_BASE_URL             Required. e.g. https://api-ws.wasapi.io/api/
+  REDIS_URL                   Required. Redis connection string.
+  TOKEN_HASH_SECRET           Required. HMAC secret for token hashing at-rest.
+  KEY_ENCRYPTION_SECRET       Required. AES key secret for API-key encryption.
+  GRANT_EXCHANGE_SECRET       Required. Shared secret with the backend.
+  CONSENT_URL                 Optional. Web app consent screen (default app.wasapi.io/oauth/mcp).
+  PORT                        Optional. Listen port (default 3000).
 `);
 }
 
@@ -96,6 +115,13 @@ async function main() {
         restart: result.restart,
         targetId: result.targetId,
       });
+      return;
+    }
+    case "serve": {
+      // Remote OAuth HTTP mode. Express/Redis are only loaded here, never in
+      // stdio mode. No WASAPI_API_KEY required — auth is per-user via OAuth.
+      const { serve } = await import("./http/serve.js");
+      await serve(result.port);
       return;
     }
     case "server": {

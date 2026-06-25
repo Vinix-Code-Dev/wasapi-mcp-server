@@ -12,6 +12,7 @@
     "README.md"
   ],
   "scripts": {
+    "postinstall": "node --input-type=commonjs -e \"require('fs').writeFileSync(require('path').join('node_modules','@wasapi','js-sdk','dist','esm','package.json'),JSON.stringify({type:'module'}))\"",
     "build": "tsc -p tsconfig.build.json",
     "dev": "tsx src/index.ts",
     "test": "vitest run",

@@ -11,9 +11,10 @@ Servidor MCP para [Wasapi](https://wasapi.io). Gestiona tu cuenta de WhatsApp Bu
 ## Tabla de contenidos
 
 - [Instalación](#instalación)
-  - [Opción 1 — Claude Desktop, sin terminal](#opción-1--claude-desktop-sin-terminal)
-  - [Opción 2 — Asistente de configuración (recomendada para developers)](#opción-2--asistente-de-configuración-recomendada-para-developers)
-  - [Opción 3 — Configuración manual](#opción-3--configuración-manual)
+  - [Opción 1 — Conector remoto (recomendado · Claude.ai web, ChatGPT, etc.)](#opción-1--conector-remoto-recomendado--claudeai-web-chatgpt-etc)
+  - [Opción 2 — Claude Desktop, sin terminal](#opción-2--claude-desktop-sin-terminal)
+  - [Opción 3 — Asistente de configuración (recomendada para developers)](#opción-3--asistente-de-configuración-recomendada-para-developers)
+  - [Opción 4 — Configuración manual](#opción-4--configuración-manual)
 - [¿Qué puedo hacer?](#qué-puedo-hacer)
 - [Clientes compatibles](#clientes-compatibles)
 - [Referencia del asistente (`setup`)](#referencia-del-asistente-setup)
@@ -28,9 +29,25 @@ Servidor MCP para [Wasapi](https://wasapi.io). Gestiona tu cuenta de WhatsApp Bu
 
 ## Instalación
 
-Antes de empezar necesitas una **API key de Wasapi**. Consíguela en [app.wasapi.io/account/developer](https://app.wasapi.io/account/developer).
+### Opción 1 — Conector remoto (recomendado · Claude.ai web, ChatGPT, etc.)
 
-### Opción 1 — Claude Desktop, sin terminal
+**La forma más fácil y recomendada.** No requiere instalación: cualquier IA que soporte conectores MCP remotos puede conectarse directamente con tu cuenta de Wasapi.
+
+**Endpoint:** `https://ia.wasapi.io/mcp`
+
+1. En tu cliente de IA (Claude.ai, ChatGPT, etc.), abre la sección de conectores o integraciones.
+2. Agrega un nuevo conector MCP con la URL: `https://ia.wasapi.io/mcp`
+3. El cliente abrirá el flujo de autorización de Wasapi — inicia sesión con tu cuenta.
+4. Acepta los permisos en la pantalla de consentimiento.
+5. ¡Listo! La IA ya puede gestionar tu cuenta de WhatsApp Business.
+
+> Para una guía detallada con capturas de pantalla, visita: [ayuda.wasapi.io — Conecta Claude, ChatGPT y otras IA con el MCP de Wasapi](https://ayuda.wasapi.io/es/articles/15648197-conecta-claude-chatgpt-y-otras-ia-con-el-mcp-de-wasapi)
+
+---
+
+Las opciones 2–4 son para instalar el servidor MCP **localmente** (necesario si usas clientes de escritorio como Claude Desktop o Cursor). Antes de empezar necesitas una **API key de Wasapi**. Consíguela en [app.wasapi.io/account/developer](https://app.wasapi.io/account/developer).
+
+### Opción 2 — Claude Desktop, sin terminal
 
 La forma más fácil si usas Claude Desktop y no quieres tocar la terminal:
 
@@ -43,7 +60,7 @@ La forma más fácil si usas Claude Desktop y no quieres tocar la terminal:
 
 > **Nota:** verás un aviso de que el desarrollador "no está verificado por Anthropic". Es lo esperado para extensiones distribuidas fuera del directorio oficial de Anthropic; la fuente es este repositorio.
 
-### Opción 2 — Asistente de configuración (recomendada para developers)
+### Opción 3 — Asistente de configuración (recomendada para developers)
 
 No necesitas instalar nada previamente — `npx` descarga y ejecuta el paquete en un solo paso:
 
@@ -71,7 +88,7 @@ Con la instalación global, el comando `wasapi-mcp` queda disponible en tu termi
 
 </details>
 
-### Opción 3 — Configuración manual
+### Opción 4 — Configuración manual
 
 Si prefieres editar la configuración tú mismo:
 
@@ -140,16 +157,14 @@ Claude decide cuál de las 62 herramientas usar, pide aclaraciones si algo es am
 
 ## Clientes compatibles
 
-Funciona con **cualquier cliente MCP que ejecute servidores locales por stdio**:
-
-| Cliente | Instalación | Notas |
+| Cliente | Cómo conectar | Notas |
 |---|---|---|
-| **Claude Desktop** | `.mcpb` (Opción 1) o asistente (Opción 2) | Recomendado |
-| **Cursor** | Asistente (Opción 2) con auto-configuración y reinicio | |
-| **Claude Code** | `setup --print-only` + `claude mcp add` o editar `~/.claude.json` | |
-| **Windsurf, Zed y otros** | `setup --print-only` + pegar el JSON en su configuración | |
-
-> **Importante:** este es un servidor MCP **local (stdio)**. **No funciona en Claude.ai web** — eso requiere un servidor MCP hosteado, que es un modelo de despliegue distinto.
+| **Claude.ai web** | Conector remoto — `https://ia.wasapi.io/mcp` (Opción 1) | Recomendado · sin instalación |
+| **ChatGPT** | Conector remoto — `https://ia.wasapi.io/mcp` (Opción 1) | Requiere soporte de conectores MCP en tu plan |
+| **Claude Desktop** | `.mcpb` (Opción 2) o asistente (Opción 3) | Instalación local |
+| **Cursor** | Asistente (Opción 3) con auto-configuración y reinicio | Instalación local |
+| **Claude Code** | `setup --print-only` + `claude mcp add` o editar `~/.claude.json` | Instalación local |
+| **Windsurf, Zed y otros** | `setup --print-only` + pegar el JSON en su configuración | Instalación local |
 
 ---
 
@@ -405,8 +420,8 @@ O agrega `"WASAPI_DEBUG": "1"` al bloque `env` de tu configuración MCP. Los log
 
 ## Privacidad
 
-- El servidor MCP corre **localmente** en tu máquina (o donde lo ejecute tu cliente MCP). No es un servicio hosteado por nosotros.
-- Envía tu API key y tus solicitudes **únicamente** a la API de Wasapi (`https://api-ws.wasapi.io`). No transmite datos a los autores del paquete ni a terceros.
+- **Conector remoto (`ia.wasapi.io`):** las solicitudes pasan por el servidor MCP de Wasapi, que actúa como intermediario OAuth entre tu cliente de IA y la API de Wasapi. No almacena el contenido de tus mensajes ni contactos.
+- **Instalación local (stdio):** el servidor MCP corre en tu máquina. Envía tus solicitudes **únicamente** a la API de Wasapi (`https://api-ws.wasapi.io`). No transmite datos a los autores del paquete ni a terceros.
 - **No recolecta, almacena ni comparte** tus datos por su cuenta. Tu API key se guarda donde tu cliente MCP la configure (en Claude Desktop, en el keychain del sistema operativo).
 - El tratamiento de los datos de tu cuenta por parte de Wasapi se rige por la [Política de Privacidad de Wasapi](https://www.wasapi.io/org/politica-de-privacidad).
 - Soporte y contacto: [issues del repositorio](https://github.com/Vinix-Code-Dev/wasapi-mcp-server/issues).
@@ -417,8 +432,7 @@ O agrega `"WASAPI_DEBUG": "1"` al bloque `env` de tu configuración MCP. Los log
 
 | Limitación | Detalle |
 |---|---|
-| `send_attachment` requiere ruta local | Para enviar archivos por URL usa `send_template` con `url_file`. |
-| No funciona en Claude.ai web | Requiere un servidor MCP hosteado (modelo de despliegue distinto). |
+| `send_attachment` requiere ruta local | Solo disponible en la instalación local (stdio). Para enviar archivos por URL usa `send_template` con `url_file`. |
 
 ---
 

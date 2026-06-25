@@ -17,6 +17,18 @@ describe("dispatch", () => {
   it("returns 'setup' with restart=true for setup --restart", () => {
     expect(dispatch(["setup", "--restart"])).toEqual({ kind: "setup", printOnly: false, local: false, restart: true });
   });
+  it("returns 'serve' for serve (no port)", () => {
+    const prev = process.env.PORT;
+    delete process.env.PORT;
+    expect(dispatch(["serve"])).toEqual({ kind: "serve", port: undefined });
+    if (prev !== undefined) process.env.PORT = prev;
+  });
+  it("returns 'serve' with a port for serve --port 8080", () => {
+    expect(dispatch(["serve", "--port", "8080"])).toEqual({ kind: "serve", port: 8080 });
+  });
+  it("returns 'serve' with a port for serve --port=8080", () => {
+    expect(dispatch(["serve", "--port=8080"])).toEqual({ kind: "serve", port: 8080 });
+  });
   it("returns 'version' for --version", () => {
     expect(dispatch(["--version"])).toEqual({ kind: "version" });
   });

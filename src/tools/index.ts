@@ -50,6 +50,7 @@ import { createCustomFieldTool } from "./custom-fields/create.js";
 import { updateCustomFieldTool } from "./custom-fields/update.js";
 import { deleteCustomFieldTool } from "./custom-fields/delete.js";
 import { getCurrentUserTool } from "./user/get-user.js";
+import { listUsersTool } from "./user/list-users.js";
 import { listConversationsTool } from "./conversations/list.js";
 import { getConversationsNextPageTool } from "./conversations/next-page.js";
 import { listLabelsTool } from "./labels/list.js";
@@ -117,6 +118,7 @@ export const allTools: ToolDefinition<any>[] = [
   updateCustomFieldTool,
   deleteCustomFieldTool,
   getCurrentUserTool,
+  listUsersTool,
   listConversationsTool,
   getConversationsNextPageTool,
   listLabelsTool,

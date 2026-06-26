@@ -80,6 +80,7 @@ export const TOOL_ANNOTATIONS: Record<string, ToolAnnotationSource> = {
   delete_custom_field: W("Eliminar campo personalizado"),
   // User
   get_current_user: R("Ver usuario actual"),
+  list_users: R("Listar usuarios (agentes)"),
   // Conversations
   list_conversations: R("Listar conversaciones"),
   get_conversations_next_page: R("Siguiente página de conversaciones"),

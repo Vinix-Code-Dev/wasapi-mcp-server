@@ -12,7 +12,7 @@ const TOOLS = [
   { name: "list_whatsapp_numbers", description: "Lista los números de WhatsApp conectados a la cuenta" },
   { name: "send_message", description: "Envía un mensaje de texto por WhatsApp" },
   { name: "send_template", description: "Envía una plantilla aprobada de WhatsApp" },
-  { name: "send_attachment", description: "Envía un archivo adjunto desde una ruta local" },
+  { name: "send_attachment", description: "Envía un archivo adjunto desde una URL pública" },
   { name: "get_conversation", description: "Obtiene el hilo de mensajes con un contacto" },
   { name: "assign_agent_to_contact", description: "Asigna automáticamente un agente a un contacto" },
   { name: "export_contacts", description: "Inicia una exportación de todos los contactos" },

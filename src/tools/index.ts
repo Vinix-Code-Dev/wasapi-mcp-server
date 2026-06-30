@@ -45,7 +45,6 @@ import { getAgentTimeInConversationTool } from "./metrics/agent-time-in-conversa
 import { toggleBotStatusTool } from "./bot/toggle-status.js";
 import { getWorkflowStatusesTool } from "./workflow/get-statuses.js";
 import { listCustomFieldsTool } from "./custom-fields/list.js";
-import { getCustomFieldTool } from "./custom-fields/get.js";
 import { createCustomFieldTool } from "./custom-fields/create.js";
 import { updateCustomFieldTool } from "./custom-fields/update.js";
 import { deleteCustomFieldTool } from "./custom-fields/delete.js";
@@ -113,7 +112,6 @@ export const allTools: ToolDefinition<any>[] = [
   toggleBotStatusTool,
   getWorkflowStatusesTool,
   listCustomFieldsTool,
-  getCustomFieldTool,
   createCustomFieldTool,
   updateCustomFieldTool,
   deleteCustomFieldTool,

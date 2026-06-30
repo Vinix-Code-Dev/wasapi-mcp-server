@@ -151,7 +151,7 @@ Una vez instalado, háblale a tu cliente MCP en lenguaje natural. Algunos ejempl
 
 > *"Muéstrame las conversaciones abiertas sin etiqueta y dame el reporte de satisfacción del último mes."*
 
-Claude decide cuál de las 62 herramientas usar, pide aclaraciones si algo es ambiguo, y te muestra la respuesta.
+Claude decide cuál de las 61 herramientas usar, pide aclaraciones si algo es ambiguo, y te muestra la respuesta.
 
 ---
 
@@ -206,7 +206,7 @@ npx -y @wasapi/mcp-server setup --print-only
 
 ## Herramientas disponibles
 
-**62 herramientas en total.**
+**61 herramientas en total.**
 
 ### Contactos (9)
 
@@ -304,12 +304,11 @@ Las métricas con rango de fechas esperan formato `YYYY-MM-DD`.
 |---|---|---|
 | `get_workflow_statuses` | Lista cambios de estado de conversaciones, con filtros | `action`, `phone`, `agent_id`, `dates`, `per_page`, `page` (todos opcionales) |
 
-### Campos personalizados (5)
+### Campos personalizados (4)
 
 | Herramienta | Qué hace | Parámetros clave |
 |---|---|---|
 | `list_custom_fields` | Lista los campos personalizados | — |
-| `get_custom_field` | Obtiene un campo por ID | `field_id` |
 | `create_custom_field` | Crea un campo | `name` |
 | `update_custom_field` | Renombra un campo | `field_id`, `name` |
 | `delete_custom_field` | Elimina un campo | `field_id` |

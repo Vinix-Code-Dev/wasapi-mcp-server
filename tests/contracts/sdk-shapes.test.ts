@@ -194,11 +194,6 @@ describe("SDK shape contracts — customFields", () => {
     expectTypeOf<Fn>().toBeFunction();
   });
 
-  it("customFields.getById is a function", () => {
-    type Fn = WasapiClient["customFields"]["getById"];
-    expectTypeOf<Fn>().toBeFunction();
-  });
-
   it("customFields.create is a function", () => {
     type Fn = WasapiClient["customFields"]["create"];
     expectTypeOf<Fn>().toBeFunction();

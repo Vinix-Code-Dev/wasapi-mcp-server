@@ -52,6 +52,7 @@ const TOOLS = [
   { name: "update_custom_field", description: "Actualiza un campo personalizado" },
   { name: "delete_custom_field", description: "Elimina un campo personalizado" },
   { name: "get_current_user", description: "Obtiene los datos del usuario de la API key actual" },
+  { name: "list_users", description: "Lista los usuarios (agentes) de la cuenta" },
   { name: "list_conversations", description: "Lista las conversaciones de la cuenta (paginado por cursor) con filtros" },
   { name: "get_conversations_next_page", description: "Siguiente página de conversaciones usando un cursor" },
   { name: "list_labels", description: "Lista las etiquetas de la cuenta" },

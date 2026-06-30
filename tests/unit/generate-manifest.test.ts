@@ -1,6 +1,7 @@
 // tests/unit/generate-manifest.test.ts
 import { describe, it, expect } from "vitest";
 import { buildManifest, manifestSchema } from "../../scripts/generate-manifest.mjs";
+import { allTools } from "../../src/tools/index.js";
 
 const pkgFixture = {
   name: "@wasapi/mcp-server",
@@ -23,7 +24,7 @@ describe("buildManifest", () => {
     expect(m.author.email).toBe("juanpablo@vinixcode.com");
   });
 
-  it("declares all 61 tools", () => {
+  it("declares all 62 tools", () => {
     const m = buildManifest(pkgFixture);
     const names = m.tools.map((t) => t.name);
     expect(names).toEqual([
@@ -47,12 +48,23 @@ describe("buildManifest", () => {
       "get_workflow_statuses",
       "list_custom_fields", "create_custom_field",
       "update_custom_field", "delete_custom_field",
-      "get_current_user",
+      "get_current_user", "list_users",
       "list_conversations", "get_conversations_next_page",
       "list_labels", "search_labels", "get_label",
       "create_label", "update_label", "delete_label",
       "get_agent_performance_report", "get_workflow_volume_report", "get_satisfaction_survey_report",
     ]);
+  });
+
+  // Guard: the manifest (what the install dialog + Connectors Directory show)
+  // MUST list exactly the tools the server actually registers — no ghosts, no
+  // omissions. Disabling/adding a tool in allTools without updating the manifest
+  // fails the build here instead of shipping a mismatched extension.
+  it("manifest tool set matches the server's registered tools exactly", () => {
+    const m = buildManifest(pkgFixture);
+    const manifestNames = m.tools.map((t) => t.name).sort();
+    const registeredNames = allTools.map((t) => t.name).sort();
+    expect(manifestNames).toEqual(registeredNames);
   });
 
   it("api_key user_config is sensitive and required", () => {

@@ -84,7 +84,8 @@ Environment variables (stdio mode):
 Environment variables (serve mode):
   OAUTH_ISSUER_URL            Required. e.g. https://mcp.wasapi.io
   MCP_PUBLIC_URL              Required. Public base URL (usually = issuer).
-  WASAPI_BASE_URL             Required. e.g. https://api-ws.wasapi.io/api/
+  WASAPI_BASE_URL             Required. Versioned SDK base, e.g. https://api-ws.wasapi.io/api/v1/
+  WASAPI_OAUTH_BASE_URL       Required. Unversioned root for the grant exchange, e.g. https://api-ws.wasapi.io/api/
   REDIS_URL                   Required. Redis connection string.
   TOKEN_HASH_SECRET           Required. HMAC secret for token hashing at-rest.
   KEY_ENCRYPTION_SECRET       Required. AES key secret for API-key encryption.

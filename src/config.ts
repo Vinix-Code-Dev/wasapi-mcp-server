@@ -53,6 +53,13 @@ const serveSchema = z.object({
   OAUTH_ISSUER_URL: z.string().url(),
   MCP_PUBLIC_URL: z.string().url(),
   WASAPI_BASE_URL: z.string().url(),
+  // Unversioned backend root for the server-to-server grant exchange
+  // (POST {WASAPI_OAUTH_BASE_URL}v3/oauth/mcp/exchange-grant). Deliberately
+  // separate from WASAPI_BASE_URL: that one is the SDK's base (versioned,
+  // e.g. .../api/v1/) used for per-user tool calls, while the Laravel
+  // exchange-grant route lives directly under /api (no /v1 segment). Reusing
+  // one var for both breaks whichever caller doesn't match its path shape.
+  WASAPI_OAUTH_BASE_URL: z.string().url(),
   REDIS_URL: z.string().min(1, "REDIS_URL is required in serve mode"),
   TOKEN_HASH_SECRET: z.string().min(16, "TOKEN_HASH_SECRET must be at least 16 chars"),
   KEY_ENCRYPTION_SECRET: z.string().min(16, "KEY_ENCRYPTION_SECRET must be at least 16 chars"),
@@ -73,6 +80,7 @@ export interface ServeConfig {
   issuerUrl: string;
   publicUrl: string;
   wasapiBaseUrl: string;
+  wasapiOAuthBaseUrl: string;
   redisUrl: string;
   tokenHashSecret: string;
   keyEncryptionSecret: string;
@@ -105,6 +113,7 @@ export function loadServeConfig(env: NodeJS.ProcessEnv = process.env): ServeConf
     publicUrl: stripTrailingSlash(e.MCP_PUBLIC_URL),
     // The SDK base URL must NOT have a trailing slash collapsed away — keep as given.
     wasapiBaseUrl: e.WASAPI_BASE_URL,
+    wasapiOAuthBaseUrl: e.WASAPI_OAUTH_BASE_URL,
     redisUrl: e.REDIS_URL,
     tokenHashSecret: e.TOKEN_HASH_SECRET,
     keyEncryptionSecret: e.KEY_ENCRYPTION_SECRET,

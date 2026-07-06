@@ -59,7 +59,7 @@ export function handleOAuthCallback(deps: OAuthCallbackDeps): RequestHandler {
 
     try {
       const userGrant = await exchangeGrant(grant, {
-        wasapiBaseUrl: deps.config.wasapiBaseUrl,
+        wasapiBaseUrl: deps.config.wasapiOAuthBaseUrl,
         grantExchangeSecret: deps.config.grantExchangeSecret,
         fetchImpl: deps.fetchImpl,
       });

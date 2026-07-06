@@ -1,6 +1,6 @@
 // tests/unit/config.test.ts
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { loadConfig } from "../../src/config.js";
+import { loadConfig, loadServeConfig } from "../../src/config.js";
 
 describe("loadConfig", () => {
   const originalEnv = { ...process.env };
@@ -36,5 +36,29 @@ describe("loadConfig", () => {
     process.env.WASAPI_API_KEY = "k";
     process.env.WASAPI_DEBUG = "1";
     expect(loadConfig().debug).toBe(true);
+  });
+});
+
+describe("loadServeConfig", () => {
+  const baseEnv = {
+    OAUTH_ISSUER_URL: "https://mcp.test",
+    MCP_PUBLIC_URL: "https://mcp.test",
+    WASAPI_BASE_URL: "https://api.test/api/v1/",
+    WASAPI_OAUTH_BASE_URL: "https://api.test/api/",
+    REDIS_URL: "redis://x",
+    TOKEN_HASH_SECRET: "token-hash-secret-aaaaaaaaaaaa",
+    KEY_ENCRYPTION_SECRET: "key-encryption-secret-bbbbbbbb",
+    GRANT_EXCHANGE_SECRET: "grant-exchange-secret-cccccccc",
+  };
+
+  it("keeps the versioned SDK base and the unversioned OAuth base as distinct values", () => {
+    const config = loadServeConfig(baseEnv as NodeJS.ProcessEnv);
+    expect(config.wasapiBaseUrl).toBe("https://api.test/api/v1/");
+    expect(config.wasapiOAuthBaseUrl).toBe("https://api.test/api/");
+  });
+
+  it("throws when WASAPI_OAUTH_BASE_URL is missing", () => {
+    const { WASAPI_OAUTH_BASE_URL, ...env } = baseEnv;
+    expect(() => loadServeConfig(env as NodeJS.ProcessEnv)).toThrow(/WASAPI_OAUTH_BASE_URL/);
   });
 });

@@ -17,29 +17,29 @@ describe("send_attachment", () => {
     sendAttachmentMock.mockClear();
   });
 
-  it("sends attachment with required fields and from_id fallback", async () => {
+  it("forwards a public URL as filePath (SDK param) with from_id fallback", async () => {
     const h = wrapHandler(sendAttachmentTool.schema, sendAttachmentTool.handler);
-    const res = await h({ wa_id: "5571999000000", filePath: "/tmp/file.pdf" });
+    const res = await h({ wa_id: "5571999000000", file_url: "https://cdn.example.com/file.pdf" });
     expect(res.isError).toBeFalsy();
     expect(sendAttachmentMock).toHaveBeenCalledWith({
       wa_id: "5571999000000",
-      filePath: "/tmp/file.pdf",
+      filePath: "https://cdn.example.com/file.pdf",
       from_id: 5,
     });
   });
 
-  it("sends attachment with caption and explicit from_id", async () => {
+  it("sends with caption and explicit from_id", async () => {
     const h = wrapHandler(sendAttachmentTool.schema, sendAttachmentTool.handler);
     const res = await h({
       wa_id: "5571999000000",
-      filePath: "/tmp/image.jpg",
+      file_url: "https://cdn.example.com/image.jpg",
       caption: "Check this out",
       from_id: 99,
     });
     expect(res.isError).toBeFalsy();
     expect(sendAttachmentMock).toHaveBeenCalledWith({
       wa_id: "5571999000000",
-      filePath: "/tmp/image.jpg",
+      filePath: "https://cdn.example.com/image.jpg",
       caption: "Check this out",
       from_id: 99,
     });
@@ -47,19 +47,19 @@ describe("send_attachment", () => {
 
   it("rejects missing wa_id", async () => {
     const h = wrapHandler(sendAttachmentTool.schema, sendAttachmentTool.handler);
-    const res = await h({ filePath: "/tmp/file.pdf" });
+    const res = await h({ file_url: "https://cdn.example.com/file.pdf" });
     expect(res.isError).toBe(true);
   });
 
-  it("rejects missing filePath", async () => {
+  it("rejects a non-URL file_url (e.g. a local path)", async () => {
     const h = wrapHandler(sendAttachmentTool.schema, sendAttachmentTool.handler);
-    const res = await h({ wa_id: "5571999000000" });
+    const res = await h({ wa_id: "5571999000000", file_url: "/tmp/file.pdf" });
     expect(res.isError).toBe(true);
   });
 
   it("passes optional filename through", async () => {
     const h = wrapHandler(sendAttachmentTool.schema, sendAttachmentTool.handler);
-    await h({ wa_id: "57300", filePath: "/tmp/a.pdf", filename: "propuesta.pdf" });
+    await h({ wa_id: "57300", file_url: "https://cdn.example.com/a.pdf", filename: "propuesta.pdf" });
     expect(sendAttachmentMock).toHaveBeenCalledWith(expect.objectContaining({ filename: "propuesta.pdf" }));
   });
 });

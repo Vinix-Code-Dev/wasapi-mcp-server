@@ -78,7 +78,6 @@ export const TOOL_ANNOTATIONS: Record<string, ToolAnnotationSource> = {
   get_workflow_statuses: R("Ver estados de workflow"),
   // Custom fields
   list_custom_fields: R("Listar campos personalizados"),
-  get_custom_field: R("Ver campo personalizado"),
   create_custom_field: W("Crear campo personalizado"),
   update_custom_field: W("Actualizar campo personalizado"),
   delete_custom_field: W("Eliminar campo personalizado"),

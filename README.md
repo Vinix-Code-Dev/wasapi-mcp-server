@@ -231,7 +231,7 @@ Los contactos se identifican por `wa_id` (un WhatsApp ID en texto), no por ID nu
 | `list_whatsapp_numbers` | Lista los números conectados y sus `from_id` | — |
 | `send_message` | Envía un mensaje de texto | `wa_id`, `message`, `from_id` (opcional) |
 | `send_template` | Envía una plantilla aprobada, con variables y adjunto por URL | `recipients[]`, `template_id`, `contact_type`, `body_vars[]`, `url_file`, `from_id` (opcionales) |
-| `send_attachment` | Envía un archivo desde una ruta local | `wa_id`, `filePath`, `caption`, `filename`, `from_id` (opcionales) |
+| `send_attachment` | Envía un archivo desde una URL pública | `wa_id`, `file_url`, `caption`, `filename`, `from_id` (opcionales) |
 | `send_contact_card` | Envía tarjetas de contacto (vCard) | `wa_id`, `contacts[]`, `from_id` (opcional) |
 | `get_conversation` | Obtiene el hilo de mensajes con un contacto | `wa_id`, `from_id`, `page` (opcionales) |
 | `change_conversation_status` | Cambia el estado de la conversación | `wa_id`, `status` (open/hold/closed), `agent_id` (opcional) |
@@ -304,21 +304,21 @@ Las métricas con rango de fechas esperan formato `YYYY-MM-DD`.
 |---|---|---|
 | `get_workflow_statuses` | Lista cambios de estado de conversaciones, con filtros | `action`, `phone`, `agent_id`, `dates`, `per_page`, `page` (todos opcionales) |
 
-### Campos personalizados (5)
+### Campos personalizados (4)
 
 | Herramienta | Qué hace | Parámetros clave |
 |---|---|---|
 | `list_custom_fields` | Lista los campos personalizados | — |
-| `get_custom_field` | Obtiene un campo por ID | `field_id` |
 | `create_custom_field` | Crea un campo | `name` |
 | `update_custom_field` | Renombra un campo | `field_id`, `name` |
 | `delete_custom_field` | Elimina un campo | `field_id` |
 
-### Usuario (1)
+### Usuario (2)
 
 | Herramienta | Qué hace | Parámetros clave |
 |---|---|---|
 | `get_current_user` | Datos de la cuenta asociada a la API key | — |
+| `list_users` | Lista los usuarios (agentes) de la cuenta | — |
 
 ### Conversaciones (2)
 
@@ -404,9 +404,9 @@ Las extensiones de desarrolladores no verificados se instalan **deshabilitadas**
 
 Tu API key funciona pero no tiene permiso para ese endpoint. Revisa la consola de desarrollador en [app.wasapi.io/account/developer](https://app.wasapi.io/account/developer) y confirma que la key tiene los permisos que necesitas.
 
-### "send_attachment falla: archivo no encontrado"
+### "send_attachment falla"
 
-El `filePath` debe existir en la **máquina donde corre el servidor MCP** (tu computador), no en la del cliente. Los adjuntos por URL aún no están soportados por el SDK; descarga el archivo localmente primero.
+`send_attachment` espera una **URL pública** en `file_url` (no una ruta de archivo local). El tipo de medio se infiere de la extensión de la URL (`.jpg`/`.png` → imagen, `.mp4` → video, `.mp3` → audio; cualquier otra → documento). Asegúrate de que la URL sea accesible públicamente y termine con la extensión correcta.
 
 ### Activar logs de depuración
 
@@ -432,7 +432,7 @@ O agrega `"WASAPI_DEBUG": "1"` al bloque `env` de tu configuración MCP. Los log
 
 | Limitación | Detalle |
 |---|---|
-| `send_attachment` requiere ruta local | Solo disponible en la instalación local (stdio). Para enviar archivos por URL usa `send_template` con `url_file`. |
+| `send_attachment` requiere URL pública | El archivo debe estar accesible por URL; el tipo se infiere de la extensión. No envía archivos locales. |
 
 ---
 

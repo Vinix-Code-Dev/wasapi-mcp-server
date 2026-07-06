@@ -1,6 +1,7 @@
 // tests/unit/generate-manifest.test.ts
 import { describe, it, expect } from "vitest";
 import { buildManifest, manifestSchema } from "../../scripts/generate-manifest.mjs";
+import { allTools } from "../../src/tools/index.js";
 
 const pkgFixture = {
   name: "@wasapi/mcp-server",
@@ -23,7 +24,7 @@ describe("buildManifest", () => {
     expect(m.author.email).toBe("juanpablo@vinixcode.com");
   });
 
-  it("declares all 62 tools", () => {
+  it("declares all 66 tools", () => {
     const m = buildManifest(pkgFixture);
     const names = m.tools.map((t) => t.name);
     expect(names).toEqual([
@@ -38,6 +39,7 @@ describe("buildManifest", () => {
       "list_flows", "list_flows_by_number", "send_flow",
       "get_flow_responses", "get_flow_assets", "get_flow_screens",
       "list_campaigns", "get_campaign",
+      "create_campaign", "get_campaign_stats", "get_campaign_logs", "cancel_campaign",
       "list_funnels", "search_contact_in_funnels", "move_contact_to_funnel_stage",
       "get_online_agents", "get_status_contacts", "get_total_campaigns",
       "get_consolidated_conversations", "get_agent_conversations", "get_messages",
@@ -45,14 +47,25 @@ describe("buildManifest", () => {
       "get_agent_volume_of_work", "get_agent_time_in_conversation",
       "toggle_bot_status",
       "get_workflow_statuses",
-      "list_custom_fields", "get_custom_field", "create_custom_field",
+      "list_custom_fields", "create_custom_field",
       "update_custom_field", "delete_custom_field",
-      "get_current_user",
+      "get_current_user", "list_users",
       "list_conversations", "get_conversations_next_page",
       "list_labels", "search_labels", "get_label",
       "create_label", "update_label", "delete_label",
       "get_agent_performance_report", "get_workflow_volume_report", "get_satisfaction_survey_report",
     ]);
+  });
+
+  // Guard: the manifest (what the install dialog + Connectors Directory show)
+  // MUST list exactly the tools the server actually registers — no ghosts, no
+  // omissions. Disabling/adding a tool in allTools without updating the manifest
+  // fails the build here instead of shipping a mismatched extension.
+  it("manifest tool set matches the server's registered tools exactly", () => {
+    const m = buildManifest(pkgFixture);
+    const manifestNames = m.tools.map((t) => t.name).sort();
+    const registeredNames = allTools.map((t) => t.name).sort();
+    expect(manifestNames).toEqual(registeredNames);
   });
 
   it("api_key user_config is sensitive and required", () => {

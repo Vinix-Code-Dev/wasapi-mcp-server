@@ -40,7 +40,7 @@ Full method surface:
 | Method | Signature | Return type | Notes |
 |---|---|---|---|
 | `sendMessage` | `({ from_id?, wa_id, message })` | `Promise<ResponseMessageWPP>` | |
-| `sendAttachment` | `({ from_id?, wa_id, filePath, caption?, filename? })` | `Promise<ResponseAttachmentWPP>` | Local file path only; no remote URL support at SDK level |
+| `sendAttachment` | `({ from_id?, wa_id, filePath, caption?, filename? })` | `Promise<ResponseAttachmentWPP>` | SDK 2.x: `filePath` is actually a **public URL** — forwarded as image_url/video_url/document_url/audio_url; media type inferred from the URL extension (unknown → document_url). The MCP tool exposes it as `file_url`. |
 | `sendTemplate` | `({ recipients, template_id, contact_type, from_id?, url_file?, ...options })` | `Promise<ResponseTemplate>` | `recipients` is a **CSV string** at the API level (e.g. `"573001,573002"`). The MCP tool accepts `string[]` and joins with `","`. `url_file` triggers `getTemplateFileType` internally — do NOT pass a `file` param |
 | `getConversation` | `({ wa_id, from_id?, page? })` | `Promise<ResponseConversation>` | |
 | `getWhatsappNumbers` | `()` | `Promise<ResponseWhatsappNumbers>` | |

@@ -7,7 +7,7 @@ import { deleteContactTool } from "./contacts/delete.js";
 import { addLabelTool } from "./contacts/add-label.js";
 import { removeLabelTool } from "./contacts/remove-label.js";
 import { assignAgentTool } from "./contacts/assign-agent.js";
-// import { exportContactsTool } from "./contacts/export.js";   // disabled
+import { exportContactsTool } from "./contacts/export.js";
 import { listWhatsappNumbersTool } from "./whatsapp/list-numbers.js";
 import { sendMessageTool } from "./whatsapp/send-message.js";
 import { sendTemplateTool } from "./whatsapp/send-template.js";
@@ -20,12 +20,12 @@ import { listTemplatesByNumberTool } from "./whatsapp/list-templates-by-number.j
 import { syncMetaTemplatesTool } from "./whatsapp/sync-meta-templates.js";
 import { changeStatusTool } from "./whatsapp/change-status.js";
 import { sendContactCardTool } from "./whatsapp/send-contact-card.js";
-// import { listFlowsTool } from "./whatsapp/list-flows.js";              // disabled
-// import { listFlowsByNumberTool } from "./whatsapp/list-flows-by-number.js"; // disabled
-// import { sendFlowTool } from "./whatsapp/send-flow.js";                // disabled
-// import { getFlowResponsesTool } from "./whatsapp/get-flow-responses.js"; // disabled
-// import { getFlowAssetsTool } from "./whatsapp/get-flow-assets.js";     // disabled
-// import { getFlowScreensTool } from "./whatsapp/get-flow-screens.js";   // disabled
+import { listFlowsTool } from "./whatsapp/list-flows.js";
+import { listFlowsByNumberTool } from "./whatsapp/list-flows-by-number.js";
+import { sendFlowTool } from "./whatsapp/send-flow.js";
+import { getFlowResponsesTool } from "./whatsapp/get-flow-responses.js";
+import { getFlowAssetsTool } from "./whatsapp/get-flow-assets.js";
+import { getFlowScreensTool } from "./whatsapp/get-flow-screens.js";
 import { listCampaignsTool } from "./campaigns/list.js";
 import { getCampaignTool } from "./campaigns/get.js";
 import { createCampaignTool } from "./campaigns/create.js";
@@ -49,7 +49,6 @@ import { getAgentTimeInConversationTool } from "./metrics/agent-time-in-conversa
 import { toggleBotStatusTool } from "./bot/toggle-status.js";
 import { getWorkflowStatusesTool } from "./workflow/get-statuses.js";
 import { listCustomFieldsTool } from "./custom-fields/list.js";
-import { getCustomFieldTool } from "./custom-fields/get.js";
 import { createCustomFieldTool } from "./custom-fields/create.js";
 import { updateCustomFieldTool } from "./custom-fields/update.js";
 import { deleteCustomFieldTool } from "./custom-fields/delete.js";
@@ -82,7 +81,7 @@ export const allTools: ToolDefinition<any>[] = [
   sendAttachmentTool,
   getConversationTool,
   assignAgentTool,
-  // exportContactsTool,        // disabled
+  exportContactsTool,
   listTemplatesTool,
   getTemplateTool,
   getTemplateFieldsTool,
@@ -90,12 +89,12 @@ export const allTools: ToolDefinition<any>[] = [
   syncMetaTemplatesTool,
   changeStatusTool,
   sendContactCardTool,
-  // listFlowsTool,             // disabled
-  // listFlowsByNumberTool,     // disabled
-  // sendFlowTool,              // disabled
-  // getFlowResponsesTool,      // disabled
-  // getFlowAssetsTool,         // disabled
-  // getFlowScreensTool,        // disabled
+  listFlowsTool,
+  listFlowsByNumberTool,
+  sendFlowTool,
+  getFlowResponsesTool,
+  getFlowAssetsTool,
+  getFlowScreensTool,
   listCampaignsTool,
   getCampaignTool,
   createCampaignTool,
@@ -119,7 +118,6 @@ export const allTools: ToolDefinition<any>[] = [
   toggleBotStatusTool,
   getWorkflowStatusesTool,
   listCustomFieldsTool,
-  getCustomFieldTool,
   createCustomFieldTool,
   updateCustomFieldTool,
   deleteCustomFieldTool,

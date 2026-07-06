@@ -27,6 +27,9 @@ export function mapError(err: unknown): MappedError {
     if (status === 401 || status === 403) {
       return { category: "auth", message: "API key inválida o sin permisos para este recurso" };
     }
+    if (status === 402) {
+      return { category: "validation", message: data?.message ?? data?.error ?? "Límite del plan alcanzado" };
+    }
     if (status === 404) {
       const detail = data?.message ?? data?.error ?? "sin detalle";
       return { category: "not_found", message: `Recurso no encontrado: ${detail}` };

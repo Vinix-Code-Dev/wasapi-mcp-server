@@ -29,9 +29,9 @@ describe("tool annotations", () => {
     expect(a.destructiveHint).toBe(true);
   });
 
-  it("count matches: 40 read-only, 22 write", () => {
+  it("count matches: 42 read-only, 24 write", () => {
     const entries = Object.values(TOOL_ANNOTATIONS);
-    expect(entries.filter((e) => e.readOnly).length).toBe(40);
-    expect(entries.filter((e) => !e.readOnly).length).toBe(22);
+    expect(entries.filter((e) => e.readOnly).length).toBe(42);
+    expect(entries.filter((e) => !e.readOnly).length).toBe(24);
   });
 });

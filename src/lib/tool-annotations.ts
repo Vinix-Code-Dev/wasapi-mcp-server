@@ -52,6 +52,10 @@ export const TOOL_ANNOTATIONS: Record<string, ToolAnnotationSource> = {
   // Campaigns
   list_campaigns: R("Listar campañas"),
   get_campaign: R("Ver campaña"),
+  create_campaign: W("Crear y enviar campaña"),
+  get_campaign_stats: R("Ver stats de campaña"),
+  get_campaign_logs: R("Ver logs de campaña"),
+  cancel_campaign: W("Cancelar campaña"),
   // Funnels
   list_funnels: R("Listar embudos"),
   search_contact_in_funnels: R("Buscar contacto en embudos"),

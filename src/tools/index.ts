@@ -28,6 +28,10 @@ import { getFlowAssetsTool } from "./whatsapp/get-flow-assets.js";
 import { getFlowScreensTool } from "./whatsapp/get-flow-screens.js";
 import { listCampaignsTool } from "./campaigns/list.js";
 import { getCampaignTool } from "./campaigns/get.js";
+import { createCampaignTool } from "./campaigns/create.js";
+import { getCampaignStatsTool } from "./campaigns/stats.js";
+import { getCampaignLogsTool } from "./campaigns/logs.js";
+import { cancelCampaignTool } from "./campaigns/cancel.js";
 import { listFunnelsTool } from "./funnels/list.js";
 import { searchContactInFunnelsTool } from "./funnels/search-contact.js";
 import { moveContactToFunnelStageTool } from "./funnels/move-contact.js";
@@ -61,8 +65,6 @@ import { deleteLabelTool } from "./labels/delete.js";
 import { getAgentPerformanceReportTool } from "./reports/agent-performance.js";
 import { getWorkflowVolumeReportTool } from "./reports/workflow-volume.js";
 import { getSatisfactionSurveyReportTool } from "./reports/satisfaction-survey.js";
-// NOTE: campaigns create/update/delete are NOT implemented — SDK stubs that throw.
-// Tracked for follow-up SDK PRs.
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const allTools: ToolDefinition<any>[] = [
@@ -95,6 +97,10 @@ export const allTools: ToolDefinition<any>[] = [
   getFlowScreensTool,
   listCampaignsTool,
   getCampaignTool,
+  createCampaignTool,
+  getCampaignStatsTool,
+  getCampaignLogsTool,
+  cancelCampaignTool,
   listFunnelsTool,
   searchContactInFunnelsTool,
   moveContactToFunnelStageTool,

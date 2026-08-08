@@ -27,6 +27,21 @@ describe("create_contact", () => {
     expect(res.isError).toBe(true);
   });
 
+  // WSP-529: un contacto que oculta su número no tiene teléfono, así que el alta va por
+  // bsuid. El SDK lo deja pasar por el spread de `options`, y `phone: undefined` no viaja
+  // porque JSON.stringify descarta las claves undefined.
+  it("crea un contacto de número oculto usando bsuid en vez de phone", async () => {
+    createMock.mockClear();
+    const h = wrapHandler(createContactTool.schema, createContactTool.handler);
+    const res = await h({ first_name: "Ana", bsuid: "CO.1234567890123456" });
+
+    expect(res.isError).toBeFalsy();
+    expect(createMock).toHaveBeenCalledWith(expect.objectContaining({
+      first_name: "Ana",
+      bsuid: "CO.1234567890123456",
+    }));
+  });
+
   it("accepts optional fields", async () => {
     createMock.mockClear();
     const h = wrapHandler(createContactTool.schema, createContactTool.handler);

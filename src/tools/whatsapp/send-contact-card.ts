@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { ToolDefinition } from "../../lib/register-tool.js";
+import { WA_ID_DESCRIPTION } from "../../lib/recipient.js";
 import { getClient } from "../../wasapi.js";
 import { resolveFromId } from "../../lib/from-id.js";
 
@@ -33,7 +34,7 @@ const contactCard = z.object({
 });
 
 const schema = z.object({
-  wa_id: z.string().min(1),
+  wa_id: z.string().min(1).describe(WA_ID_DESCRIPTION),
   contacts: z.array(contactCard).min(1),
   from_id: z.number().int().positive().optional(),
   context_wam_id: z.string().optional(),

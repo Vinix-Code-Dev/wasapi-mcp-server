@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { ToolDefinition } from "../../lib/register-tool.js";
+import { WA_ID_DESCRIPTION } from "../../lib/recipient.js";
 import { getClient } from "../../wasapi.js";
 
 // SDK: whatsapp.getConversation({ wa_id, from_id?, page? })
@@ -9,7 +10,7 @@ import { getClient } from "../../wasapi.js";
 // list_conversations is NOT implemented — the SDK has no listConversations method.
 // This is an SDK gap; tracked as a follow-up issue.
 const schema = z.object({
-  wa_id: z.string().min(1).describe("WhatsApp ID del contacto (E.164 sin +). Devuelve el hilo de mensajes con ese contacto."),
+  wa_id: z.string().min(1).describe(WA_ID_DESCRIPTION + " Devuelve el hilo de mensajes con ese contacto."),
   from_id: z.number().int().positive().optional().describe("Filtrar por número WhatsApp específico. Opcional si solo hay uno."),
   page: z.number().int().positive().optional().describe("Número de página para paginación del hilo de mensajes"),
 });

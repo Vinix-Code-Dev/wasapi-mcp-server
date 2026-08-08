@@ -62,10 +62,42 @@ describe("send_template", () => {
     expect(res.isError).toBe(true);
   });
 
-  it("rejects missing contact_type", async () => {
+  // `contact_type` dejó de ser obligatorio (WSP-529): omitirlo es el camino recomendado,
+  // porque deja que la API resuelva cada destinatario por su formato. Con el campo
+  // obligatorio —y limitado a phone|contact— un BSUID o un username no tenían cómo viajar.
+  it("acepta omitir contact_type y no lo inventa hacia el SDK", async () => {
     const h = wrapHandler(sendTemplateTool.schema, sendTemplateTool.handler);
     const res = await h({ recipients: ["5571999000000"], template_id: "uuid-1234" });
-    expect(res.isError).toBe(true);
+
+    expect(res.isError).toBeFalsy();
+    expect(sendMock).toHaveBeenCalledWith({
+      recipients: "5571999000000",
+      template_id: "uuid-1234",
+      from_id: 10,
+    });
+    // Un contact_type inventado forzaría la interpretación y rompería la detección.
+    expect(sendMock).toHaveBeenCalledWith(expect.not.objectContaining({ contact_type: expect.anything() }));
+  });
+
+  it("deja pasar un BSUID y un username como destinatarios", async () => {
+    const h = wrapHandler(sendTemplateTool.schema, sendTemplateTool.handler);
+    const res = await h({
+      recipients: ["CO.1234567890123456", "ana.gomez", "5571999000000"],
+      template_id: "uuid-1234",
+    });
+
+    expect(res.isError).toBeFalsy();
+    expect(sendMock).toHaveBeenCalledWith(
+      expect.objectContaining({ recipients: "CO.1234567890123456,ana.gomez,5571999000000" }),
+    );
+  });
+
+  it("sigue aceptando contact_type explícito, para no romper a quien ya lo manda", async () => {
+    const h = wrapHandler(sendTemplateTool.schema, sendTemplateTool.handler);
+    const res = await h({ recipients: ["5571999000000"], template_id: "t1", contact_type: "phone" });
+
+    expect(res.isError).toBeFalsy();
+    expect(sendMock).toHaveBeenCalledWith(expect.objectContaining({ contact_type: "phone" }));
   });
 
   it("joins recipients array into CSV string for the SDK", async () => {

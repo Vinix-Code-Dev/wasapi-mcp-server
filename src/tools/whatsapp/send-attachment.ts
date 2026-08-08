@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { ToolDefinition } from "../../lib/register-tool.js";
+import { WA_ID_DESCRIPTION } from "../../lib/recipient.js";
 import { getClient } from "../../wasapi.js";
 import { resolveFromId } from "../../lib/from-id.js";
 
@@ -9,7 +10,7 @@ import { resolveFromId } from "../../lib/from-id.js";
 // the file EXTENSION. So the value must be a PUBLIC URL, not a local path.
 // Unrecognized extensions are sent as document_url.
 const schema = z.object({
-  wa_id: z.string().min(1).describe("WhatsApp ID del destinatario (E.164 sin +)"),
+  wa_id: z.string().min(1).describe(WA_ID_DESCRIPTION),
   file_url: z
     .string()
     .url()

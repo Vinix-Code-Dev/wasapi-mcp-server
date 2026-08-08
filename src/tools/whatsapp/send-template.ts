@@ -2,6 +2,7 @@ import { z } from "zod";
 import type { ToolDefinition } from "../../lib/register-tool.js";
 import { getClient } from "../../wasapi.js";
 import { resolveFromId } from "../../lib/from-id.js";
+import { WA_ID_DESCRIPTION } from "../../lib/recipient.js";
 
 const templateVar = z.object({
   text: z.string().describe("Nombre del placeholder en la plantilla, p.ej. {{1}}"),
@@ -9,9 +10,17 @@ const templateVar = z.object({
 });
 
 const schema = z.object({
-  recipients: z.array(z.string().min(1)).min(1).describe("wa_ids destino (E.164 sin +)"),
+  recipients: z.array(z.string().min(1)).min(1).describe("Destinatarios. " + WA_ID_DESCRIPTION),
   template_id: z.string().min(1).describe("UUID de la plantilla (ver list_whatsapp_templates)"),
-  contact_type: z.enum(["phone", "contact"]),
+  contact_type: z
+    .enum(["phone", "contact"])
+    .optional()
+    .describe(
+      "OMÍTELO salvo que necesites forzar la interpretación: sin este campo Wasapi resuelve " +
+        "cada destinatario por su formato (teléfono, id de contacto, uuid, BSUID o username), " +
+        "que es lo que permite enviarle a un contacto de número oculto. " +
+        "\"phone\" trata todos los valores como teléfonos y \"contact\" como IDs de contacto.",
+    ),
   from_id: z.number().int().positive().optional(),
   body_vars: z.array(templateVar).optional().describe("Variables del cuerpo de la plantilla"),
   header_var: z.array(templateVar).optional().describe("Variable del encabezado"),
